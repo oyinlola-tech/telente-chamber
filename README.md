@@ -644,4 +644,4 @@ For technical support or inquiries:
 ---
 
 **Last Updated**: January 12, 2026
-**Maintained By**: Development Team
+**Maintained By**: Oluwayemi Oyinlola Micahael
