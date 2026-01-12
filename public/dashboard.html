@@ -1,0 +1,1238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - Telente Chambers</title>
+    <style>
+        :root {
+            --white: #FFFFFF;
+            --black: #000000;
+            --transition: all 0.3s ease;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Georgia', serif;
+            line-height: 1.6;
+            color: var(--black);
+            background-color: var(--white);
+            min-height: 100vh;
+        }
+        
+        /* Dashboard Layout */
+        .dashboard-container {
+            display: flex;
+            min-height: 100vh;
+        }
+        
+        /* Sidebar */
+        .sidebar {
+            width: 250px;
+            background-color: var(--black);
+            color: var(--white);
+            padding: 2rem 0;
+            position: fixed;
+            height: 100vh;
+            overflow-y: auto;
+        }
+        
+        .sidebar-header {
+            padding: 0 1.5rem 2rem;
+            border-bottom: 1px solid #333;
+        }
+        
+        .sidebar-header h1 {
+            font-size: 1.5rem;
+            font-weight: normal;
+            margin-bottom: 0.5rem;
+        }
+        
+        .sidebar-header p {
+            color: #999;
+            font-size: 0.9rem;
+        }
+        
+        .nav-links {
+            list-style: none;
+            padding: 1.5rem 0;
+        }
+        
+        .nav-links li {
+            margin-bottom: 0.5rem;
+        }
+        
+        .nav-links a {
+            display: block;
+            padding: 0.75rem 1.5rem;
+            color: #ccc;
+            text-decoration: none;
+            transition: var(--transition);
+            border-left: 3px solid transparent;
+        }
+        
+        .nav-links a:hover,
+        .nav-links a.active {
+            background-color: #222;
+            color: var(--white);
+            border-left-color: var(--white);
+        }
+        
+        .logout-btn {
+            margin: 1.5rem;
+            width: calc(100% - 3rem);
+            background: transparent;
+            color: var(--white);
+            border: 1px solid #666;
+            padding: 0.75rem;
+            cursor: pointer;
+            transition: var(--transition);
+            font-family: 'Georgia', serif;
+        }
+        
+        .logout-btn:hover {
+            background: #222;
+            border-color: var(--white);
+        }
+        
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            margin-left: 250px;
+            padding: 2rem;
+            background-color: #f9f9f9;
+            min-height: 100vh;
+        }
+        
+        .content-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .content-header h2 {
+            font-size: 1.8rem;
+            font-weight: normal;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .stat-card {
+            background: var(--white);
+            padding: 1.5rem;
+            border: 1px solid #eee;
+            text-align: center;
+        }
+        
+        .stat-number {
+            font-size: 2rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+        
+        .stat-label {
+            color: #666;
+            font-size: 0.9rem;
+        }
+        
+        /* Tab Navigation */
+        .tabs {
+            display: flex;
+            border-bottom: 1px solid #eee;
+            margin-bottom: 2rem;
+            background: var(--white);
+        }
+        
+        .tab-btn {
+            padding: 1rem 2rem;
+            background: none;
+            border: none;
+            border-bottom: 3px solid transparent;
+            cursor: pointer;
+            font-family: 'Georgia', serif;
+            font-size: 1rem;
+            color: #666;
+            transition: var(--transition);
+        }
+        
+        .tab-btn:hover {
+            color: var(--black);
+        }
+        
+        .tab-btn.active {
+            color: var(--black);
+            border-bottom-color: var(--black);
+        }
+        
+        /* Tab Content */
+        .tab-content {
+            display: none;
+            background: var(--white);
+            padding: 2rem;
+            border: 1px solid #eee;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        /* Tables */
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+        }
+        
+        .data-table th,
+        .data-table td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .data-table th {
+            background-color: #f9f9f9;
+            font-weight: normal;
+            color: #666;
+        }
+        
+        .data-table tr:hover {
+            background-color: #f9f9f9;
+        }
+        
+        /* Actions */
+        .actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+        
+        .btn {
+            padding: 0.5rem 1rem;
+            border: 1px solid var(--black);
+            background: var(--white);
+            color: var(--black);
+            cursor: pointer;
+            font-family: 'Georgia', serif;
+            font-size: 0.9rem;
+            transition: var(--transition);
+        }
+        
+        .btn:hover {
+            background: var(--black);
+            color: var(--white);
+        }
+        
+        .btn-small {
+            padding: 0.25rem 0.5rem;
+            font-size: 0.8rem;
+        }
+        
+        .btn-approve {
+            border-color: #155724;
+            color: #155724;
+        }
+        
+        .btn-approve:hover {
+            background: #155724;
+            color: var(--white);
+        }
+        
+        .btn-replied {
+            border-color: #0c5460;
+            color: #0c5460;
+        }
+        
+        .btn-replied:hover {
+            background: #0c5460;
+            color: var(--white);
+        }
+        
+        /* Form Styles */
+        .form-row {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+            color: #333;
+        }
+        
+        input, textarea, select {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #ddd;
+            font-family: 'Georgia', serif;
+            font-size: 1rem;
+            transition: var(--transition);
+        }
+        
+        textarea {
+            min-height: 200px;
+            resize: vertical;
+        }
+        
+        input:focus, textarea:focus, select:focus {
+            outline: none;
+            border-color: var(--black);
+        }
+        
+        .file-upload {
+            border: 2px dashed #ddd;
+            padding: 2rem;
+            text-align: center;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        
+        .file-upload:hover {
+            border-color: var(--black);
+        }
+        
+        .file-upload input {
+            display: none;
+        }
+        
+        .preview-image {
+            max-width: 200px;
+            max-height: 200px;
+            margin-top: 1rem;
+        }
+        
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0,0,0,0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .modal-content {
+            background: var(--white);
+            padding: 2rem;
+            max-width: 500px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+        
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .modal-header h3 {
+            font-size: 1.5rem;
+            font-weight: normal;
+        }
+        
+        .close-modal {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #666;
+        }
+        
+        /* Messages */
+        .message {
+            padding: 1rem;
+            margin-bottom: 1rem;
+            border-radius: 4px;
+        }
+        
+        .message.success {
+            background-color: #f0f9f0;
+            border: 1px solid #c3e6cb;
+            color: #155724;
+        }
+        
+        .message.error {
+            background-color: #f8f9fa;
+            border: 1px solid #f5c6cb;
+            color: #721c24;
+        }
+        
+        /* Loading */
+        .loading {
+            text-align: center;
+            padding: 2rem;
+            color: #666;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .dashboard-container {
+                flex-direction: column;
+            }
+            
+            .sidebar {
+                width: 100%;
+                height: auto;
+                position: static;
+            }
+            
+            .main-content {
+                margin-left: 0;
+            }
+            
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+            
+            .tabs {
+                flex-wrap: wrap;
+            }
+            
+            .tab-btn {
+                flex: 1;
+                min-width: 120px;
+                padding: 0.75rem 1rem;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+    <!-- Dashboard Layout -->
+    <div class="dashboard-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <h1>Telente Chambers</h1>
+                <p>Admin Dashboard</p>
+            </div>
+            
+            <ul class="nav-links">
+                <li><a href="#dashboard" class="active" data-tab="dashboard">Dashboard</a></li>
+                <li><a href="#contacts" data-tab="contacts">Contact Messages</a></li>
+                <li><a href="#testimonials" data-tab="testimonials">Testimonials</a></li>
+                <li><a href="#blogs" data-tab="blogs">Blog Management</a></li>
+                <li><a href="#new-blog" data-tab="new-blog">New Blog Post</a></li>
+            </ul>
+            
+            <button class="logout-btn" id="logout-btn">Logout</button>
+        </aside>
+        
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Content Header -->
+            <div class="content-header">
+                <h2 id="page-title">Dashboard Overview</h2>
+                <div id="last-login">Last login: Loading...</div>
+            </div>
+            
+            <!-- Stats Overview -->
+            <div class="stats-grid" id="stats-container">
+                <div class="stat-card">
+                    <div class="stat-number" id="total-contacts">0</div>
+                    <div class="stat-label">Contact Messages</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="total-testimonials">0</div>
+                    <div class="stat-label">Testimonials</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="total-blogs">0</div>
+                    <div class="stat-label">Blog Posts</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="unreplied-contacts">0</div>
+                    <div class="stat-label">Unreplied Messages</div>
+                </div>
+            </div>
+            
+            <!-- Tab Navigation -->
+            <div class="tabs" id="tab-nav">
+                <button class="tab-btn active" data-tab="dashboard">Overview</button>
+                <button class="tab-btn" data-tab="contacts">Contacts</button>
+                <button class="tab-btn" data-tab="testimonials">Testimonials</button>
+                <button class="tab-btn" data-tab="blogs">Blogs</button>
+                <button class="tab-btn" data-tab="new-blog">New Post</button>
+            </div>
+            
+            <!-- Tab Content -->
+            <div class="tab-content active" id="dashboard-tab">
+                <div id="dashboard-content">
+                    <div class="loading">Loading dashboard data...</div>
+                </div>
+            </div>
+            
+            <div class="tab-content" id="contacts-tab">
+                <div id="contacts-content">
+                    <div class="loading">Loading contacts...</div>
+                </div>
+            </div>
+            
+            <div class="tab-content" id="testimonials-tab">
+                <div id="testimonials-content">
+                    <div class="loading">Loading testimonials...</div>
+                </div>
+            </div>
+            
+            <div class="tab-content" id="blogs-tab">
+                <div id="blogs-content">
+                    <div class="loading">Loading blog posts...</div>
+                </div>
+            </div>
+            
+            <div class="tab-content" id="new-blog-tab">
+                <div id="new-blog-content">
+                    <div class="message" id="blog-message"></div>
+                    <form id="blog-form">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="blog-title">Title *</label>
+                                <input type="text" id="blog-title" name="title" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="blog-status">Status</label>
+                                <select id="blog-status" name="status">
+                                    <option value="published">Published</option>
+                                    <option value="draft">Draft</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="blog-excerpt">Excerpt (optional)</label>
+                            <textarea id="blog-excerpt" name="excerpt" rows="3"></textarea>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="blog-content">Content *</label>
+                            <textarea id="blog-content" name="content" required></textarea>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Featured Image</label>
+                            <div class="file-upload" id="file-upload">
+                                <input type="file" id="blog-image" name="image" accept="image/*">
+                                <p>Click to upload image (max 10MB)</p>
+                                <div id="image-preview"></div>
+                            </div>
+                        </div>
+                        
+                        <button type="submit" class="btn" id="blog-submit">Publish Post</button>
+                    </form>
+                </div>
+            </div>
+        </main>
+    </div>
+    
+    <!-- Email Modal -->
+    <div class="modal" id="email-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Send Email</h3>
+                <button class="close-modal" id="close-email-modal">&times;</button>
+            </div>
+            <div class="message" id="email-status"></div>
+            <form id="email-form">
+                <div class="form-group">
+                    <label for="email-to">To</label>
+                    <input type="email" id="email-to" name="to" readonly>
+                </div>
+                <div class="form-group">
+                    <label for="email-subject">Subject</label>
+                    <input type="text" id="email-subject" name="subject" required>
+                </div>
+                <div class="form-group">
+                    <label for="email-body">Message</label>
+                    <textarea id="email-body" name="message" rows="6" required></textarea>
+                </div>
+                <input type="hidden" id="email-type" name="type">
+                <input type="hidden" id="email-record-id" name="recordId">
+                <button type="submit" class="btn" id="email-submit">Send Email</button>
+            </form>
+        </div>
+    </div>
+    
+    <script>
+        // Authentication and initialization
+        let currentUser = null;
+        let authToken = localStorage.getItem('admin_token');
+        
+        // Check authentication
+        async function checkAuth() {
+            if (!authToken) {
+                console.log('No auth token found in localStorage');
+                window.location.href = '/admin/login';
+                return false;
+            }
+            
+            try {
+                const response = await fetch('/api/admin/check-auth', {
+                    headers: {
+                        'Authorization': `Bearer ${authToken}`
+                    }
+                });
+                
+                console.log('Check-auth response:', { status: response.status });
+                
+                if (!response.ok) {
+                    throw new Error('Not authenticated');
+                }
+                
+                const data = await response.json();
+                console.log('Auth check successful, user:', data.user);
+                currentUser = data.user;
+                updateLastLogin();
+                return true;
+            } catch (error) {
+                console.error('Auth check failed:', error);
+                localStorage.removeItem('admin_token');
+                window.location.href = '/admin/login';
+                return false;
+            }
+        }
+        
+        // Update last login time
+        function updateLastLogin() {
+            const lastLoginEl = document.getElementById('last-login');
+            const now = new Date();
+            lastLoginEl.textContent = `Last login: ${now.toLocaleString()}`;
+        }
+        
+        // Load dashboard stats
+        async function loadDashboardStats() {
+            try {
+                const [contactsRes, testimonialsRes, blogsRes] = await Promise.all([
+                    fetch('/api/contacts', {
+                        headers: { 'Authorization': `Bearer ${authToken}` }
+                    }),
+                    fetch('/api/testimonials?approved=false', {
+                        headers: { 'Authorization': `Bearer ${authToken}` }
+                    }),
+                    fetch('/api/blogs', {
+                        headers: { 'Authorization': `Bearer ${authToken}` }
+                    })
+                ]);
+                
+                const contacts = await contactsRes.json();
+                const testimonials = await testimonialsRes.json();
+                const blogs = await blogsRes.json();
+                
+                // Update stats
+                document.getElementById('total-contacts').textContent = contacts.length;
+                document.getElementById('total-testimonials').textContent = testimonials.length;
+                document.getElementById('total-blogs').textContent = blogs.length;
+                
+                const unreplied = contacts.filter(c => !c.replied).length;
+                document.getElementById('unreplied-contacts').textContent = unreplied;
+                
+                // Update dashboard content
+                const dashboardContent = document.getElementById('dashboard-content');
+                const recentContacts = contacts.slice(0, 5);
+                const pendingTestimonials = testimonials.filter(t => !t.approved).slice(0, 5);
+                
+                dashboardContent.innerHTML = `
+                    <div class="form-row">
+                        <div style="flex: 1;">
+                            <h3 style="margin-bottom: 1rem;">Recent Contact Messages</h3>
+                            ${recentContacts.length > 0 ? `
+                                <table class="data-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Name</th>
+                                            <th>Email</th>
+                                            <th>Subject</th>
+                                            <th>Date</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        ${recentContacts.map(contact => `
+                                            <tr>
+                                                <td>${contact.name}</td>
+                                                <td>${contact.email}</td>
+                                                <td>${contact.subject || 'No subject'}</td>
+                                                <td>${new Date(contact.created_at).toLocaleDateString()}</td>
+                                            </tr>
+                                        `).join('')}
+                                    </tbody>
+                                </table>
+                            ` : '<p>No recent contact messages.</p>'}
+                        </div>
+                        
+                        <div style="flex: 1;">
+                            <h3 style="margin-bottom: 1rem;">Pending Testimonials</h3>
+                            ${pendingTestimonials.length > 0 ? `
+                                <table class="data-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Name</th>
+                                            <th>Rating</th>
+                                            <th>Date</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        ${pendingTestimonials.map(testimonial => `
+                                            <tr>
+                                                <td>${testimonial.name}</td>
+                                                <td>${'★'.repeat(testimonial.rating)}${'☆'.repeat(5 - testimonial.rating)}</td>
+                                                <td>${new Date(testimonial.created_at).toLocaleDateString()}</td>
+                                            </tr>
+                                        `).join('')}
+                                    </tbody>
+                                </table>
+                            ` : '<p>No pending testimonials.</p>'}
+                        </div>
+                    </div>
+                `;
+                
+            } catch (error) {
+                console.error('Error loading dashboard stats:', error);
+            }
+        }
+        
+        // Load contacts
+        async function loadContacts() {
+            try {
+                const response = await fetch('/api/contacts', {
+                    headers: { 'Authorization': `Bearer ${authToken}` }
+                });
+                const contacts = await response.json();
+                
+                const contactsContent = document.getElementById('contacts-content');
+                
+                if (contacts.length === 0) {
+                    contactsContent.innerHTML = '<p>No contact messages found.</p>';
+                    return;
+                }
+                
+                contactsContent.innerHTML = `
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Name</th>
+                                <th>Email</th>
+                                <th>Phone</th>
+                                <th>Subject</th>
+                                <th>Message</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${contacts.map(contact => `
+                                <tr>
+                                    <td>${new Date(contact.created_at).toLocaleDateString()}</td>
+                                    <td>${contact.name}</td>
+                                    <td>${contact.email}</td>
+                                    <td>${contact.phone || '-'}</td>
+                                    <td>${contact.subject || 'No subject'}</td>
+                                    <td style="max-width: 200px; overflow: hidden; text-overflow: ellipsis;">${contact.message}</td>
+                                    <td>
+                                        ${contact.replied ? 
+                                            '<span style="color: #155724;">Replied</span>' : 
+                                            '<span style="color: #721c24;">Pending</span>'
+                                        }
+                                    </td>
+                                    <td class="actions">
+                                        <button class="btn btn-small" onclick="viewContact(${contact.id})">View</button>
+                                        <button class="btn btn-small btn-replied" onclick="openEmailModal('contact', ${contact.id}, ${JSON.stringify(contact.email)})">
+                                            ${contact.replied ? 'Email Again' : 'Reply'}
+                                        </button>
+                                    </td>
+                                </tr>
+                            `).join('')}
+                        </tbody>
+                    </table>
+                `;
+            } catch (error) {
+                console.error('Error loading contacts:', error);
+                document.getElementById('contacts-content').innerHTML = 
+                    '<p class="error">Failed to load contacts. Please try again.</p>';
+            }
+        }
+        
+        // Load testimonials
+        async function loadTestimonials() {
+            try {
+                const response = await fetch('/api/testimonials?approved=false', {
+                    headers: { 'Authorization': `Bearer ${authToken}` }
+                });
+                const testimonials = await response.json();
+                
+                const testimonialsContent = document.getElementById('testimonials-content');
+                
+                if (testimonials.length === 0) {
+                    testimonialsContent.innerHTML = '<p>No testimonials found.</p>';
+                    return;
+                }
+                
+                testimonialsContent.innerHTML = `
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Name</th>
+                                <th>Email</th>
+                                <th>Rating</th>
+                                <th>Message</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${testimonials.map(testimonial => `
+                                <tr>
+                                    <td>${new Date(testimonial.created_at).toLocaleDateString()}</td>
+                                    <td>${testimonial.name}</td>
+                                    <td>${testimonial.email || '-'}</td>
+                                    <td>${'★'.repeat(testimonial.rating)}${'☆'.repeat(5 - testimonial.rating)}</td>
+                                    <td style="max-width: 200px; overflow: hidden; text-overflow: ellipsis;">${testimonial.message}</td>
+                                    <td>
+                                        ${testimonial.approved ? 
+                                            '<span style="color: #155724;">Approved</span>' : 
+                                            '<span style="color: #721c24;">Pending</span>'
+                                        }
+                                    </td>
+                                    <td class="actions">
+                                        <button class="btn btn-small" onclick="viewTestimonial(${testimonial.id})">View</button>
+                                        <button class="btn btn-small btn-approve" onclick="toggleApproval(${testimonial.id}, ${!testimonial.approved})">
+                                            ${testimonial.approved ? 'Unapprove' : 'Approve'}
+                                        </button>
+                                        ${testimonial.email ? `
+                                            <button class="btn btn-small btn-replied" onclick="openEmailModal('testimonial', ${testimonial.id}, ${JSON.stringify(testimonial.email)})">
+                                                ${testimonial.replied ? 'Email Again' : 'Reply'}
+                                            </button>
+                                        ` : ''}
+                                    </td>
+                                </tr>
+                            `).join('')}
+                        </tbody>
+                    </table>
+                `;
+            } catch (error) {
+                console.error('Error loading testimonials:', error);
+                document.getElementById('testimonials-content').innerHTML = 
+                    '<p class="error">Failed to load testimonials. Please try again.</p>';
+            }
+        }
+        
+        // Load blogs
+        async function loadBlogs() {
+            try {
+                const response = await fetch('/api/blogs', {
+                    headers: { 'Authorization': `Bearer ${authToken}` }
+                });
+                const blogs = await response.json();
+                
+                const blogsContent = document.getElementById('blogs-content');
+                
+                if (blogs.length === 0) {
+                    blogsContent.innerHTML = '<p>No blog posts found.</p>';
+                    return;
+                }
+                
+                blogsContent.innerHTML = `
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Title</th>
+                                <th>Status</th>
+                                <th>Excerpt</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${blogs.map(blog => `
+                                <tr>
+                                    <td>${new Date(blog.created_at).toLocaleDateString()}</td>
+                                    <td>${blog.title}</td>
+                                    <td>
+                                        <span style="color: ${blog.status === 'published' ? '#155724' : '#856404'}">
+                                            ${blog.status.charAt(0).toUpperCase() + blog.status.slice(1)}
+                                        </span>
+                                    </td>
+                                    <td style="max-width: 200px; overflow: hidden; text-overflow: ellipsis;">${blog.excerpt || blog.content.substring(0, 100)}...</td>
+                                    <td class="actions">
+                                        <button class="btn btn-small" onclick="editBlog(${blog.id})">Edit</button>
+                                        <button class="btn btn-small" onclick="deleteBlog(${blog.id})">Delete</button>
+                                    </td>
+                                </tr>
+                            `).join('')}
+                        </tbody>
+                    </table>
+                `;
+            } catch (error) {
+                console.error('Error loading blogs:', error);
+                document.getElementById('blogs-content').innerHTML = 
+                    '<p class="error">Failed to load blog posts. Please try again.</p>';
+            }
+        }
+        
+        // Tab switching
+        function setupTabs() {
+            const tabBtns = document.querySelectorAll('.tab-btn');
+            const navLinks = document.querySelectorAll('.nav-links a');
+            
+            tabBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const tabId = btn.getAttribute('data-tab');
+                    
+                    // Update active tab button
+                    tabBtns.forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    
+                    // Update active nav link
+                    navLinks.forEach(link => {
+                        if (link.getAttribute('data-tab') === tabId) {
+                            link.classList.add('active');
+                        } else {
+                            link.classList.remove('active');
+                        }
+                    });
+                    
+                    // Update page title
+                    document.getElementById('page-title').textContent = 
+                        btn.textContent + (tabId === 'dashboard' ? ' Overview' : '');
+                    
+                    // Show active tab content
+                    document.querySelectorAll('.tab-content').forEach(content => {
+                        content.classList.remove('active');
+                    });
+                    document.getElementById(`${tabId}-tab`).classList.add('active');
+                    
+                    // Load data for the tab if needed
+                    switch(tabId) {
+                        case 'contacts':
+                            loadContacts();
+                            break;
+                        case 'testimonials':
+                            loadTestimonials();
+                            break;
+                        case 'blogs':
+                            loadBlogs();
+                            break;
+                        case 'dashboard':
+                            loadDashboardStats();
+                            break;
+                    }
+                });
+            });
+            
+            navLinks.forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const tabId = link.getAttribute('data-tab');
+                    const tabBtn = document.querySelector(`.tab-btn[data-tab="${tabId}"]`);
+                    if (tabBtn) {
+                        tabBtn.click();
+                    }
+                });
+            });
+        }
+        
+        // Blog form submission
+        document.getElementById('blog-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const submitBtn = document.getElementById('blog-submit');
+            const originalText = submitBtn.textContent;
+            submitBtn.textContent = 'Publishing...';
+            submitBtn.disabled = true;
+            
+            const formData = new FormData();
+            formData.append('title', document.getElementById('blog-title').value);
+            formData.append('content', document.getElementById('blog-content').value);
+            formData.append('excerpt', document.getElementById('blog-excerpt').value);
+            formData.append('status', document.getElementById('blog-status').value);
+            
+            const imageFile = document.getElementById('blog-image').files[0];
+            if (imageFile) {
+                formData.append('image', imageFile);
+            }
+            
+            try {
+                const response = await fetch('/api/blogs', {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${authToken}`
+                    },
+                    body: formData
+                });
+                
+                const result = await response.json();
+                
+                const messageDiv = document.getElementById('blog-message');
+                
+                if (response.ok) {
+                    messageDiv.textContent = 'Blog post published successfully!';
+                    messageDiv.className = 'message success';
+                    
+                    // Reset form
+                    document.getElementById('blog-form').reset();
+                    document.getElementById('image-preview').innerHTML = '';
+                    
+                    // Load blogs tab
+                    loadBlogs();
+                } else {
+                    messageDiv.textContent = result.error || 'Failed to publish blog post.';
+                    messageDiv.className = 'message error';
+                }
+            } catch (error) {
+                const messageDiv = document.getElementById('blog-message');
+                messageDiv.textContent = 'Network error. Please try again.';
+                messageDiv.className = 'message error';
+            } finally {
+                submitBtn.textContent = originalText;
+                submitBtn.disabled = false;
+            }
+        });
+        
+        // File upload preview
+        document.getElementById('file-upload').addEventListener('click', () => {
+            document.getElementById('blog-image').click();
+        });
+        
+        document.getElementById('blog-image').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const preview = document.getElementById('image-preview');
+                    preview.innerHTML = `<img src="${e.target.result}" class="preview-image" alt="Preview">`;
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+        
+        // Email modal
+        window.openEmailModal = function(type, recordId, email) {
+            document.getElementById('email-to').value = email;
+            document.getElementById('email-type').value = type;
+            document.getElementById('email-record-id').value = recordId;
+            
+            let subjectPrefix = '';
+            if (type === 'contact') {
+                subjectPrefix = 'Re: Your inquiry to Telente Chambers';
+            } else if (type === 'testimonial') {
+                subjectPrefix = 'Re: Your testimonial for Telente Chambers';
+            }
+            
+            document.getElementById('email-subject').value = subjectPrefix;
+            document.getElementById('email-modal').style.display = 'flex';
+        };
+        
+        document.getElementById('close-email-modal').addEventListener('click', () => {
+            document.getElementById('email-modal').style.display = 'none';
+        });
+        
+        // Email form submission
+        document.getElementById('email-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const submitBtn = document.getElementById('email-submit');
+            const originalText = submitBtn.textContent;
+            submitBtn.textContent = 'Sending...';
+            submitBtn.disabled = true;
+            
+            const formData = {
+                to: document.getElementById('email-to').value,
+                subject: document.getElementById('email-subject').value,
+                message: document.getElementById('email-body').value,
+                type: document.getElementById('email-type').value,
+                recordId: document.getElementById('email-record-id').value
+            };
+            
+            try {
+                const response = await fetch('/api/send-email', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${authToken}`
+                    },
+                    body: JSON.stringify(formData)
+                });
+                
+                const result = await response.json();
+                
+                const messageDiv = document.getElementById('email-status');
+                
+                if (response.ok) {
+                    messageDiv.textContent = 'Email sent successfully!';
+                    messageDiv.className = 'message success';
+                    
+                    // Close modal after 2 seconds
+                    setTimeout(() => {
+                        document.getElementById('email-modal').style.display = 'none';
+                        document.getElementById('email-form').reset();
+                        messageDiv.className = 'message';
+                        
+                        // Reload data
+                        if (formData.type === 'contact') {
+                            loadContacts();
+                        } else if (formData.type === 'testimonial') {
+                            loadTestimonials();
+                        }
+                    }, 2000);
+                } else {
+                    messageDiv.textContent = result.error || 'Failed to send email.';
+                    messageDiv.className = 'message error';
+                }
+            } catch (error) {
+                const messageDiv = document.getElementById('email-status');
+                messageDiv.textContent = 'Network error. Please try again.';
+                messageDiv.className = 'message error';
+            } finally {
+                submitBtn.textContent = originalText;
+                submitBtn.disabled = false;
+            }
+        });
+        
+        // Logout
+        document.getElementById('logout-btn').addEventListener('click', async () => {
+            try {
+                await fetch('/api/admin/logout', {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${authToken}`
+                    }
+                });
+            } catch (error) {
+                // Ignore errors on logout
+            }
+            
+            localStorage.removeItem('admin_token');
+            window.location.href = '/admin/login';
+        });
+        
+        // Helper functions
+        window.viewContact = function(id) {
+            alert('View contact details for ID: ' + id);
+            // Implement detailed view modal
+        };
+        
+        window.viewTestimonial = function(id) {
+            alert('View testimonial details for ID: ' + id);
+            // Implement detailed view modal
+        };
+        
+        window.toggleApproval = async function(id, approve) {
+            try {
+                const response = await fetch(`/api/testimonials/${id}/approve`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${authToken}`
+                    },
+                    body: JSON.stringify({ approved: approve })
+                });
+                
+                if (response.ok) {
+                    loadTestimonials();
+                    loadDashboardStats();
+                }
+            } catch (error) {
+                console.error('Error updating approval:', error);
+            }
+        };
+        
+        window.editBlog = function(id) {
+            alert('Edit blog post with ID: ' + id);
+            // Implement edit functionality
+        };
+        
+        window.deleteBlog = async function(id) {
+            if (confirm('Are you sure you want to delete this blog post?')) {
+                try {
+                    // Note: You'll need to add a DELETE endpoint in your backend
+                    // const response = await fetch(`/api/blogs/${id}`, {
+                    //     method: 'DELETE',
+                    //     headers: { 'Authorization': `Bearer ${authToken}` }
+                    // });
+                    // 
+                    // if (response.ok) {
+                    //     loadBlogs();
+                    // }
+                    alert('Delete functionality not implemented yet. You need to add a DELETE endpoint.');
+                } catch (error) {
+                    console.error('Error deleting blog:', error);
+                }
+            }
+        };
+        
+        // Initialize dashboard
+        document.addEventListener('DOMContentLoaded', async () => {
+            const isAuthenticated = await checkAuth();
+            if (isAuthenticated) {
+                setupTabs();
+                loadDashboardStats();
+                
+                // Setup file upload
+                const fileUpload = document.getElementById('file-upload');
+                if (fileUpload) {
+                    fileUpload.addEventListener('dragover', (e) => {
+                        e.preventDefault();
+                        fileUpload.style.borderColor = 'var(--black)';
+                    });
+                    
+                    fileUpload.addEventListener('dragleave', () => {
+                        fileUpload.style.borderColor = '#ddd';
+                    });
+                    
+                    fileUpload.addEventListener('drop', (e) => {
+                        e.preventDefault();
+                        fileUpload.style.borderColor = '#ddd';
+                        
+                        const file = e.dataTransfer.files[0];
+                        if (file && file.type.startsWith('image/')) {
+                            const input = document.getElementById('blog-image');
+                            // Use DataTransfer to set files on the input if supported
+                            if (typeof DataTransfer !== 'undefined') {
+                                const dt = new DataTransfer();
+                                dt.items.add(file);
+                                input.files = dt.files;
+                            } else {
+                                input.files = e.dataTransfer.files;
+                            }
+                            
+                            const reader = new FileReader();
+                            reader.onload = function(e) {
+                                const preview = document.getElementById('image-preview');
+                                preview.innerHTML = `<img src="${e.target.result}" class="preview-image" alt="Preview">`;
+                            };
+                            reader.readAsDataURL(file);
+                        }
+                    });
+                }
+            }
+        });
+    </script>
+</body>
+</html>

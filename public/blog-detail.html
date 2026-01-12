@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blog Article - Telente Chambers</title>
+    <style>
+        :root {
+            --white: #FFFFFF;
+            --black: #000000;
+            --transition: all 0.3s ease;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Georgia', serif;
+            line-height: 1.6;
+            color: var(--black);
+            background-color: var(--white);
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* Header */
+        header {
+            background-color: var(--white);
+            border-bottom: 1px solid #eee;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.5rem 0;
+        }
+        
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            text-decoration: none;
+            color: var(--black);
+        }
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+        
+        nav a {
+            text-decoration: none;
+            color: var(--black);
+            font-size: 1rem;
+            transition: var(--transition);
+        }
+        
+        nav a:hover {
+            opacity: 0.7;
+        }
+        
+        /* Blog Detail */
+        .blog-detail {
+            padding: 3rem 0;
+        }
+        
+        .back-link {
+            display: inline-block;
+            margin-bottom: 2rem;
+            color: var(--black);
+            text-decoration: none;
+            border-bottom: 1px solid transparent;
+            transition: var(--transition);
+        }
+        
+        .back-link:hover {
+            border-bottom-color: var(--black);
+        }
+        
+        .blog-header {
+            margin-bottom: 2rem;
+        }
+        
+        .blog-meta {
+            color: #666;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+        
+        .blog-title {
+            font-size: 2.5rem;
+            font-weight: normal;
+            line-height: 1.3;
+            margin-bottom: 1.5rem;
+        }
+        
+        .featured-image {
+            width: 100%;
+            max-height: 500px;
+            overflow: hidden;
+            margin-bottom: 2rem;
+        }
+        
+        .featured-image img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+        
+        .blog-content {
+            max-width: 800px;
+            margin: 0 auto;
+            font-size: 1.1rem;
+            line-height: 1.8;
+        }
+        
+        .blog-content h2, 
+        .blog-content h3 {
+            margin: 2rem 0 1rem;
+            font-weight: normal;
+        }
+        
+        .blog-content p {
+            margin-bottom: 1.5rem;
+        }
+        
+        .blog-content ul,
+        .blog-content ol {
+            margin: 1.5rem 0;
+            padding-left: 2rem;
+        }
+        
+        .blog-content li {
+            margin-bottom: 0.5rem;
+        }
+        
+        .blog-content blockquote {
+            border-left: 3px solid var(--black);
+            padding-left: 1.5rem;
+            margin: 2rem 0;
+            font-style: italic;
+            color: #333;
+        }
+        
+        /* Related Articles */
+        .related-articles {
+            padding: 4rem 0;
+            border-top: 1px solid #eee;
+        }
+        
+        .related-articles h2 {
+            font-size: 2rem;
+            margin-bottom: 2rem;
+            font-weight: normal;
+        }
+        
+        .related-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+        
+        .related-card {
+            border: 1px solid #eee;
+            transition: var(--transition);
+        }
+        
+        .related-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+        
+        .related-image {
+            height: 200px;
+            overflow: hidden;
+        }
+        
+        .related-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .related-content {
+            padding: 1.5rem;
+        }
+        
+        .related-content h3 {
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+            font-weight: normal;
+        }
+        
+        .related-content p {
+            color: #666;
+            margin-bottom: 1rem;
+            font-size: 0.95rem;
+        }
+        
+        .related-link {
+            color: var(--black);
+            text-decoration: none;
+            font-size: 0.9rem;
+            display: inline-block;
+            border-bottom: 1px solid transparent;
+            transition: var(--transition);
+        }
+        
+        .related-link:hover {
+            border-bottom-color: var(--black);
+        }
+        
+        /* Footer */
+        footer {
+            background-color: var(--black);
+            color: var(--white);
+            padding: 4rem 0 2rem;
+        }
+        
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 3rem;
+            margin-bottom: 3rem;
+        }
+        
+        .footer-section h3 {
+            font-size: 1.2rem;
+            margin-bottom: 1.5rem;
+            font-weight: normal;
+        }
+        
+        .footer-section p {
+            color: #ccc;
+            margin-bottom: 1rem;
+        }
+        
+        .copyright {
+            text-align: center;
+            padding-top: 2rem;
+            border-top: 1px solid #333;
+            color: #999;
+            font-size: 0.9rem;
+        }
+        
+        /* WhatsApp Button */
+        .whatsapp-button {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 60px;
+            height: 60px;
+            background-color: #25D366;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.8rem;
+            text-decoration: none;
+            box-shadow: 0 4px 20px rgba(37, 211, 102, 0.3);
+            transition: var(--transition);
+            z-index: 1000;
+        }
+        
+        .whatsapp-button:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 25px rgba(37, 211, 102, 0.4);
+        }
+        
+        /* Loading and Error States */
+        .loading, .error, .not-found {
+            text-align: center;
+            padding: 4rem 0;
+            color: #666;
+        }
+        
+        @media (max-width: 768px) {
+            .nav-container {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            nav ul {
+                gap: 1rem;
+            }
+            
+            .blog-title {
+                font-size: 2rem;
+            }
+            
+            .blog-content {
+                font-size: 1rem;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+    <header>
+        <div class="container nav-container">
+            <a href="/" class="logo">Telente Chambers</a>
+            <nav>
+                <ul>
+                    <li><a href="/">Home</a></li>
+                    <li><a href="/#about">About</a></li>
+                    <li><a href="/blog">Blog</a></li>
+                    <li><a href="/contact">Contact</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main class="blog-detail">
+        <div class="container">
+            <a href="/blog" class="back-link">← Back to all articles</a>
+            
+            <div id="blog-content">
+                <div class="loading">Loading article...</div>
+            </div>
+        </div>
+    </main>
+
+    <section class="related-articles" id="related-articles" style="display: none;">
+        <div class="container">
+            <h2>Related Articles</h2>
+            <div class="related-grid" id="related-grid">
+                
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Telente Chambers</h3>
+                    <p>123 Legal Avenue<br>Suite 500<br>New York, NY 10001</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Contact</h3>
+                    <p>Phone: (555) 123-4567<br>Email: info@telentechambers.com<br>Fax: (555) 123-4568</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Hours</h3>
+                    <p>Monday - Friday: 9am - 6pm<br>Saturday: By appointment<br>Sunday: Closed</p>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>&copy; 2026 Telente Chambers. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    
+    <a href="https://wa.me/15551234567?text=Hello%20Telente%20Chambers%2C%20I%20would%20like%20to%20discuss%20a%20legal%20matter" 
+       class="whatsapp-button" 
+       target="_blank">
+        <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="white">
+            <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.76.982.998-3.675-.236-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.9 6.994c-.004 5.45-4.438 9.88-9.888 9.88m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.333.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.333 11.893-11.893 0-3.18-1.24-6.162-3.495-8.411"/>
+        </svg>
+    </a>
+
+    <script>
+        async function loadBlogDetail() {
+            try {
+                
+                const pathSegments = window.location.pathname.split('/');
+                const slug = pathSegments[pathSegments.length - 1];
+                
+                if (!slug || slug === 'blog-detail.html') {
+                    document.getElementById('blog-content').innerHTML = 
+                        '<p class="not-found">Article not found.</p>';
+                    return;
+                }
+                
+                
+                const response = await fetch(`/api/blogs/${slug}`);
+                
+                if (!response.ok) {
+                    if (response.status === 404) {
+                        document.getElementById('blog-content').innerHTML = 
+                            '<p class="not-found">Article not found.</p>';
+                    } else {
+                        throw new Error('Failed to load article');
+                    }
+                    return;
+                }
+                
+                const blog = await response.json();
+                
+                
+                document.title = `${blog.title} - Telente Chambers`;
+                
+                
+                const blogContent = document.getElementById('blog-content');
+                blogContent.innerHTML = `
+                    <div class="blog-header">
+                        <div class="blog-meta">
+                            ${new Date(blog.created_at).toLocaleDateString('en-US', {
+                                year: 'numeric',
+                                month: 'long',
+                                day: 'numeric'
+                            })}
+                        </div>
+                        <h1 class="blog-title">${blog.title}</h1>
+                    </div>
+                    
+                    ${blog.image ? `
+                        <div class="featured-image">
+                            <img src="/${blog.image}" alt="${blog.title}">
+                        </div>
+                    ` : ''}
+                    
+                    <div class="blog-content">
+                        ${blog.content.replace(/\n/g, '</p><p>')}
+                    </div>
+                `;
+                
+           
+                loadRelatedArticles(blog.id);
+                
+            } catch (error) {
+                console.error('Error loading blog:', error);
+                document.getElementById('blog-content').innerHTML = 
+                    '<p class="error">Unable to load article. Please try again later.</p>';
+            }
+        }
+        
+        async function loadRelatedArticles(currentBlogId) {
+            try {
+                const response = await fetch('/api/blogs?limit=3');
+                const blogs = await response.json();
+                
+                
+                const relatedBlogs = blogs.filter(blog => blog.id !== currentBlogId).slice(0, 2);
+                
+                if (relatedBlogs.length > 0) {
+                    const relatedSection = document.getElementById('related-articles');
+                    const relatedGrid = document.getElementById('related-grid');
+                    
+                    relatedGrid.innerHTML = relatedBlogs.map(blog => `
+                        <div class="related-card">
+                            ${blog.image ? `
+                                <div class="related-image">
+                                    <img src="/${blog.image}" alt="${blog.title}">
+                                </div>
+                            ` : ''}
+                            <div class="related-content">
+                                <h3>${blog.title}</h3>
+                                <p>${blog.excerpt || blog.content.substring(0, 120)}...</p>
+                                <a href="/blog/${blog.slug}" class="related-link">Read Article →</a>
+                            </div>
+                        </div>
+                    `).join('');
+                    
+                    relatedSection.style.display = 'block';
+                }
+            } catch (error) {
+                console.error('Error loading related articles:', error);
+            }
+        }
+        
+        
+        document.addEventListener('DOMContentLoaded', loadBlogDetail);
+    </script>
+</body>
+</html>

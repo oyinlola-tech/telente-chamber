@@ -1,0 +1,680 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Telente Chambers - Legal Excellence</title>
+    <style>
+        :root {
+            --white: #FFFFFF;
+            --black: #000000;
+            --transition: all 0.3s ease;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Georgia', serif;
+            line-height: 1.6;
+            color: var(--black);
+            background-color: var(--white);
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+
+        header {
+            background-color: var(--white);
+            border-bottom: 1px solid #eee;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.5rem 0;
+        }
+        
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            text-decoration: none;
+            color: var(--black);
+        }
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+        
+        nav a {
+            text-decoration: none;
+            color: var(--black);
+            font-size: 1rem;
+            transition: var(--transition);
+        }
+        
+        nav a:hover {
+            opacity: 0.7;
+        }
+        
+        
+        .hero {
+            padding: 4rem 0;
+            text-align: center;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            font-weight: normal;
+        }
+        
+        .hero p {
+            font-size: 1.2rem;
+            max-width: 800px;
+            margin: 0 auto;
+            color: #333;
+        }
+        
+        
+        .about {
+            padding: 4rem 0;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .about h2 {
+            font-size: 2rem;
+            margin-bottom: 2rem;
+            font-weight: normal;
+        }
+        
+        .about-content {
+            columns: 2;
+            gap: 3rem;
+        }
+        
+        .about-content p {
+            margin-bottom: 1.5rem;
+            break-inside: avoid;
+        }
+        
+        
+        .blog-preview {
+            padding: 4rem 0;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 3rem;
+        }
+        
+        .section-header h2 {
+            font-size: 2rem;
+            font-weight: normal;
+        }
+        
+        .view-all {
+            color: var(--black);
+            text-decoration: none;
+            border: 1px solid var(--black);
+            padding: 0.5rem 1rem;
+            transition: var(--transition);
+        }
+        
+        .view-all:hover {
+            background-color: var(--black);
+            color: var(--white);
+        }
+        
+        .blogs-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+        
+        .blog-card {
+            border: 1px solid #eee;
+            transition: var(--transition);
+        }
+        
+        .blog-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+        
+        .blog-image {
+            height: 200px;
+            overflow: hidden;
+        }
+        
+        .blog-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .blog-content {
+            padding: 1.5rem;
+        }
+        
+        .blog-content h3 {
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+            font-weight: normal;
+        }
+        
+        .blog-content p {
+            color: #666;
+            margin-bottom: 1rem;
+            font-size: 0.95rem;
+        }
+        
+        .read-more {
+            color: var(--black);
+            text-decoration: none;
+            font-size: 0.9rem;
+            display: inline-block;
+            border-bottom: 1px solid transparent;
+            transition: var(--transition);
+        }
+        
+        .read-more:hover {
+            border-bottom-color: var(--black);
+        }
+        
+        
+        .testimonials {
+            padding: 4rem 0;
+        }
+        
+        .testimonials h2 {
+            font-size: 2rem;
+            margin-bottom: 3rem;
+            font-weight: normal;
+            text-align: center;
+        }
+        
+        .testimonials-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+        
+        .testimonial-card {
+            padding: 2rem;
+            border: 1px solid #eee;
+            position: relative;
+        }
+        
+        .testimonial-card::before {
+            content: '"';
+            font-size: 4rem;
+            position: absolute;
+            top: -10px;
+            left: 20px;
+            opacity: 0.1;
+        }
+        
+        .stars {
+            color: #000;
+            margin-bottom: 1rem;
+            font-size: 1.2rem;
+        }
+        
+        .testimonial-text {
+            font-style: italic;
+            margin-bottom: 1rem;
+            color: #333;
+        }
+        
+        .testimonial-author {
+            font-weight: bold;
+            color: var(--black);
+        }
+        
+        
+        footer {
+            background-color: var(--black);
+            color: var(--white);
+            padding: 4rem 0 2rem;
+            margin-top: 4rem;
+        }
+        
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 3rem;
+            margin-bottom: 3rem;
+        }
+        
+        .footer-section h3 {
+            font-size: 1.2rem;
+            margin-bottom: 1.5rem;
+            font-weight: normal;
+        }
+        
+        .footer-section p {
+            color: #ccc;
+            margin-bottom: 1rem;
+        }
+        
+        .copyright {
+            text-align: center;
+            padding-top: 2rem;
+            border-top: 1px solid #333;
+            color: #999;
+            font-size: 0.9rem;
+        }
+        
+        
+        .whatsapp-button {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 60px;
+            height: 60px;
+            background-color: #25D366;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.8rem;
+            text-decoration: none;
+            box-shadow: 0 4px 20px rgba(37, 211, 102, 0.3);
+            transition: var(--transition);
+            z-index: 1000;
+        }
+        
+        .whatsapp-button:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 25px rgba(37, 211, 102, 0.4);
+        }
+
+        .founder {
+            padding: 4rem 0;
+            border-bottom: 1px solid #eee;
+            background-color: #f9f9f9;
+        }
+
+        .founder h2 {
+            font-size: 2rem;
+            margin-bottom: 3rem;
+            font-weight: normal;
+            text-align: center;
+        }
+
+        .founder-content {
+            display: grid;
+            grid-template-columns: 300px 1fr;
+            gap: 3rem;
+            align-items: start;
+        }
+
+        .founder-image {
+            position: relative;
+        }
+
+        .image-placeholder {
+            width: 100%;
+            height: 400px;
+            background-color: var(--white);
+            border: 1px solid #eee;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .initials {
+            font-size: 4rem;
+            font-weight: bold;
+            color: #333;
+            opacity: 0.3;
+        }
+
+        .founder-details h3 {
+            font-size: 1.8rem;
+            margin-bottom: 0.5rem;
+            font-weight: normal;
+        }
+
+        .founder-title {
+            color: #666;
+            font-size: 1.1rem;
+            margin-bottom: 2rem;
+            font-style: italic;
+        }
+
+        .founder-bio p {
+            margin-bottom: 1.5rem;
+            color: #333;
+        }
+
+        .founder-highlights {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+
+        .highlight strong {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--black);
+            font-size: 1rem;
+        }
+
+        .highlight ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .highlight li {
+            margin-bottom: 0.5rem;
+            color: #666;
+            font-size: 0.95rem;
+            position: relative;
+            padding-left: 1.2rem;
+        }
+
+        .highlight li:before {
+            content: "•";
+            position: absolute;
+            left: 0;
+            color: var(--black);
+        }
+
+        .founder-philosophy {
+            font-style: italic;
+            color: #333;
+            padding: 1.5rem;
+            border-left: 3px solid var(--black);
+            background-color: var(--white);
+            margin-top: 2rem;
+        }
+
+        @media (max-width: 768px) {
+            .founder-content {
+                grid-template-columns: 1fr;
+            }
+            
+            .founder-image {
+                max-width: 250px;
+                margin: 0 auto;
+            }
+            
+            .image-placeholder {
+                height: 300px;
+            }
+            
+            .founder-highlights {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        
+        @media (max-width: 768px) {
+            .nav-container {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            nav ul {
+                gap: 1rem;
+            }
+            
+            .hero h1 {
+                font-size: 2rem;
+            }
+            
+            .about-content {
+                columns: 1;
+            }
+            
+            .section-header {
+                flex-direction: column;
+                gap: 1rem;
+                text-align: center;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+    
+    <header>
+        <div class="container nav-container">
+            <a href="/" class="logo">Telente Chambers</a>
+            <nav>
+                <ul>
+                    <li><a href="/">Home</a></li>
+                    <li><a href="#about">About</a></li>
+                    <li><a href="/blog">Blog</a></li>
+                    <li><a href="/contact">Contact</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    
+    <section class="hero">
+        <div class="container">
+            <h1>Legal Excellence with Integrity</h1>
+            <p>Providing expert legal counsel with unwavering commitment to justice and client success. Our firm combines decades of experience with innovative legal strategies.</p>
+        </div>
+    </section>
+
+    
+    <section id="about" class="about">
+        <div class="container">
+            <h2>About Telente Chambers</h2>
+            <div class="about-content">
+                <p>Founded on the principles of justice, integrity, and excellence, Telente Chambers has been serving clients with distinction for over two decades. Our firm was established with a clear vision: to provide exceptional legal services while maintaining the highest ethical standards.</p>
+                
+                <p>Our team of experienced attorneys specializes in various areas of law, including corporate law, intellectual property, civil litigation, and family law. Each attorney brings unique expertise and a commitment to achieving the best possible outcomes for our clients.</p>
+                
+                <p>At Telente Chambers, we believe that every client deserves personalized attention and strategic legal solutions. We take the time to understand your unique circumstances and develop tailored approaches to address your legal needs effectively.</p>
+                
+                <p>Our track record of success is built on thorough preparation, innovative thinking, and a deep understanding of the law. We pride ourselves on being not just legal representatives, but trusted advisors who guide our clients through complex legal challenges with confidence and clarity.</p>
+            </div>
+        </div>
+    </section>
+
+    
+<section class="founder">
+    <div class="container">
+        <h2>Our Founding Lawyer</h2>
+        <div class="founder-content">
+            <div class="founder-image">
+                <img src="/uploads/img/oyin12.jpg" alt="Alexandra M. Telente" style="width:100%; height:400px; object-fit:cover; border:1px solid #eee;">
+            </div>
+            <div class="founder-details">
+                <h3>Alexandra M. Telente, Esq.</h3>
+                <p class="founder-title">Founding Partner & Senior Counsel</p>
+                
+                <div class="founder-bio">
+                    <p>With over 25 years of legal experience, Alexandra M. Telente founded Telente Chambers in 2005 with a vision to create a law firm that combines exceptional legal expertise with unwavering client commitment.</p>
+                    
+                    <p>A graduate of Harvard Law School (J.D., 1995), Ms. Telente began her career at one of New York's premier corporate law firms before establishing her own practice. She specializes in corporate law, intellectual property litigation, and complex civil disputes.</p>
+                    
+                    <div class="founder-highlights">
+                        <div class="highlight">
+                            <strong>Education:</strong>
+                            <ul>
+                                <li>Harvard Law School, J.D. (1995)</li>
+                                <li>Yale University, B.A. in Political Science (1992)</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="highlight">
+                            <strong>Bar Admissions:</strong>
+                            <ul>
+                                <li>New York State Bar (1996)</li>
+                                <li>U.S. District Court, Southern District of New York (1997)</li>
+                                <li>U.S. District Court, Eastern District of New York (1997)</li>
+                                <li>U.S. Court of Appeals for the Second Circuit (2000)</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="highlight">
+                            <strong>Professional Recognition:</strong>
+                            <ul>
+                                <li>Best Lawyers in America (2015-2024)</li>
+                                <li>Super Lawyers, New York Metro (2010-2024)</li>
+                                <li>Martindale-Hubbell AV Preeminent Rating</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <p class="founder-philosophy">
+                        "My philosophy has always been that legal representation should be both formidable and compassionate. We fight tirelessly for our clients while never losing sight of the human element in every case."
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+    
+    <section class="blog-preview">
+        <div class="container">
+            <div class="section-header">
+                <h2>Latest Insights</h2>
+                <a href="/blog" class="view-all">View All Articles</a>
+            </div>
+            <div class="blogs-grid" id="blogs-container">
+                
+                <div class="loading">Loading articles...</div>
+            </div>
+        </div>
+    </section>
+
+    
+    <section class="testimonials">
+        <div class="container">
+            <h2>Client Testimonials</h2>
+            <div class="testimonials-grid" id="testimonials-container">
+                
+                <div class="loading">Loading testimonials...</div>
+            </div>
+        </div>
+    </section>
+
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Telente Chambers</h3>
+                    <p>123 Legal Avenue<br>Suite 500<br>New York, NY 10001</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Contact</h3>
+                    <p>Phone: (555) 123-4567<br>Email: info@telentechambers.com<br>Fax: (555) 123-4568</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Hours</h3>
+                    <p>Monday - Friday: 9am - 6pm<br>Saturday: By appointment<br>Sunday: Closed</p>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>&copy; 2026 Telente Chambers. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <a href="https://wa.me/15551234567?text=Hello%20Telente%20Chambers%2C%20I%20would%20like%20to%20discuss%20a%20legal%20matter" 
+       class="whatsapp-button" 
+       target="_blank">
+        <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="white">
+            <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.76.982.998-3.675-.236-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.9 6.994c-.004 5.45-4.438 9.88-9.888 9.88m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.333.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.333 11.893-11.893 0-3.18-1.24-6.162-3.495-8.411"/>
+        </svg>
+    </a>
+
+    <script>
+        async function loadBlogs() {
+            try {
+                const response = await fetch('/api/blogs?limit=3');
+                const blogs = await response.json();
+                const container = document.getElementById('blogs-container');
+                
+                if (blogs.length === 0) {
+                    container.innerHTML = '<p class="no-blogs">No articles available at the moment.</p>';
+                    return;
+                }
+                
+                container.innerHTML = blogs.map(blog => `
+                    <div class="blog-card">
+                        ${blog.image ? `
+                            <div class="blog-image">
+                                <img src="/${blog.image}" alt="${blog.title}">
+                            </div>
+                        ` : ''}
+                        <div class="blog-content">
+                            <h3>${blog.title}</h3>
+                            <p>${blog.excerpt || blog.content.substring(0, 120)}...</p>
+                            <a href="/blog/${blog.slug}" class="read-more">Read More →</a>
+                        </div>
+                    </div>
+                `).join('');
+            } catch (error) {
+                console.error('Error loading blogs:', error);
+                document.getElementById('blogs-container').innerHTML = 
+                    '<p class="error">Unable to load articles. Please try again later.</p>';
+            }
+        }
+
+        
+        async function loadTestimonials() {
+            try {
+                const response = await fetch('/api/testimonials');
+                const testimonials = await response.json();
+                const container = document.getElementById('testimonials-container');
+                
+                if (testimonials.length === 0) {
+                    container.innerHTML = '<p class="no-testimonials">No testimonials yet.</p>';
+                    return;
+                }
+                
+                container.innerHTML = testimonials.slice(0, 3).map(testimonial => `
+                    <div class="testimonial-card">
+                        <div class="stars">
+                            ${'★'.repeat(testimonial.rating)}${'☆'.repeat(5 - testimonial.rating)}
+                        </div>
+                        <p class="testimonial-text">"${testimonial.message}"</p>
+                        <p class="testimonial-author">${testimonial.name}</p>
+                    </div>
+                `).join('');
+            } catch (error) {
+                console.error('Error loading testimonials:', error);
+                document.getElementById('testimonials-container').innerHTML = 
+                    '<p class="error">Unable to load testimonials.</p>';
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            loadBlogs();
+            loadTestimonials();
+        });
+    </script>
+</body>
+</html>
