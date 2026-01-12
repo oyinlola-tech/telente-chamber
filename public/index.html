@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Telente Chambers - Legal Excellence</title>
+    <title>Spectrum Legal - Barristers and Solicitors</title>
     <style>
         :root {
             --white: #FFFFFF;
@@ -463,7 +463,7 @@
     
     <header>
         <div class="container nav-container">
-            <a href="/" class="logo">Telente Chambers</a>
+            <a href="/" class="logo">Spectrum Legal</a>
             <nav>
                 <ul>
                     <li><a href="/">Home</a></li>
@@ -486,13 +486,13 @@
     
     <section id="about" class="about">
         <div class="container">
-            <h2>About Telente Chambers</h2>
+            <h2>About Spectrum Legal</h2>
             <div class="about-content">
-                <p>Founded on the principles of justice, integrity, and excellence, Telente Chambers has been serving clients with distinction for over two decades. Our firm was established with a clear vision: to provide exceptional legal services while maintaining the highest ethical standards.</p>
+                <p>Founded on the principles of justice, integrity, and excellence, Spectrum Legal has been serving clients with distinction for over two decades. Our firm was established with a clear vision: to provide exceptional legal services while maintaining the highest ethical standards.</p>
                 
                 <p>Our team of experienced attorneys specializes in various areas of law, including corporate law, intellectual property, civil litigation, and family law. Each attorney brings unique expertise and a commitment to achieving the best possible outcomes for our clients.</p>
                 
-                <p>At Telente Chambers, we believe that every client deserves personalized attention and strategic legal solutions. We take the time to understand your unique circumstances and develop tailored approaches to address your legal needs effectively.</p>
+                <p>At Spectrum Legal, we believe that every client deserves personalized attention and strategic legal solutions. We take the time to understand your unique circumstances and develop tailored approaches to address your legal needs effectively.</p>
                 
                 <p>Our track record of success is built on thorough preparation, innovative thinking, and a deep understanding of the law. We pride ourselves on being not just legal representatives, but trusted advisors who guide our clients through complex legal challenges with confidence and clarity.</p>
             </div>
@@ -505,16 +505,16 @@
         <h2>Our Founding Lawyer</h2>
         <div class="founder-content">
             <div class="founder-image">
-                <img src="/uploads/img/oyin12.jpg" alt="Alexandra M. Telente" style="width:100%; height:400px; object-fit:cover; border:1px solid #eee;">
+                <img src="/uploads/img/oyin12.jpg" alt="Senior Partner" style="width:100%; height:400px; object-fit:cover; border:1px solid #eee;">
             </div>
             <div class="founder-details">
-                <h3>Alexandra M. Telente, Esq.</h3>
+                <h3>Senior Partner, Esq.</h3>
                 <p class="founder-title">Founding Partner & Senior Counsel</p>
                 
                 <div class="founder-bio">
-                    <p>With over 25 years of legal experience, Alexandra M. Telente founded Telente Chambers in 2005 with a vision to create a law firm that combines exceptional legal expertise with unwavering client commitment.</p>
+                    <p>With over 25 years of legal experience, our founding partner established Spectrum Legal in 2005 with a vision to create a law firm that combines exceptional legal expertise with unwavering client commitment.</p>
                     
-                    <p>A graduate of Harvard Law School (J.D., 1995), Ms. Telente began her career at one of New York's premier corporate law firms before establishing her own practice. She specializes in corporate law, intellectual property litigation, and complex civil disputes.</p>
+                    <p>A graduate of Harvard Law School (J.D., 1995), our founding partner began their career at one of New York's premier corporate law firms before establishing their own practice. They specialize in corporate law, intellectual property litigation, and complex civil disputes.</p>
                     
                     <div class="founder-highlights">
                         <div class="highlight">
@@ -584,12 +584,12 @@
         <div class="container">
             <div class="footer-content">
                 <div class="footer-section">
-                    <h3>Telente Chambers</h3>
+                    <h3>Spectrum Legal</h3>
                     <p>123 Legal Avenue<br>Suite 500<br>New York, NY 10001</p>
                 </div>
                 <div class="footer-section">
                     <h3>Contact</h3>
-                    <p>Phone: (555) 123-4567<br>Email: info@telentechambers.com<br>Fax: (555) 123-4568</p>
+                    <p>Phone: (555) 123-4567<br>Email: info@spectrumlegals.com<br>Fax: (555) 123-4568</p>
                 </div>
                 <div class="footer-section">
                     <h3>Hours</h3>
@@ -597,12 +597,12 @@
                 </div>
             </div>
             <div class="copyright">
-                <p>&copy; 2026 Telente Chambers. All rights reserved.</p>
+                <p>&copy; 2026 Spectrum Legal. All rights reserved.</p>
             </div>
         </div>
     </footer>
 
-    <a href="https://wa.me/15551234567?text=Hello%20Telente%20Chambers%2C%20I%20would%20like%20to%20discuss%20a%20legal%20matter" 
+    <a href="https://wa.me/15551234567?text=Hello%20Spectrum%20Legal%2C%20I%20would%20like%20to%20discuss%20a%20legal%20matter" 
        class="whatsapp-button" 
        target="_blank">
         <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="white">
@@ -611,6 +611,17 @@
     </a>
 
     <script>
+        // Update year in footer
+        document.addEventListener('DOMContentLoaded', function() {
+            const currentYear = new Date().getFullYear();
+            const copyrightElements = document.querySelectorAll('p');
+            copyrightElements.forEach(el => {
+                if (el.textContent.includes('Spectrum Legal')) {
+                    el.innerHTML = el.innerHTML.replace(/\d{4}\s+Spectrum Legal/, `${currentYear} Spectrum Legal`);
+                }
+            });
+        });
+
         async function loadBlogs() {
             try {
                 const response = await fetch('/api/blogs?limit=3');

@@ -69,7 +69,7 @@ const initDatabase = async () => {
 
     
     const bcrypt = require('bcryptjs');
-    const defaultEmail = 'admin@telente.com';
+    const defaultEmail = 'admin@spectrumlegals.com';
     const defaultPassword = await bcrypt.hash('Admin@123!!', 10);
     
     await pool.query(

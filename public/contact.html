@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Contact Us - Telente Chambers</title>
+    <title>Contact Us - Spectrum Legal</title>
     <style>
         :root {
             --white: #FFFFFF;
@@ -339,7 +339,7 @@
     <!-- Header -->
     <header>
         <div class="container nav-container">
-            <a href="/" class="logo">Telente Chambers</a>
+            <a href="/" class="logo">Spectrum Legal</a>
             <nav>
                 <ul>
                     <li><a href="/">Home</a></li>
@@ -415,16 +415,16 @@
                         <div class="form-group">
                             <label>Rating *</label>
                             <div class="rating">
-                                <input type="radio" id="star5" name="rating" value="5" required>
-                                <label for="star5">★</label>
-                                <input type="radio" id="star4" name="rating" value="4">
-                                <label for="star4">★</label>
-                                <input type="radio" id="star3" name="rating" value="3">
-                                <label for="star3">★</label>
+                                <input type="radio" id="star1" name="rating" value="1" required>
+                                <label for="star1">★</label>
                                 <input type="radio" id="star2" name="rating" value="2">
                                 <label for="star2">★</label>
-                                <input type="radio" id="star1" name="rating" value="1">
-                                <label for="star1">★</label>
+                                <input type="radio" id="star3" name="rating" value="3">
+                                <label for="star3">★</label>
+                                <input type="radio" id="star4" name="rating" value="4">
+                                <label for="star4">★</label>
+                                <input type="radio" id="star5" name="rating" value="5">
+                                <label for="star5">★</label>
                             </div>
                         </div>
                         
@@ -450,7 +450,7 @@
                     <a href="tel:+15551234567">(555) 123-4567</a></p>
                     
                     <p><strong>Email:</strong><br>
-                    <a href="mailto:info@telentechambers.com">info@telentechambers.com</a></p>
+                    <a href="mailto:info@spectrumlegals.com">info@spectrumlegals.com</a></p>
                 </div>
                 
                 <div class="info-card">
@@ -479,12 +479,12 @@
         <div class="container">
             <div class="footer-content">
                 <div class="footer-section">
-                    <h3>Telente Chambers</h3>
+                    <h3>Spectrum Legal</h3>
                     <p>123 Legal Avenue<br>Suite 500<br>New York, NY 10001</p>
                 </div>
                 <div class="footer-section">
                     <h3>Contact</h3>
-                    <p>Phone: (555) 123-4567<br>Email: info@telentechambers.com<br>Fax: (555) 123-4568</p>
+                    <p>Phone: (555) 123-4567<br>Email: info@spectrumlegals.com<br>Fax: (555) 123-4568</p>
                 </div>
                 <div class="footer-section">
                     <h3>Hours</h3>
@@ -492,13 +492,13 @@
                 </div>
             </div>
             <div class="copyright">
-                <p>&copy; 2026 Telente Chambers. All rights reserved.</p>
+                <p>&copy; 2026 Spectrum Legal. All rights reserved.</p>
             </div>
         </div>
     </footer>
 
     <!-- WhatsApp Button -->
-    <a href="https://wa.me/15551234567?text=Hello%20Telente%20Chambers%2C%20I%20would%20like%20to%20discuss%20a%20legal%20matter" 
+    <a href="https://wa.me/15551234567?text=Hello%20Spectrum%20Legal%2C%20I%20would%20like%20to%20discuss%20a%20legal%20matter" 
        class="whatsapp-button" 
        target="_blank">
         <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="white">
@@ -507,6 +507,17 @@
     </a>
 
     <script>
+        // Update year in footer
+        document.addEventListener('DOMContentLoaded', function() {
+            const currentYear = new Date().getFullYear();
+            const copyrightElements = document.querySelectorAll('p');
+            copyrightElements.forEach(el => {
+                if (el.textContent.includes('Spectrum Legal')) {
+                    el.innerHTML = el.innerHTML.replace(/\d{4}\s+Spectrum Legal/, `${currentYear} Spectrum Legal`);
+                }
+            });
+        });
+
         // Contact form handler
         document.getElementById('contact-form').addEventListener('submit', async (e) => {
             e.preventDefault();

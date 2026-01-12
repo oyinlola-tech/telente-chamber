@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Blog - Telente Chambers</title>
+    <title>Blog - Spectrum Legal</title>
     <style>
         /* Reuse styles from index.html with some modifications */
         :root {
@@ -286,7 +286,7 @@
     <!-- Header -->
     <header>
         <div class="container nav-container">
-            <a href="/" class="logo">Telente Chambers</a>
+            <a href="/" class="logo">Spectrum Legal</a>
             <nav>
                 <ul>
                     <li><a href="/">Home</a></li>
@@ -328,12 +328,12 @@
         <div class="container">
             <div class="footer-content">
                 <div class="footer-section">
-                    <h3>Telente Chambers</h3>
+                    <h3>Spectrum Legal</h3>
                     <p>123 Legal Avenue<br>Suite 500<br>New York, NY 10001</p>
                 </div>
                 <div class="footer-section">
                     <h3>Contact</h3>
-                    <p>Phone: (555) 123-4567<br>Email: info@telentechambers.com<br>Fax: (555) 123-4568</p>
+                    <p>Phone: (555) 123-4567<br>Email: info@spectrumlegals.com<br>Fax: (555) 123-4568</p>
                 </div>
                 <div class="footer-section">
                     <h3>Hours</h3>
@@ -341,13 +341,13 @@
                 </div>
             </div>
             <div class="copyright">
-                <p>&copy; 2026 Telente Chambers. All rights reserved.</p>
+                <p>&copy; 2026 Spectrum Legal. All rights reserved.</p>
             </div>
         </div>
     </footer>
 
     <!-- WhatsApp Button -->
-    <a href="https://wa.me/15551234567?text=Hello%20Telente%20Chambers%2C%20I%20would%20like%20to%20discuss%20a%20legal%20matter" 
+    <a href="https://wa.me/15551234567?text=Hello%20Spectrum%20Legal%2C%20I%20would%20like%20to%20discuss%20a%20legal%20matter" 
        class="whatsapp-button" 
        target="_blank">
         <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="white">
@@ -356,6 +356,17 @@
     </a>
 
     <script>
+        // Update year in footer
+        document.addEventListener('DOMContentLoaded', function() {
+            const currentYear = new Date().getFullYear();
+            const copyrightElements = document.querySelectorAll('p');
+            copyrightElements.forEach(el => {
+                if (el.textContent.includes('Spectrum Legal')) {
+                    el.innerHTML = el.innerHTML.replace(/\d{4}\s+Spectrum Legal/, `${currentYear} Spectrum Legal`);
+                }
+            });
+        });
+
         let currentPage = 1;
         const blogsPerPage = 6;
         let allBlogs = [];
