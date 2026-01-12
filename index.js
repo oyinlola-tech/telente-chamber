@@ -251,6 +251,30 @@ app.get('/api/contacts', authenticateToken, async (req, res) => {
   }
 });
 
+app.delete('/api/contacts/:id', authenticateToken, async (req, res) => {
+  try {
+    const contactId = parseInt(req.params.id);
+    
+    if (isNaN(contactId)) {
+      return res.status(400).json({ error: 'Invalid contact ID' });
+    }
+    
+    const [result] = await pool.query(
+      'DELETE FROM contacts WHERE id = ?',
+      [contactId]
+    );
+    
+    if (result.affectedRows === 0) {
+      return res.status(404).json({ error: 'Contact not found' });
+    }
+    
+    res.json({ message: 'Contact deleted successfully' });
+  } catch (error) {
+    console.error('Delete contact error:', error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
 app.post('/api/admin/login', async (req, res) => {
   try {
     const { email, password } = req.body;
