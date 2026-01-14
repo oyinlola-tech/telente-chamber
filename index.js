@@ -346,8 +346,8 @@ app.post('/api/admin/forgot-password', async (req, res) => {
 
     // Store OTP in password_resets table
     await pool.query(
-      'INSERT INTO password_resets (user_id, otp, expires_at) VALUES (?, ?, ?)',
-      [user.id, otp, new Date(expiresAt)]
+      'INSERT INTO password_resets (user_id, otp, email, expires_at) VALUES (?, ?, ?, ?)',
+      [user.id, otp, email, new Date(expiresAt)]
     );
 
     //Email content with OTP
@@ -456,12 +456,13 @@ if (password.length < 8) {
 
 // Verify OTP again for security
     const [otps] = await pool.query(`
-      SELECT * FROM password_resets WHERE email = ? AND otp = ? AND used = FALSE AND expires_at > NOW()
+      SELECT pr.* FROM password_resets pr
+      JOIN users u ON pr.user_id = u.id
+      WHERE pr.email = ? AND pr.otp = ? AND pr.used = FALSE AND pr.expires_at > NOW()
     `, [email, otp]);
     if (otps.length === 0) {
       return res.status(400).json({ error: 'Invalid or expired OTP' });
     }
-
     const otpRecord = otps[0];
     //Find user
     const [users] = await pool.query('SELECT * FROM users WHERE email = ?', [email]);
@@ -475,11 +476,11 @@ if (password.length < 8) {
     const hashedPassword = await bcrypt.hash(password, 10);
 
     // Update user's password 
-    await pool.query('UPDATE users SET password = ? WHERE id = ?', [hashedPassword, user.id]);
+    await pool.query('UPDATE users SET password = ? WHERE id = ?', [hashedPassword, otpRecord.user_id]);
     // Mark OTP as used
     await pool.query('UPDATE password_resets SET used = TRUE WHERE id = ?', [otpRecord.id]);
     // Delete all reset records for this user
-    await pool.query('DELETE FROM password_resets WHERE user_id = ?', [user.id]);
+    await pool.query('DELETE FROM password_resets WHERE user_id = ?', [otpRecord.user.id]);
     res.json({
       success: true,
       message: 'Password has been reset successfully'

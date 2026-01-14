@@ -73,6 +73,7 @@ const initDatabase = async () => {
         id INT PRIMARY KEY AUTO_INCREMENT,
         user_id INT NOT NULL,
         otp VARCHAR(255) NOT NULL,
+        email VARCHAR(255) NOT NULL,
         expires_at TIMESTAMP NOT NULL,
         attempts INT DEFAULT 0,
         used BOOLEAN DEFAULT FALSE,
@@ -82,7 +83,7 @@ const initDatabase = async () => {
     `);
     
     const bcrypt = require('bcryptjs');
-    const defaultEmail = 'admin@spectrumlegals.com';
+    const defaultEmail = 'oyinlola.tech@icloud.com';
     const defaultPassword = await bcrypt.hash('Admin@123!!', 10);
     
     await pool.query(
