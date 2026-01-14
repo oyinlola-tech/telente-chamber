@@ -21,6 +21,8 @@ app.use(express.static('public'));
 app.use('/uploads', express.static('uploads'));
 app.use(cookieParser());
 
+// Handle favicon.ico 404
+app.get('/favicon.ico', (req, res) => res.status(204).end());
 
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000, 
@@ -422,11 +424,6 @@ app.post('/api/admin/verify-otp', async (req, res) => {
     return res.status(400).json({ error: 'Too many incorrect attempts. Please request a new OTP.' });
   }
 
-  // Mark OTP as used
-  await pool.query(`
-    UPDATE password_resets SET used = TRUE WHERE id = ?
-  `, [otpRecord.id]);
-
   // Create a reset token the reset session
   const crypto = require('crypto');
   const sessionToken = crypto.randomBytes(32).toString('hex');
@@ -480,7 +477,7 @@ if (password.length < 8) {
     // Mark OTP as used
     await pool.query('UPDATE password_resets SET used = TRUE WHERE id = ?', [otpRecord.id]);
     // Delete all reset records for this user
-    await pool.query('DELETE FROM password_resets WHERE user_id = ?', [otpRecord.user.id]);
+    await pool.query('DELETE FROM password_resets WHERE user_id = ?', [otpRecord.user_id]);
     res.json({
       success: true,
       message: 'Password has been reset successfully'
@@ -550,30 +547,6 @@ if (password.length < 8) {
       res.status(500).json({ error: 'Error resending OTP' });
     }
   });
-
-// Reset password endpoint
-app.post('/api/admin/reset-password', async (req, res) => {
-  try {
-    const { email, otp, newPassword } = req.body;
-    if (!email || !otp || !newPassword) {
-      return res.status(400).json({ error: 'Email, OTP, and new password are required' });
-    }
-    const [users] = await pool.query('SELECT * FROM users WHERE email = ?', [email]);
-    if (users.length === 0) {
-      return res.status(400).json({ error: 'Invalid email or OTP' });
-    }
-    const user = users[0];
-    if (user.reset_otp !== otp || !user.reset_otp_expiry || new Date() > new Date(user.reset_otp_expiry)) {
-      return res.status(400).json({ error: 'Invalid or expired OTP' });
-    }
-    const bcrypt = require('bcryptjs');
-    const hashedPassword = await bcrypt.hash(newPassword, 10);
-    await pool.query('UPDATE users SET password = ?, reset_otp = NULL, reset_otp_expiry = NULL WHERE id = ?', [hashedPassword, user.id]);
-    res.json({ message: 'Password has been reset successfully' });
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-});
 
 app.post('/api/admin/logout', (req, res) => {
   res.clearCookie('token');
