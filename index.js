@@ -101,6 +101,13 @@ app.get('/admin/dashboard', authenticateToken, (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'dashboard.html'));
 });
 
+app.get('/admin/forgot-password', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'forgot-password.html'));
+});
+
+app.get('/admin/reset-password/:token', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'reset-password.html'));
+});
 
 app.get('/api/blogs', async (req, res) => {
   try {
@@ -308,6 +315,260 @@ app.post('/api/admin/login', async (req, res) => {
     });
     
     res.json({ message: 'Login successful', token: token, user: { id: user.id, email: user.email} });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+app.post('/api/admin/forgot-password', async (req, res) => {
+  try {
+    const { email } = req.body;
+
+    if (!email) {
+      return res.status(400).json({ error: 'Email is required' });
+    }
+
+    // Check if user exists
+    const [users] = await pool.query('SELECT * FROM users WHERE email = ?', [email]);
+    if (users.length === 0) {
+      // For security, do not reveal that the email does not exist
+      return res.json({ message: 'If that email address is in our database, we will send you an email to reset your password.' });
+    }
+
+    const user = users[0];
+
+    // Generate a 6-digit OTP
+    const otp = Math.floor(100000 + Math.random() * 900000).toString();
+    const expiresAt = Date.now() + 10 * 60 * 1000; // 10 minutes from now
+
+    //Delete any existing OTPs for the user
+    await pool.query('DELETE FROM password_resets WHERE user_id = ?', [user.id]);
+
+    // Store OTP in password_resets table
+    await pool.query(
+      'INSERT INTO password_resets (user_id, otp, expires_at) VALUES (?, ?, ?)',
+      [user.id, otp, new Date(expiresAt)]
+    );
+
+    //Email content with OTP
+    const message = `<div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
+    <h2 style="color: #000000; border-bottom: 2px solid #000000; padding-bottom: 10px;">Password Reset Request</h2>
+    <p> You requested a password reset for your Legl Spectrum admin account.</p>
+    <div style="background-color: #f9f9f9; border: 1px solid #ddd; padding: 20px; text-align: center; margin: 20px 0;"> 
+    <p style="margin: 0 0 10px 0; font-size: 14px; color: #666;"> Your One-Time Password (OTP) is:</p>
+    <div style="font-size: 14px; font-weight: bold; color: #000000; letter-spacing: 10px; margin: 10px 0;">${otp}</div>
+    <p style="margin: 10px 0 0 0; font-size: 14px; color: #666;"> This OTP is valid for 10 minutes.</p></div>
+    <p><strong>Instructions:</strong></p>
+    <ol style="margin: 15px 0; padding-left: 20px;">
+    <li>Go to the password reset page.</li>
+    <li>Enter your email address</li>
+    <li>Enter the OTP provided above.</li>
+    <li>Create a new password for your account.</li>
+    </ol>
+    <div style="background-color: #f0f0f0; padding: 15px; margin: 20px 0; border-left: 4px solid #000000;">
+    <p style="margiin: 0; font-size: 14px;">
+    <strong> Security Notice:</strong> <br>
+    Never share your OTP with anyone.<br>
+    If you did not request a password reset, please ignore this email or contact support immediately.</p>
+    </div>
+    <p style="font-size: 14px; color: #666; margin-top: 30px;"> Best regards,<br> Legal Spectrum Team</p>
+    </div>`;
+    // Send OTP via email
+    const nodemailer = require('nodemailer');
+    const transporter = nodemailer.createTransport({
+      service: 'gmail', 
+      auth: {
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASS
+      }
+    });
+
+    await transporter.sendMail({
+      from: process.env.EMAIL_USER,
+      to: email,
+      subject: 'Password Reset OTP - Legal Spectrum',
+      html: message
+    });
+    res.json({ message: 'If that email address is in our database, we will send you an email to reset your password.' });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// Verify OTP
+app.post('/api/admin/verify-otp', async (req, res) => {
+  try {
+    const { email, otp } = req.body;
+    if (!email || !otp) {
+      return res.status(400).json({ error: 'Email and OTP are required' });
+    }
+
+  // Check OTP
+  const [otps] = await pool.query(`
+    SELECT * FROM password_resets WHERE email = ? AND otp = ? AND used = FALSE AND expires_at > NOW()
+  `, [email, otp]);
+
+  if (otps.length === 0) {
+    //increment attempts for existing OTP
+    await pool.query(`
+      UPDATE password_resets SET attempts = attempts + 1 WHERE email = ? AND expired_at > NOW()
+    `, [email]);
+    return res.status(400).json({ error: 'Invalid or expired OTP' });
+  }
+
+  const otpRecord = otps[0];
+  // Check if too many attempts
+  if (otpRecord.attempts >= 5) {
+    return res.status(400).json({ error: 'Too many incorrect attempts. Please request a new OTP.' });
+  }
+
+  // Mark OTP as used
+  await pool.query(`
+    UPDATE password_resets SET used = TRUE WHERE id = ?
+  `, [otpRecord.id]);
+
+  // Create a reset token the reset session
+  const crypto = require('crypto');
+  const sessionToken = crypto.randomBytes(32).toString('hex');
+
+  // Store session token temporarily (Valid for 5 minutes)
+  const sessionExpires = Date.now() + 5 * 60 * 1000; // 5 minutes from now
+  res.json({ success: true, message: 'OTP verified successfully', reset_token: sessionToken, expires_at: sessionExpires });
+  } catch (error) {
+    console.error('OTP verification error:', error);
+
+    res.status(500).json({ error: 'Error verifying OTP' });
+  }
+});
+
+//Reset Password with OTP verification
+app.post('/api/admin/reset-password', async (req, res) => {
+  try {
+    const { email, otp, password } = req.body;
+    if (!email || !otp || !password) {
+      return res.status(400).json({ error: 'Email, OTP, and new password are required' });
+    }
+
+// Validate password strength
+if (password.length < 8) {
+  return res.status(400).json({ error: 'Password must be at least 8 characters long' });
+}
+
+// Verify OTP again for security
+    const [otps] = await pool.query(`
+      SELECT * FROM password_resets WHERE email = ? AND otp = ? AND used = FALSE AND expires_at > NOW()
+    `, [email, otp]);
+    if (otps.length === 0) {
+      return res.status(400).json({ error: 'Invalid or expired OTP' });
+    }
+
+    const otpRecord = otps[0];
+    //Find user
+    const [users] = await pool.query('SELECT * FROM users WHERE email = ?', [email]);
+    if (users.length === 0) {
+      return res.status(400).json({ error: 'User not found' });
+    }
+    const user = users[0];
+
+    // Hash new password
+    const bcrypt = require('bcryptjs');
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    // Update user's password 
+    await pool.query('UPDATE users SET password = ? WHERE id = ?', [hashedPassword, user.id]);
+    // Mark OTP as used
+    await pool.query('UPDATE password_resets SET used = TRUE WHERE id = ?', [otpRecord.id]);
+    // Delete all reset records for this user
+    await pool.query('DELETE FROM password_resets WHERE user_id = ?', [user.id]);
+    res.json({
+      success: true,
+      message: 'Password has been reset successfully'
+    });
+  } catch (error) {
+    console.error('Password reset error:', error);
+    res.status(500).json({ error: 'Error resetting password' });
+  }
+});
+  // Resend OTP
+  app.post('/api/admin/resend-otp', async (req, res) => {
+    try {
+      const { email } = req.body;
+      if (!email) {
+        return res.status(400).json({ error: 'Email is required' });
+      }
+
+    // Check if user exists
+  const [users] = await pool.query('SELECT * FROM users WHERE email = ?', [email]);
+  if (users.length === 0) {
+    // For security, do not reveal that the email does not exist
+    return res.json({ message: 'If an account exists with this email, we will send you an email to reset your password.' });
+  }
+  const user = users[0];
+
+  // Generate a new 6-digit OTP
+  const otp = Math.floor(100000 + Math.random() * 900000).toString();
+  const expiresAt = Date.now() + 10 * 60 * 1000; // 10 minutes from now
+  //Delete any existing OTPs for the user
+  await pool.query('DELETE FROM password_resets WHERE user_id = ? AND used = FALSE', [user.id]);
+  // Store new OTP in password_resets table
+  await pool.query(
+    'INSERT INTO password_resets (user_id, otp, expires_at) VALUES (?, ?, ?)',
+    [user.id, otp, expiresAt]
+  );
+// Email content with OTP
+  const message = `<div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
+  <h2 style="color: #000000; border-bottom: 2px solid #000000; padding-bottom: 10px;">New Password Reset OTP</h2>
+  <p> You requested a new OTP for your Legal Spectrum admin account.</p>
+  <div style="background-color: #f9f9f9; border: 1px solid #ddd; padding: 20px; text-align: center; margin: 20px 0;"> 
+  <p style="margin: 0 0 10px 0; font-size: 14px; color: #666;"> Your One-Time Password (OTP) is:</p>
+  <div style="font-size: 32px; font-weight: bold; color: #000000; letter-spacing: 10px; margin: 10px 0;">${otp}</div>
+  <p style="margin: 10px 0 0 0; font-size: 14px; color: #666;"> This OTP is valid for 10 minutes.</p></div>
+  <p><strong>Instructions:</strong></p>
+  <ol style="margin: 15px 0; padding-left: 20px;">
+  <li>Go to the password reset page.</li>
+  <li>Enter your email address</li>
+  <li>Enter the OTP provided above.</li></ol></div>`;
+  // Send OTP via email
+  const nodemailer = require('nodemailer');
+  const transporter = nodemailer.createTransport({
+    service: 'gmail', 
+    auth: {
+      user: process.env.EMAIL_USER,
+      pass: process.env.EMAIL_PASS
+    }
+  });
+  await transporter.sendMail({
+    from: process.env.EMAIL_USER,
+    to: email,
+    subject: 'New Password Reset OTP - Legal Spectrum',
+    html: message
+  });
+  res.json({ message: 'If an account exists with this email, we will send you an email to reset your password.' });
+    } catch (error) {
+      console.error('Resend OTP error:', error);
+      res.status(500).json({ error: 'Error resending OTP' });
+    }
+  });
+
+// Reset password endpoint
+app.post('/api/admin/reset-password', async (req, res) => {
+  try {
+    const { email, otp, newPassword } = req.body;
+    if (!email || !otp || !newPassword) {
+      return res.status(400).json({ error: 'Email, OTP, and new password are required' });
+    }
+    const [users] = await pool.query('SELECT * FROM users WHERE email = ?', [email]);
+    if (users.length === 0) {
+      return res.status(400).json({ error: 'Invalid email or OTP' });
+    }
+    const user = users[0];
+    if (user.reset_otp !== otp || !user.reset_otp_expiry || new Date() > new Date(user.reset_otp_expiry)) {
+      return res.status(400).json({ error: 'Invalid or expired OTP' });
+    }
+    const bcrypt = require('bcryptjs');
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
+    await pool.query('UPDATE users SET password = ?, reset_otp = NULL, reset_otp_expiry = NULL WHERE id = ?', [hashedPassword, user.id]);
+    res.json({ message: 'Password has been reset successfully' });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }

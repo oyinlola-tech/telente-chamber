@@ -67,6 +67,19 @@ const initDatabase = async () => {
       )
     `);
 
+    //Add password_reset table
+    await pool.query(`
+      CREATE TABLE IF NOT EXISTS password_resets (
+        id INT PRIMARY KEY AUTO_INCREMENT,
+        user_id INT NOT NULL,
+        otp VARCHAR(255) NOT NULL,
+        expires_at TIMESTAMP NOT NULL,
+        attempts INT DEFAULT 0,
+        used BOOLEAN DEFAULT FALSE,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+      )
+    `);
     
     const bcrypt = require('bcryptjs');
     const defaultEmail = 'admin@spectrumlegals.com';
