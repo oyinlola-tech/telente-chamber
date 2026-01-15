@@ -87,3 +87,23 @@ footer a{color:#dbe9ff}
         max-width: 400px;
     }
 }
+
+/* Mobile devices */
+@media (max-width: 768px) {
+    .register-box {
+        max-width: 90%;
+        padding: 20px;
+    }
+}   
+/* Tablet devices */
+@media (min-width: 769px) and (max-width: 1024px) {
+    .register-box {
+        max-width: 450px;
+    }   
+}
+/* Desktop devices */
+@media (min-width: 1025px) {
+    .register-box {
+        max-width: 400px;
+    }
+}

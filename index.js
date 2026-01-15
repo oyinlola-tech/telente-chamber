@@ -111,6 +111,10 @@ app.get('/admin/reset-password/:token', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'reset-password.html'));
 });
 
+app.get('/unsubscribe', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'unsubscribe.html'));
+});
+
 app.get('/api/blogs', async (req, res) => {
   try {
     const limit = req.query.limit ? parseInt(req.query.limit) : null;
@@ -174,11 +178,191 @@ app.post('/api/blogs', authenticateToken, upload.single('image'), async (req, re
       [title, slug, content, excerpt, imagePath, status || 'published']
     );
     
+    // If the post is published, send a notification to subscribers
+    if ((status || 'published') === 'published') {
+      try {
+        const [subscribers] = await pool.query("SELECT email, unsubscribe_token FROM subscribers WHERE status = 'subscribed'");
+        if (subscribers.length > 0) {
+          const nodemailer = require('nodemailer');
+          const fs = require('fs').promises;
+          const transporter = nodemailer.createTransport({
+            service: 'gmail',
+            auth: { user: process.env.EMAIL_USER, pass: process.env.EMAIL_PASS }
+          });
+
+          let template = await fs.readFile(path.join(__dirname, 'public', 'new-post-notification-template.html'), 'utf-8');
+          
+          const postLink = `${req.protocol}://${req.get('host')}/blog/${slug}`;
+
+          let postTemplate = template.replace('{{postTitle}}', title);
+          postTemplate = postTemplate.replace('{{postExcerpt}}', excerpt || content.substring(0, 150) + '...');
+          postTemplate = postTemplate.replace('{{postLink}}', postLink);
+
+          const mailOptions = {
+            from: process.env.EMAIL_USER,
+            subject: `New Post: ${title}`,
+          };
+
+          // Send email to all subscribers
+          for (const subscriber of subscribers) {
+            const unsubscribeLink = `${req.protocol}://${req.get('host')}/unsubscribe?token=${subscriber.unsubscribe_token}`;
+            const personalizedHtml = postTemplate.replace('{{unsubscribeLink}}', unsubscribeLink);
+            await transporter.sendMail({ ...mailOptions, to: subscriber.email, html: personalizedHtml });
+          }
+          console.log(`Sent new post notification to ${subscribers.length} subscribers.`);
+        }
+      } catch (emailError) {
+        // Log the error but don't fail the main request
+        console.error('Failed to send newsletter notification:', emailError);
+      }
+    }
+
     res.json({ id: result.insertId, slug, message: 'Blog created successfully' });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
 });
+
+app.delete('/api/blogs/:id', authenticateToken, async (req, res) => {
+  try {
+    const blogId = parseInt(req.params.id);
+
+    if (isNaN(blogId)) {
+      return res.status(400).json({ error: 'Invalid blog ID' });
+    }
+
+    // First, find the blog to get the image path
+    const [blogs] = await pool.query('SELECT image FROM blogs WHERE id = ?', [blogId]);
+
+    if (blogs.length === 0) {
+      return res.status(404).json({ error: 'Blog post not found' });
+    }
+
+    const blog = blogs[0];
+
+    // If there's an image, delete it from the filesystem
+    if (blog.image) {
+      const fs = require('fs').promises;
+      const imagePath = path.join(__dirname, blog.image);
+      try {
+        await fs.unlink(imagePath);
+      } catch (err) {
+        console.error(`Failed to delete image file: ${imagePath}`, err);
+      }
+    }
+
+    // Delete the blog post from the database
+    await pool.query('DELETE FROM blogs WHERE id = ?', [blogId]);
+
+    res.json({ message: 'Blog post deleted successfully' });
+  } catch (error) {
+    console.error('Delete blog error:', error);
+    res.status(500).json({ error: 'An error occurred while deleting the blog post.' });
+  }
+});
+
+// Newsletter subscription
+app.post('/api/subscribe', async (req, res) => {
+  try {
+    const { email } = req.body;
+    if (!email || !/^\S+@\S+\.\S+$/.test(email)) {
+      return res.status(400).json({ error: 'A valid email is required.' });
+    }
+
+    const crypto = require('crypto');
+    const unsubscribeToken = crypto.randomBytes(32).toString('hex');
+
+    // Use INSERT ... ON DUPLICATE KEY UPDATE to handle re-subscriptions
+    const [result] = await pool.query(
+      `INSERT INTO subscribers (email, unsubscribe_token, status) VALUES (?, ?, 'subscribed')
+       ON DUPLICATE KEY UPDATE status = 'subscribed', unsubscribe_token = ?`,
+      [email, unsubscribeToken, unsubscribeToken]
+    );
+
+    if (result.affectedRows === 1 && result.insertId > 0) {
+      // New subscription
+    } else if (result.affectedRows === 2) {
+      // Re-subscription (updated existing row)
+    } else {
+      // Already subscribed and active, do nothing.
+      return res.json({ message: 'You are already subscribed to our newsletter.' });
+    }
+    // Send confirmation email
+    const nodemailer = require('nodemailer');
+    const fs = require('fs').promises;
+    const transporter = nodemailer.createTransport({
+      service: 'gmail',
+      auth: { user: process.env.EMAIL_USER, pass: process.env.EMAIL_PASS }
+    });
+
+    let template = await fs.readFile(path.join(__dirname, 'public', 'subscription-confirmation-template.html'), 'utf-8');
+    const unsubscribeLink = `${req.protocol}://${req.get('host')}/unsubscribe?token=${unsubscribeToken}`;
+    template = template.replace('{{unsubscribeLink}}', unsubscribeLink);
+
+    await transporter.sendMail({
+      from: process.env.EMAIL_USER,
+      to: email,
+      subject: 'Subscription Confirmed - Spectrum Legal',
+      html: template
+    });
+
+    res.json({ message: 'Thank you for subscribing! A confirmation email has been sent.' });
+  } catch (error) {
+    console.error('Subscription error:', error);
+    res.status(500).json({ error: 'An error occurred during subscription.' });
+  }
+});
+
+// Unsubscribe from newsletter
+app.get('/api/unsubscribe', async (req, res) => {
+  try {
+    const { token } = req.query;
+    if (!token) {
+      return res.status(400).json({ error: 'Unsubscribe token is required.' });
+    }
+
+    // Get subscriber email first
+    const [subscribers] = await pool.query('SELECT email FROM subscribers WHERE unsubscribe_token = ?', [token]);
+    
+    if (subscribers.length === 0) {
+      return res.status(400).json({ error: 'Invalid unsubscribe link or you are already unsubscribed.' });
+    }
+    
+    const email = subscribers[0].email;
+
+    // Send confirmation email
+    try {
+      const nodemailer = require('nodemailer');
+      const fs = require('fs').promises;
+      const transporter = nodemailer.createTransport({
+        service: 'gmail',
+        auth: { 
+          user: process.env.EMAIL_USER, 
+          pass: process.env.EMAIL_PASS }
+      });
+
+      const template = await fs.readFile(path.join(__dirname, 'public', 'unsubscribe-confirmation-template.html'), 'utf-8');
+
+      await transporter.sendMail({
+        from: process.env.EMAIL_USER,
+        to: email,
+        subject: 'Unsubscribe Confirmation - Spectrum Legal',
+        html: template
+      });
+    } catch (emailError) {
+      console.error('Error sending unsubscribe confirmation:', emailError);
+    }
+
+    // Delete subscriber from database
+    await pool.query('DELETE FROM subscribers WHERE unsubscribe_token = ?', [token]);
+
+    res.json({ message: 'You have been successfully unsubscribed from our newsletter.' });
+  } catch (error) {
+    console.error('Unsubscribe error:', error);
+    res.status(500).json({ error: 'An error occurred while unsubscribing.' });
+  }
+});
+
 app.get('/api/testimonials', async (req, res) => {
   try {
     const approvedOnly = req.query.approved !== 'false';
@@ -355,7 +539,7 @@ app.post('/api/admin/forgot-password', async (req, res) => {
     //Email content with OTP
     const message = `<div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
     <h2 style="color: #000000; border-bottom: 2px solid #000000; padding-bottom: 10px;">Password Reset Request</h2>
-    <p> You requested a password reset for your Legl Spectrum admin account.</p>
+    <p> You requested a password reset for your Legal Spectrum admin account.</p>
     <div style="background-color: #f9f9f9; border: 1px solid #ddd; padding: 20px; text-align: center; margin: 20px 0;"> 
     <p style="margin: 0 0 10px 0; font-size: 14px; color: #666;"> Your One-Time Password (OTP) is:</p>
     <div style="font-size: 14px; font-weight: bold; color: #000000; letter-spacing: 10px; margin: 10px 0;">${otp}</div>
@@ -561,8 +745,11 @@ app.post('/api/send-email', authenticateToken, async (req, res) => {
   try {
     const { to, subject, message, type, recordId } = req.body;
     
+    const fs = require('fs').promises;
+
     const nodemailer = require('nodemailer');
     
+
     const transporter = nodemailer.createTransport({
       service: 'gmail', 
       auth: {
@@ -571,24 +758,60 @@ app.post('/api/send-email', authenticateToken, async (req, res) => {
       }
     });
     
+
+    let htmlToSend;
+    let name = 'Valued Client'; // Default name
+
+    try {
+      if (type === 'contact' && recordId) {
+        const [contacts] = await pool.query('SELECT name FROM contacts WHERE id = ?', [recordId]);
+        if (contacts.length > 0) {
+          name = contacts[0].name;
+        }
+        let template = await fs.readFile(path.join(__dirname, 'public', 'contact-reply-template.html'), 'utf-8');
+        template = template.replace('{{name}}', name);
+        htmlToSend = template.replace('{{message}}', message.replace(/\n/g, '<br>'));
+
+      } else if (type === 'testimonial' && recordId) {
+        const [testimonials] = await pool.query('SELECT name FROM testimonials WHERE id = ?', [recordId]);
+        if (testimonials.length > 0) {
+          name = testimonials[0].name;
+        }
+        let template = await fs.readFile(path.join(__dirname, 'public', 'testimonial-reply-template.html'), 'utf-8');
+        template = template.replace('{{name}}', name);
+        htmlToSend = template.replace('{{message}}', message.replace(/\n/g, '<br>'));
+      } else {
+        // Fallback for generic emails
+        htmlToSend = `<div>${message.replace(/\n/g, '<br>')}</div>`;
+      }
+    } catch (templateError) {
+        console.error('Error reading email template:', templateError);
+        // Fallback to simple email if template fails
+        htmlToSend = `<div>${message.replace(/\n/g, '<br>')}</div>`;
+    }
+
     const mailOptions = {
       from: process.env.EMAIL_USER,
       to: to,
       subject: subject,
-      text: message,
-      html: `<div>${message.replace(/\n/g, '<br>')}</div>`
+      text: message, // Plain text version
+      html: htmlToSend
     };
     
+
     await transporter.sendMail(mailOptions);
     
+
     if (type === 'contact' && recordId) {
       await pool.query('UPDATE contacts SET replied = true WHERE id = ?', [recordId]);
     } else if (type === 'testimonial' && recordId) {
       await pool.query('UPDATE testimonials SET replied = true WHERE id = ?', [recordId]);
     }
     
+
     res.json({ message: 'Email sent successfully' });
   } catch (error) {
+    console.error('Send email error:', error);
     res.status(500).json({ error: error.message });
   }
 });

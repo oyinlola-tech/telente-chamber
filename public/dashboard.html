@@ -1194,15 +1194,15 @@
             if (confirm('Are you sure you want to delete this blog post?')) {
                 try {
                     // Note: You'll need to add a DELETE endpoint in your backend
-                    // const response = await fetch(`/api/blogs/${id}`, {
-                    //     method: 'DELETE',
-                    //     headers: { 'Authorization': `Bearer ${authToken}` }
-                    // });
-                    // 
-                    // if (response.ok) {
-                    //     loadBlogs();
-                    // }
-                    alert('Delete functionality not implemented yet. You need to add a DELETE endpoint.');
+                     const response = await fetch(`/api/blogs/${id}`, {
+                        method: 'DELETE',
+                         headers: { 'Authorization': `Bearer ${authToken}` }
+                     });
+                     
+                     if (response.ok) {
+                         loadBlogs();
+                     }
+                    alert('Blog is deleted successfully!');
                 } catch (error) {
                     console.error('Error deleting blog:', error);
                 }

@@ -81,6 +81,29 @@ const initDatabase = async () => {
         FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
       )
     `);
+
+    // Check if subscribers table needs update (migration)
+    try {
+      // Try to select the new column. If it fails, we need to recreate the table.
+      await pool.query("SELECT unsubscribe_token FROM subscribers LIMIT 1");
+    } catch (error) {
+      if (error.code === 'ER_BAD_FIELD_ERROR') {
+        console.log('Detected old subscribers table schema. Recreating table...');
+        await pool.query("DROP TABLE IF EXISTS subscribers");
+      }
+    }
+
+    // Subscribers table
+    await pool.query(`
+      CREATE TABLE IF NOT EXISTS subscribers (
+        id INT PRIMARY KEY AUTO_INCREMENT,
+        email VARCHAR(255) UNIQUE NOT NULL,
+        unsubscribe_token VARCHAR(255) UNIQUE NOT NULL,
+        status ENUM('subscribed', 'unsubscribed') DEFAULT 'subscribed',
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+      )
+    `);
     
     const bcrypt = require('bcryptjs');
     const defaultEmail = 'oyinlola.tech@icloud.com';

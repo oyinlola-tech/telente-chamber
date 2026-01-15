@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>New Post from Spectrum Legal</title>
+    <style>
+        body { margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; background-color: #f0f2f5; color: #333; }
+        .email-container { max-width: 600px; margin: 20px auto; background-color: #ffffff; border: 1px solid #e0e0e0; border-radius: 8px; overflow: hidden; }
+        .header { background-color: #000000; color: #ffffff; padding: 30px 40px; text-align: center; }
+        .header h1 { font-size: 28px; font-weight: 600; margin: 0; font-family: 'Georgia', 'Times New Roman', Times, serif; }
+        .body-content { padding: 30px 40px; line-height: 1.7; font-size: 16px; }
+        .post-title { font-size: 22px; font-weight: 600; color: #000000; margin-top: 0; margin-bottom: 15px; font-family: 'Georgia', 'Times New Roman', Times, serif; }
+        .post-excerpt { font-style: italic; color: #555; border-left: 3px solid #e0e0e0; padding-left: 15px; margin-bottom: 25px; }
+        .button { display: inline-block; background-color: #000000; color: #ffffff; padding: 12px 25px; text-decoration: none; border-radius: 5px; font-weight: 600; }
+        .footer { background-color: #f0f2f5; color: #888; font-size: 12px; padding: 20px 40px; text-align: center; }
+        .footer p { margin: 0 0 10px; }
+        .disclaimer {
+            font-style: italic;
+            border-top: 1px solid #e0e0e0;
+            padding-top: 15px;
+            margin-top: 15px;
+            text-align: left;
+        }
+    </style>
+</head>
+<body>
+    <div class="email-container">
+        <div class="header">
+            <h1>Spectrum Legal</h1>
+        </div>
+        <div class="body-content">
+            <h2 class="post-title">{{postTitle}}</h2>
+            <p class="post-excerpt">{{postExcerpt}}</p>
+            <p>A new article has been published on our blog. Click the button below to read the full post.</p>
+            <p style="text-align: center; margin-top: 30px; margin-bottom: 30px;"><a href="{{postLink}}" class="button">Read Full Article</a></p>
+            <p>Best regards,<br>The Team at Spectrum Legal</p>
+        </div>
+        <div class="footer">
+            <p>&copy; 2026 Spectrum Legal. All rights reserved.<br>123 Legal Avenue, Suite 500, New York, NY 10001</p>
+            <p>You are receiving this email because you subscribed to our newsletter. <a href="{{unsubscribeLink}}" style="color: #000000;">Unsubscribe here</a>.</p>
+            <div class="disclaimer">
+                <p><strong>Security Notice:</strong> This email and any attachments are intended for the recipient only. If you have received this email in error, please notify the sender and delete it. Do not copy, disclose, or distribute its contents.</p>
+                <p><strong>Disclaimer:</strong> The content of this newsletter is for informational purposes only and does not constitute legal advice. An attorney-client relationship is not created by this communication. For advice on specific legal issues, please consult a qualified attorney.</p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

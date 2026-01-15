@@ -70,6 +70,23 @@
             opacity: 0.7;
         }
         
+        .hamburger {
+            display: none;
+            cursor: pointer;
+            background: none;
+            border: none;
+            padding: 0.5rem;
+        }
+
+        .bar {
+            display: block;
+            width: 25px;
+            height: 3px;
+            margin: 5px auto;
+            transition: all 0.3s ease-in-out;
+            background-color: var(--black);
+        }
+        
         
         .hero {
             padding: 4rem 0;
@@ -152,6 +169,8 @@
         .blog-card {
             border: 1px solid #eee;
             transition: var(--transition);
+            border-radius: 8px;
+            overflow: hidden;
         }
         
         .blog-card:hover {
@@ -221,6 +240,8 @@
             padding: 2rem;
             border: 1px solid #eee;
             position: relative;
+            border-radius: 8px;
+            background-color: var(--white);
         }
         
         .testimonial-card::before {
@@ -336,6 +357,7 @@
             width: 100%;
             height: 400px;
             background-color: var(--white);
+            border-radius: 8px;
             border: 1px solid #eee;
             display: flex;
             align-items: center;
@@ -431,15 +453,85 @@
             }
         }
         
+        /* Newsletter Styles */
+        .newsletter-section {
+            margin-top: 4rem;
+            background-color: #f0f2f5; 
+            padding: 60px 20px; 
+            text-align: center;
+        }
+
+        #newsletter-form {
+            max-width: 500px; 
+            margin: 0 auto; 
+            display: flex; 
+            gap: 10px;
+        }
+
+        #newsletter-email {
+            flex-grow: 1; 
+            padding: 15px; 
+            border: 1px solid #ccc; 
+            border-radius: 5px; 
+            font-size: 16px;
+            outline: none;
+        }
+
+        #newsletter-form button {
+            background-color: #000; 
+            color: #fff; 
+            padding: 15px 25px; 
+            border: none; 
+            border-radius: 5px; 
+            font-size: 16px; 
+            cursor: pointer; 
+            font-weight: bold;
+            transition: var(--transition);
+        }
+
+        #newsletter-form button:hover {
+            opacity: 0.8;
+        }
+        
         
         @media (max-width: 768px) {
+            .hamburger {
+                display: block;
+            }
+            
+            .hamburger.active .bar:nth-child(2) {
+                opacity: 0;
+            }
+            
+            .hamburger.active .bar:nth-child(1) {
+                transform: translateY(8px) rotate(45deg);
+            }
+            
+            .hamburger.active .bar:nth-child(3) {
+                transform: translateY(-8px) rotate(-45deg);
+            }
+
             .nav-container {
-                flex-direction: column;
-                gap: 1rem;
+                flex-wrap: wrap;
+            }
+            
+            nav {
+                width: 100%;
+                max-height: 0;
+                overflow: hidden;
+                transition: max-height 0.3s ease-out;
+                background-color: var(--white);
+            }
+            
+            nav.active {
+                max-height: 300px;
             }
             
             nav ul {
-                gap: 1rem;
+                flex-direction: column;
+                padding: 20px 0;
+                gap: 1.5rem;
+                text-align: center;
             }
             
             .hero h1 {
@@ -455,6 +547,24 @@
                 gap: 1rem;
                 text-align: center;
             }
+
+            #newsletter-form {
+                flex-direction: column;
+            }
+
+            #newsletter-form button {
+                width: 100%;
+            }
+        }
+
+        /* Tablet devices */
+        @media (min-width: 769px) and (max-width: 1024px) {
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            .container {
+                padding: 0 30px;
+            }
         }
     </style>
     <link rel="stylesheet" href="/css/styles.css">
@@ -464,6 +574,11 @@
     <header>
         <div class="container nav-container">
             <a href="/" class="logo">Spectrum Legal</a>
+            <button class="hamburger" aria-label="Toggle navigation">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </button>
             <nav>
                 <ul>
                     <li><a href="/">Home</a></li>
@@ -505,7 +620,7 @@
         <h2>Our Founding Lawyer</h2>
         <div class="founder-content">
             <div class="founder-image">
-                <img src="/uploads/img/oyin12.jpg" alt="Senior Partner" style="width:100%; height:400px; object-fit:cover; border:1px solid #eee;">
+                <img src="/uploads/img/oyin12.jpg" alt="Senior Partner" style="width:100%; height:400px; object-fit:cover; border:1px solid #eee; border-radius: 8px;">
             </div>
             <div class="founder-details">
                 <h3>Senior Partner, Esq.</h3>
@@ -579,8 +694,22 @@
         </div>
     </section>
 
+    <!-- Newsletter Section -->
+    <section class="newsletter-section">
+        <div class="container">
+            <h2 style="font-size: 28px; font-family: 'Georgia', serif; margin-bottom: 15px;">Subscribe to Our Newsletter</h2>
+            <p style="font-size: 16px; color: #555; max-width: 600px; margin: 0 auto 30px auto;">
+                Stay informed with our latest articles, legal insights, and firm news delivered directly to your inbox.
+            </p>
+            <form id="newsletter-form">
+                <input type="email" id="newsletter-email" placeholder="Enter your email address" required>
+                <button type="submit">Subscribe</button>
+            </form>
+            <p id="newsletter-message" style="margin-top: 15px; font-size: 14px;"></p>
+        </div>
+    </section>
 
-    <footer>
+    <footer style="margin-top: 0;">
         <div class="container">
             <div class="footer-content">
                 <div class="footer-section">
@@ -685,6 +814,50 @@
         document.addEventListener('DOMContentLoaded', () => {
             loadBlogs();
             loadTestimonials();
+
+            const hamburger = document.querySelector('.hamburger');
+            const nav = document.querySelector('nav');
+
+            if (hamburger) {
+                hamburger.addEventListener('click', () => {
+                    hamburger.classList.toggle('active');
+                    nav.classList.toggle('active');
+                });
+            }
+
+            const newsletterForm = document.getElementById('newsletter-form');
+            if (newsletterForm) {
+                newsletterForm.addEventListener('submit', async (e) => {
+                    e.preventDefault();
+                    const email = document.getElementById('newsletter-email').value;
+                    const messageEl = document.getElementById('newsletter-message');
+                    
+                    messageEl.textContent = 'Subscribing...';
+                    messageEl.style.color = '#555';
+
+                    try {
+                        const response = await fetch('/api/subscribe', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ email })
+                        });
+
+                        const result = await response.json();
+
+                        if (response.ok) {
+                            messageEl.textContent = result.message;
+                            messageEl.style.color = 'green';
+                            document.getElementById('newsletter-email').value = '';
+                        } else {
+                            messageEl.textContent = result.error || 'An error occurred.';
+                            messageEl.style.color = 'red';
+                        }
+                    } catch (error) {
+                        messageEl.textContent = 'Failed to connect to the server.';
+                        messageEl.style.color = 'red';
+                    }
+                });
+            }
         });
     </script>
 </body>
