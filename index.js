@@ -302,7 +302,7 @@ app.post('/api/subscribe', async (req, res) => {
     await transporter.sendMail({
       from: process.env.EMAIL_USER,
       to: email,
-      subject: 'Subscription Confirmed - Spectrum Legal',
+      subject: 'Subscription Confirmed - Legal Spectrum',
       html: template
     });
 
@@ -346,7 +346,7 @@ app.get('/api/unsubscribe', async (req, res) => {
       await transporter.sendMail({
         from: process.env.EMAIL_USER,
         to: email,
-        subject: 'Unsubscribe Confirmation - Spectrum Legal',
+        subject: 'Unsubscribe Confirmation - Legal Spectrum',
         html: template
       });
     } catch (emailError) {

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Contact Us - Spectrum Legal</title>
+    <title>Contact Us - Legal Spectrum</title>
     <style>
         :root {
             --white: #FFFFFF;
@@ -339,7 +339,7 @@
     <!-- Header -->
     <header>
         <div class="container nav-container">
-            <a href="/" class="logo">Spectrum Legal</a>
+            <a href="/" class="logo">Legal Spectrum</a>
             <nav>
                 <ul>
                     <li><a href="/">Home</a></li>
@@ -479,7 +479,7 @@
         <div class="container">
             <div class="footer-content">
                 <div class="footer-section">
-                    <h3>Spectrum Legal</h3>
+                    <h3>Legal Spectrum</h3>
                     <p>123 Legal Avenue<br>Suite 500<br>New York, NY 10001</p>
                 </div>
                 <div class="footer-section">
@@ -492,7 +492,7 @@
                 </div>
             </div>
             <div class="copyright">
-                <p>&copy; 2026 Spectrum Legal. All rights reserved.</p>
+                <p>&copy; 2026 Legal Spectrum. All rights reserved.</p>
             </div>
         </div>
     </footer>
@@ -512,8 +512,8 @@
             const currentYear = new Date().getFullYear();
             const copyrightElements = document.querySelectorAll('p');
             copyrightElements.forEach(el => {
-                if (el.textContent.includes('Spectrum Legal')) {
-                    el.innerHTML = el.innerHTML.replace(/\d{4}\s+Spectrum Legal/, `${currentYear} Spectrum Legal`);
+                if (el.textContent.includes('Legal Spectrum')) {
+                    el.innerHTML = el.innerHTML.replace(/\d{4}\s+Legal Spectrum/, `${currentYear} Legal Spectrum`);
                 }
             });
         });

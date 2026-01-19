@@ -1,6 +1,6 @@
-# Spectrum Legal - Barristers and Solicitors
+# Legal Spectrum - Barristers and Solicitors
 
-A modern, professional website for Spectrum Legal, a law firm providing expert legal services in corporate law, intellectual property litigation, and complex civil disputes.
+A modern, professional website for Legal Spectrum, a law firm providing expert legal services in corporate law, intellectual property litigation, and complex civil disputes.
 
 ## 📋 Table of Contents
 
@@ -414,8 +414,8 @@ CREATE TABLE testimonials (
 5. Use this password in `EMAIL_PASS` environment variable
 
 ### Email Templates
-- Contact reply: "Re: Your inquiry to Spectrum Legal"
-- Testimonial reply: "Re: Your testimonial for Spectrum Legal"
+- Contact reply: "Re: Your inquiry to Legal Spectrum"
+- Testimonial reply: "Re: Your testimonial for Legal Spectrum"
 
 ### Email Features
 - HTML and plain text support
@@ -616,7 +616,7 @@ curl -X GET http://localhost:3000/api/contacts \
 
 ## 📄 License
 
-This project is the property of Spectrum Legal. All rights reserved.
+This project is the property of Legal Spectrum. All rights reserved.
 
 Unauthorized copying, modification, or distribution is prohibited.
 
