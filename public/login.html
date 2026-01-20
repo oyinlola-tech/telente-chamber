@@ -408,6 +408,11 @@
                     body: JSON.stringify(formData)
                 });
                 
+
+                if(response.status === 401){
+                    alert('Incorrect credentials. Please try again.');
+                }
+                
                 const result = await response.json();
                 
                 console.log('Login response:', { status: response.status, result });
