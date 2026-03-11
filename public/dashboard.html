@@ -587,7 +587,6 @@
         // Check authentication
         async function checkAuth() {
             if (!authToken) {
-                console.log('No auth token found in localStorage');
                 window.location.href = '/admin/login';
                 return false;
             }
@@ -599,14 +598,11 @@
                     }
                 });
                 
-                console.log('Check-auth response:', { status: response.status });
-                
                 if (!response.ok) {
                     throw new Error('Not authenticated');
                 }
                 
                 const data = await response.json();
-                console.log('Auth check successful, user:', data.user);
                 currentUser = data.user;
                 updateLastLogin();
                 return true;
