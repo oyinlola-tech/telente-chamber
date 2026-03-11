@@ -11,6 +11,37 @@ const { pool, initDatabase } = require('./db');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+const createEmailTransporter = () => {
+  const nodemailer = require('nodemailer');
+  const host = process.env.EMAIL_HOST;
+  const port = process.env.EMAIL_PORT ? parseInt(process.env.EMAIL_PORT, 10) : undefined;
+  const secure = process.env.EMAIL_SECURE
+    ? process.env.EMAIL_SECURE === 'true'
+    : port === 465;
+
+  if (host) {
+    return nodemailer.createTransport({
+      host,
+      port: port || 587,
+      secure,
+      auth: { user: process.env.EMAIL_USER, pass: process.env.EMAIL_PASS }
+    });
+  }
+
+  return nodemailer.createTransport({
+    service: 'gmail',
+    auth: { user: process.env.EMAIL_USER, pass: process.env.EMAIL_PASS }
+  });
+};
+
+const getEmailFrom = () => {
+  if (process.env.EMAIL_FROM) return process.env.EMAIL_FROM;
+  if (process.env.EMAIL_FROM_NAME) {
+    return `${process.env.EMAIL_FROM_NAME} <${process.env.EMAIL_USER}>`;
+  }
+  return process.env.EMAIL_USER;
+};
+
 
 app.use(helmet({
   contentSecurityPolicy: false, 
@@ -183,12 +214,8 @@ app.post('/api/blogs', authenticateToken, upload.single('image'), async (req, re
       try {
         const [subscribers] = await pool.query("SELECT email, unsubscribe_token FROM subscribers WHERE status = 'subscribed'");
         if (subscribers.length > 0) {
-          const nodemailer = require('nodemailer');
           const fs = require('fs').promises;
-          const transporter = nodemailer.createTransport({
-            service: 'gmail',
-            auth: { user: process.env.EMAIL_USER, pass: process.env.EMAIL_PASS }
-          });
+          const transporter = createEmailTransporter();
 
           let template = await fs.readFile(path.join(__dirname, 'public', 'new-post-notification-template.html'), 'utf-8');
           
@@ -199,7 +226,7 @@ app.post('/api/blogs', authenticateToken, upload.single('image'), async (req, re
           postTemplate = postTemplate.replace('{{postLink}}', postLink);
 
           const mailOptions = {
-            from: process.env.EMAIL_USER,
+            from: getEmailFrom(),
             subject: `New Post: ${title}`,
           };
 
@@ -288,19 +315,15 @@ app.post('/api/subscribe', async (req, res) => {
       return res.json({ message: 'You are already subscribed to our newsletter.' });
     }
     // Send confirmation email
-    const nodemailer = require('nodemailer');
     const fs = require('fs').promises;
-    const transporter = nodemailer.createTransport({
-      service: 'gmail',
-      auth: { user: process.env.EMAIL_USER, pass: process.env.EMAIL_PASS }
-    });
+    const transporter = createEmailTransporter();
 
     let template = await fs.readFile(path.join(__dirname, 'public', 'subscription-confirmation-template.html'), 'utf-8');
     const unsubscribeLink = `${req.protocol}://${req.get('host')}/unsubscribe?token=${unsubscribeToken}`;
     template = template.replace('{{unsubscribeLink}}', unsubscribeLink);
 
     await transporter.sendMail({
-      from: process.env.EMAIL_USER,
+      from: getEmailFrom(),
       to: email,
       subject: 'Subscription Confirmed - Legal Spectrum',
       html: template
@@ -332,19 +355,13 @@ app.get('/api/unsubscribe', async (req, res) => {
 
     // Send confirmation email
     try {
-      const nodemailer = require('nodemailer');
       const fs = require('fs').promises;
-      const transporter = nodemailer.createTransport({
-        service: 'gmail',
-        auth: { 
-          user: process.env.EMAIL_USER, 
-          pass: process.env.EMAIL_PASS }
-      });
+      const transporter = createEmailTransporter();
 
       const template = await fs.readFile(path.join(__dirname, 'public', 'unsubscribe-confirmation-template.html'), 'utf-8');
 
       await transporter.sendMail({
-        from: process.env.EMAIL_USER,
+        from: getEmailFrom(),
         to: email,
         subject: 'Unsubscribe Confirmation - Legal Spectrum',
         html: template
@@ -560,17 +577,10 @@ app.post('/api/admin/forgot-password', async (req, res) => {
     <p style="font-size: 14px; color: #666; margin-top: 30px;"> Best regards,<br> Legal Spectrum Team</p>
     </div>`;
     // Send OTP via email
-    const nodemailer = require('nodemailer');
-    const transporter = nodemailer.createTransport({
-      service: 'gmail', 
-      auth: {
-        user: process.env.EMAIL_USER,
-        pass: process.env.EMAIL_PASS
-      }
-    });
+    const transporter = createEmailTransporter();
 
     await transporter.sendMail({
-      from: process.env.EMAIL_USER,
+      from: getEmailFrom(),
       to: email,
       subject: 'Password Reset OTP - Legal Spectrum',
       html: message
@@ -711,16 +721,9 @@ if (password.length < 8) {
   <li>Enter your email address</li>
   <li>Enter the OTP provided above.</li></ol></div>`;
   // Send OTP via email
-  const nodemailer = require('nodemailer');
-  const transporter = nodemailer.createTransport({
-    service: 'gmail', 
-    auth: {
-      user: process.env.EMAIL_USER,
-      pass: process.env.EMAIL_PASS
-    }
-  });
+  const transporter = createEmailTransporter();
   await transporter.sendMail({
-    from: process.env.EMAIL_USER,
+    from: getEmailFrom(),
     to: email,
     subject: 'New Password Reset OTP - Legal Spectrum',
     html: message
@@ -747,16 +750,7 @@ app.post('/api/send-email', authenticateToken, async (req, res) => {
     
     const fs = require('fs').promises;
 
-    const nodemailer = require('nodemailer');
-    
-
-    const transporter = nodemailer.createTransport({
-      service: 'gmail', 
-      auth: {
-        user: process.env.EMAIL_USER,
-        pass: process.env.EMAIL_PASS
-      }
-    });
+    const transporter = createEmailTransporter();
     
 
     let htmlToSend;
@@ -791,7 +785,7 @@ app.post('/api/send-email', authenticateToken, async (req, res) => {
     }
 
     const mailOptions = {
-      from: process.env.EMAIL_USER,
+      from: getEmailFrom(),
       to: to,
       subject: subject,
       text: message, // Plain text version
