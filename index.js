@@ -4,6 +4,7 @@ const helmet = require('helmet');
 const rateLimit = require('express-rate-limit');
 const multer = require('multer');
 const cookieParser = require('cookie-parser');
+const juice = require('juice');
 require('dotenv').config();
 
 const { pool, initDatabase } = require('./db');
@@ -41,6 +42,31 @@ const getEmailFrom = () => {
   }
   return process.env.EMAIL_USER;
 };
+
+const inlineEmailTemplate = async (templatePath, cssPath, replacements = {}) => {
+  const fs = require('fs').promises;
+  let html = await fs.readFile(templatePath, 'utf-8');
+
+  Object.entries(replacements).forEach(([key, value]) => {
+    const safeValue = value === undefined || value === null ? '' : String(value);
+    html = html.replace(new RegExp(`{{${key}}}`, 'g'), safeValue);
+  });
+
+  if (cssPath) {
+    const css = await fs.readFile(cssPath, 'utf-8');
+    html = html.replace(/<link[^>]*rel=["']stylesheet["'][^>]*>/gi, '');
+    html = juice(html, { extraCss: css, preserveImportant: true });
+  }
+
+  return html;
+};
+
+const getBusinessInfo = () => ({
+  name: process.env.BUSINESS_NAME || 'Legal Spectrum',
+  phone: process.env.BUSINESS_PHONE || '',
+  email: process.env.BUSINESS_EMAIL || process.env.EMAIL_USER || '',
+  address: process.env.BUSINESS_ADDRESS || 'Legal Spectrum Chambers, Okitipupa, Ondo State, Nigeria'
+});
 
 
 app.use(helmet({
@@ -216,17 +242,12 @@ app.post('/api/blogs', authenticateToken, upload.single('image'), async (req, re
       try {
         const [subscribers] = await pool.query("SELECT email, unsubscribe_token FROM subscribers WHERE status = 'subscribed'");
         if (subscribers.length > 0) {
-          const fs = require('fs').promises;
           const transporter = createEmailTransporter();
-
-          let template = await fs.readFile(path.join(__dirname, 'public', 'new-post-notification-template.html'), 'utf-8');
-          
+          const templatePath = path.join(__dirname, 'public', 'new-post-notification-template.html');
+          const cssPath = path.join(__dirname, 'public', 'css', 'emails', 'new-post-notification-template.css');
           const postLink = `${req.protocol}://${req.get('host')}/blog/${slug}`;
 
-          let postTemplate = template.replace('{{postTitle}}', title);
-          postTemplate = postTemplate.replace('{{postExcerpt}}', excerpt || content.substring(0, 150) + '...');
-          postTemplate = postTemplate.replace('{{postLink}}', postLink);
-
+          const business = getBusinessInfo();
           const mailOptions = {
             from: getEmailFrom(),
             subject: `New Post: ${title}`,
@@ -235,7 +256,17 @@ app.post('/api/blogs', authenticateToken, upload.single('image'), async (req, re
           // Send email to all subscribers
           for (const subscriber of subscribers) {
             const unsubscribeLink = `${req.protocol}://${req.get('host')}/unsubscribe?token=${subscriber.unsubscribe_token}`;
-            const personalizedHtml = postTemplate.replace('{{unsubscribeLink}}', unsubscribeLink);
+            const personalizedHtml = await inlineEmailTemplate(
+              templatePath,
+              cssPath,
+              {
+                postTitle: title,
+                postExcerpt: excerpt || content.substring(0, 150) + '...',
+                postLink,
+                unsubscribeLink,
+                address: business.address
+              }
+            );
             await transporter.sendMail({ ...mailOptions, to: subscriber.email, html: personalizedHtml });
           }
           console.log(`Sent new post notification to ${subscribers.length} subscribers.`);
@@ -317,12 +348,14 @@ app.post('/api/subscribe', async (req, res) => {
       return res.json({ message: 'You are already subscribed to our newsletter.' });
     }
     // Send confirmation email
-    const fs = require('fs').promises;
     const transporter = createEmailTransporter();
-
-    let template = await fs.readFile(path.join(__dirname, 'public', 'subscription-confirmation-template.html'), 'utf-8');
     const unsubscribeLink = `${req.protocol}://${req.get('host')}/unsubscribe?token=${unsubscribeToken}`;
-    template = template.replace('{{unsubscribeLink}}', unsubscribeLink);
+    const business = getBusinessInfo();
+    const template = await inlineEmailTemplate(
+      path.join(__dirname, 'public', 'subscription-confirmation-template.html'),
+      path.join(__dirname, 'public', 'css', 'emails', 'subscription-confirmation-template.css'),
+      { unsubscribeLink, address: business.address }
+    );
 
     await transporter.sendMail({
       from: getEmailFrom(),
@@ -357,10 +390,13 @@ app.get('/api/unsubscribe', async (req, res) => {
 
     // Send confirmation email
     try {
-      const fs = require('fs').promises;
       const transporter = createEmailTransporter();
-
-      const template = await fs.readFile(path.join(__dirname, 'public', 'unsubscribe-confirmation-template.html'), 'utf-8');
+      const business = getBusinessInfo();
+      const template = await inlineEmailTemplate(
+        path.join(__dirname, 'public', 'unsubscribe-confirmation-template.html'),
+        path.join(__dirname, 'public', 'css', 'emails', 'unsubscribe-confirmation-template.css'),
+        { address: business.address }
+      );
 
       await transporter.sendMail({
         from: getEmailFrom(),
@@ -555,29 +591,12 @@ app.post('/api/admin/forgot-password', async (req, res) => {
       [user.id, otp, email, new Date(expiresAt)]
     );
 
-    //Email content with OTP
-    const message = `<div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
-    <h2 style="color: #000000; border-bottom: 2px solid #000000; padding-bottom: 10px;">Password Reset Request</h2>
-    <p> You requested a password reset for your Legal Spectrum admin account.</p>
-    <div style="background-color: #f9f9f9; border: 1px solid #ddd; padding: 20px; text-align: center; margin: 20px 0;"> 
-    <p style="margin: 0 0 10px 0; font-size: 14px; color: #666;"> Your One-Time Password (OTP) is:</p>
-    <div style="font-size: 14px; font-weight: bold; color: #000000; letter-spacing: 10px; margin: 10px 0;">${otp}</div>
-    <p style="margin: 10px 0 0 0; font-size: 14px; color: #666;"> This OTP is valid for 10 minutes.</p></div>
-    <p><strong>Instructions:</strong></p>
-    <ol style="margin: 15px 0; padding-left: 20px;">
-    <li>Go to the password reset page.</li>
-    <li>Enter your email address</li>
-    <li>Enter the OTP provided above.</li>
-    <li>Create a new password for your account.</li>
-    </ol>
-    <div style="background-color: #f0f0f0; padding: 15px; margin: 20px 0; border-left: 4px solid #000000;">
-    <p style="margiin: 0; font-size: 14px;">
-    <strong> Security Notice:</strong> <br>
-    Never share your OTP with anyone.<br>
-    If you did not request a password reset, please ignore this email or contact support immediately.</p>
-    </div>
-    <p style="font-size: 14px; color: #666; margin-top: 30px;"> Best regards,<br> Legal Spectrum Team</p>
-    </div>`;
+    const business = getBusinessInfo();
+    const message = await inlineEmailTemplate(
+      path.join(__dirname, 'public', 'forgot-password-otp-template.html'),
+      path.join(__dirname, 'public', 'css', 'emails', 'forgot-password-otp-template.css'),
+      { otp, address: business.address }
+    );
     // Send OTP via email
     const transporter = createEmailTransporter();
 
@@ -709,19 +728,12 @@ if (password.length < 8) {
     'INSERT INTO password_resets (user_id, otp, expires_at) VALUES (?, ?, ?)',
     [user.id, otp, expiresAt]
   );
-// Email content with OTP
-  const message = `<div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
-  <h2 style="color: #000000; border-bottom: 2px solid #000000; padding-bottom: 10px;">New Password Reset OTP</h2>
-  <p> You requested a new OTP for your Legal Spectrum admin account.</p>
-  <div style="background-color: #f9f9f9; border: 1px solid #ddd; padding: 20px; text-align: center; margin: 20px 0;"> 
-  <p style="margin: 0 0 10px 0; font-size: 14px; color: #666;"> Your One-Time Password (OTP) is:</p>
-  <div style="font-size: 32px; font-weight: bold; color: #000000; letter-spacing: 10px; margin: 10px 0;">${otp}</div>
-  <p style="margin: 10px 0 0 0; font-size: 14px; color: #666;"> This OTP is valid for 10 minutes.</p></div>
-  <p><strong>Instructions:</strong></p>
-  <ol style="margin: 15px 0; padding-left: 20px;">
-  <li>Go to the password reset page.</li>
-  <li>Enter your email address</li>
-  <li>Enter the OTP provided above.</li></ol></div>`;
+  const business = getBusinessInfo();
+  const message = await inlineEmailTemplate(
+    path.join(__dirname, 'public', 'resend-otp-template.html'),
+    path.join(__dirname, 'public', 'css', 'emails', 'resend-otp-template.css'),
+    { otp, address: business.address }
+  );
   // Send OTP via email
   const transporter = createEmailTransporter();
   await transporter.sendMail({
@@ -750,13 +762,12 @@ app.post('/api/send-email', authenticateToken, async (req, res) => {
   try {
     const { to, subject, message, type, recordId } = req.body;
     
-    const fs = require('fs').promises;
-
     const transporter = createEmailTransporter();
     
 
     let htmlToSend;
     let name = 'Valued Client'; // Default name
+    const business = getBusinessInfo();
 
     try {
       if (type === 'contact' && recordId) {
@@ -764,18 +775,30 @@ app.post('/api/send-email', authenticateToken, async (req, res) => {
         if (contacts.length > 0) {
           name = contacts[0].name;
         }
-        let template = await fs.readFile(path.join(__dirname, 'public', 'contact-reply-template.html'), 'utf-8');
-        template = template.replace('{{name}}', name);
-        htmlToSend = template.replace('{{message}}', message.replace(/\n/g, '<br>'));
+        htmlToSend = await inlineEmailTemplate(
+          path.join(__dirname, 'public', 'contact-reply-template.html'),
+          path.join(__dirname, 'public', 'css', 'emails', 'contact-reply-template.css'),
+          {
+            name,
+            message: message.replace(/\n/g, '<br>'),
+            address: business.address
+          }
+        );
 
       } else if (type === 'testimonial' && recordId) {
         const [testimonials] = await pool.query('SELECT name FROM testimonials WHERE id = ?', [recordId]);
         if (testimonials.length > 0) {
           name = testimonials[0].name;
         }
-        let template = await fs.readFile(path.join(__dirname, 'public', 'testimonial-reply-template.html'), 'utf-8');
-        template = template.replace('{{name}}', name);
-        htmlToSend = template.replace('{{message}}', message.replace(/\n/g, '<br>'));
+        htmlToSend = await inlineEmailTemplate(
+          path.join(__dirname, 'public', 'testimonial-reply-template.html'),
+          path.join(__dirname, 'public', 'css', 'emails', 'testimonial-reply-template.css'),
+          {
+            name,
+            message: message.replace(/\n/g, '<br>'),
+            address: business.address
+          }
+        );
       } else {
         // Fallback for generic emails
         htmlToSend = `<div>${message.replace(/\n/g, '<br>')}</div>`;

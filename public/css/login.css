@@ -3,7 +3,12 @@
             padding: 0;
             box-sizing: border-box;
         }
-        
+
+        html, body {
+            width: 100%;
+            overflow-x: hidden;
+        }
+
         body {
             font-family: 'Georgia', serif;
             line-height: 1.6;
@@ -221,6 +226,10 @@
             
             .login-container {
                 padding: 1.5rem 0;
+            }
+
+            .container {
+                padding: 0 16px;
             }
             
             .login-box {

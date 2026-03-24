@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>New Password Reset OTP - Legal Spectrum</title>
+    <link rel="stylesheet" href="/css/emails/resend-otp-template.css">
+</head>
+<body>
+    <div class="email-container">
+        <div class="header">
+            <img src="/uploads/img/Legal-specturm-logo.png" alt="Legal Spectrum logo">
+            <h1>Legal Spectrum</h1>
+        </div>
+        <div class="body-content">
+            <h2>New Password Reset OTP</h2>
+            <p>You requested a new OTP for your Legal Spectrum admin account.</p>
+            <div class="otp-card">
+                <p class="otp-label">Your One-Time Password (OTP) is:</p>
+                <div class="otp-code">{{otp}}</div>
+                <p class="otp-note">This OTP is valid for 10 minutes.</p>
+            </div>
+            <p><strong>Instructions:</strong></p>
+            <ol>
+                <li>Go to the password reset page.</li>
+                <li>Enter your email address.</li>
+                <li>Enter the OTP provided above.</li>
+            </ol>
+        </div>
+        <div class="footer">
+            <p>&copy; 2026 Legal Spectrum. All rights reserved.<br>{{address}}</p>
+        </div>
+    </div>
+</body>
+</html>

@@ -14,7 +14,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Source+Sans+3:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/css/dashboard.css">
 </head>
-<body>
+<body data-page="dashboard" data-site-url="https://www.legalspectrum.ng" data-org-name="Legal Spectrum" data-org-phone="+2348061234567" data-org-email="hello@legalspectrum.ng" data-org-street="Legal Spectrum Chambers" data-org-locality="Okitipupa" data-org-region="Ondo State" data-org-country="NG">
     <a class="skip-link" href="#main-content">Skip to main content</a>
     <header>
         <div class="container nav-container">
@@ -36,17 +36,19 @@
                 </ul>
                 <a class="nav-cta" href="/contact">Book a Consultation</a>
             </nav>
+            <div class="admin-header-actions">
+                <span class="admin-badge">Admin</span>
+                <button class="sidebar-toggle" id="sidebar-toggle" type="button" aria-expanded="false" aria-controls="dashboard-sidebar">
+                    Menu
+                </button>
+            </div>
         </div>
     </header>
 
     <!-- Dashboard Layout -->
     <div class="dashboard-container">
         <!-- Sidebar -->
-        <aside class="sidebar">
-            <div class="sidebar-header">
-                <p>Admin Dashboard</p>
-            </div>
-            
+        <aside class="sidebar" id="dashboard-sidebar">
             <ul class="nav-links">
                 <li><a href="#dashboard" class="active" data-tab="dashboard">Dashboard</a></li>
                 <li><a href="#contacts" data-tab="contacts">Contact Messages</a></li>
@@ -164,33 +166,8 @@
         </main>
     </div>
 
-    <footer>
-        <div class="container">
-            <div class="footer-content">
-                <div class="footer-section">
-                    <div class="footer-brand">
-                        <img src="/uploads/img/Legal-specturm-logo.png" alt="Legal Spectrum logo">
-                        <span>Legal Spectrum</span>
-                    </div>
-                    <p>Trusted counsel for corporate leaders and private clients. We deliver strategic clarity and decisive advocacy.</p>
-                </div>
-                <div class="footer-section">
-                    <h3>Contact</h3>
-                    <p>Phone: +1 (555) 123-4567<br>Email: counsel@legalspectrum.com<br>Address: 123 Legal Avenue, Suite 500, New York, NY 10001</p>
-                </div>
-                <div class="footer-section">
-                    <h3>Office Hours</h3>
-                    <p>Monday - Friday: 9am - 6pm<br>Saturday: By appointment<br>Sunday: Closed</p>
-                </div>
-            </div>
-            <div class="copyright">
-                <p>&copy; 2026 Legal Spectrum. All rights reserved.</p>
-            </div>
-        </div>
-    </footer>
+    <div data-include="footer"></div>
 
-    <script src="/js/nav.js"></script>
-    
     <!-- Email Modal -->
     <div class="modal" id="email-modal">
         <div class="modal-content">
@@ -218,8 +195,6 @@
             </form>
         </div>
     </div>
-    
-    
-    <script src="/js/dashboard.js"></script>
+    <script src="/js/bundle.js"></script>
 </body>
 </html>

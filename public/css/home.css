@@ -17,6 +17,11 @@
             box-sizing: border-box;
         }
 
+        html, body {
+            width: 100%;
+            overflow-x: hidden;
+        }
+
         body {
             font-family: "Source Sans 3", sans-serif;
             line-height: 1.7;
@@ -415,6 +420,36 @@
             color: var(--ink-2);
         }
 
+        .team {
+            padding-top: 0;
+        }
+
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .team-card {
+            background: var(--surface-2);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 1.8rem;
+            box-shadow: var(--shadow);
+        }
+
+        .team-role {
+            color: var(--muted);
+            font-weight: 600;
+            margin-bottom: 0.8rem;
+        }
+
+        .team-highlights {
+            margin-top: 1rem;
+            padding-left: 1.1rem;
+            color: var(--muted);
+        }
+
         .blog-preview {
             background: #fff;
         }
@@ -688,6 +723,27 @@
                 flex-wrap: wrap;
             }
 
+            .container {
+                padding: 0 16px;
+            }
+
+            .hero {
+                padding: 3.5rem 0 3rem;
+            }
+
+            .hero h1 {
+                font-size: clamp(2.2rem, 8vw, 2.8rem);
+            }
+
+            .hero-actions {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .hero-actions .btn {
+                width: 100%;
+            }
+
             nav {
                 width: 100%;
                 max-height: 0;
@@ -720,6 +776,22 @@
 
             .founder-image img {
                 height: 320px;
+            }
+
+            .blogs-grid,
+            .testimonials-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .footer-content {
+                gap: 2rem;
+            }
+
+            .whatsapp-button {
+                width: 52px;
+                height: 52px;
+                right: 20px;
+                bottom: 20px;
             }
         }
 

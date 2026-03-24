@@ -1,3 +1,8 @@
+html, body {
+            width: 100%;
+            overflow-x: hidden;
+        }
+
 body {
             font-family: "Source Sans 3", sans-serif;
             line-height: 1.6;
@@ -147,6 +152,19 @@ body {
         @media (max-width: 768px) {
             .hamburger {
                 display: block;
+            }
+
+            .container {
+                padding: 0 16px;
+            }
+
+            .unsubscribe-content {
+                padding: 2.25rem 1.5rem;
+                margin: 3rem auto;
+            }
+
+            #message {
+                font-size: 1.05rem;
             }
 
             nav {
