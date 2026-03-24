@@ -1286,7 +1286,16 @@
      }
  
      let currentUser = null;
-     let authToken = localStorage.getItem('admin_token');
+    let authToken = localStorage.getItem('admin_token');
+    let editingBlogId = null;
+
+    const resetBlogFormState = () => {
+      editingBlogId = null;
+      const submitBtn = document.getElementById('blog-submit');
+      if (submitBtn) {
+        submitBtn.textContent = 'Publish Post';
+      }
+    };
  
      const sidebar = document.getElementById('dashboard-sidebar');
      const sidebarToggle = document.getElementById('sidebar-toggle');
@@ -1595,9 +1604,9 @@
  
      const loadBlogs = async () => {
        try {
-         const response = await fetch('/api/blogs', {
-           headers: { Authorization: `Bearer ${authToken}` }
-         });
+        const response = await fetch('/api/blogs?status=all', {
+          headers: { Authorization: `Bearer ${authToken}` }
+        });
          const blogs = await response.json();
  
          const blogsContent = document.getElementById('blogs-content');
@@ -1712,7 +1721,7 @@
  
        const submitBtn = document.getElementById('blog-submit');
        const originalText = submitBtn.textContent;
-       submitBtn.textContent = 'Publishing...';
+      submitBtn.textContent = editingBlogId ? 'Updating...' : 'Publishing...';
        submitBtn.disabled = true;
  
        const formData = new FormData();
@@ -1727,26 +1736,27 @@
        }
  
        try {
-         const response = await fetch('/api/blogs', {
-           method: 'POST',
-           headers: {
-             Authorization: `Bearer ${authToken}`
-           },
-           body: formData
-         });
+      const response = await fetch(editingBlogId ? `/api/blogs/${editingBlogId}` : '/api/blogs', {
+        method: editingBlogId ? 'PUT' : 'POST',
+        headers: {
+          Authorization: `Bearer ${authToken}`
+        },
+        body: formData
+      });
  
          const result = await response.json();
  
          const messageDiv = document.getElementById('blog-message');
  
-         if (response.ok) {
-           messageDiv.textContent = 'Blog post published successfully!';
-           messageDiv.className = 'message success';
- 
-           document.getElementById('blog-form').reset();
-           document.getElementById('image-preview').innerHTML = '';
- 
-           loadBlogs();
+      if (response.ok) {
+        messageDiv.textContent = editingBlogId ? 'Blog post updated successfully!' : 'Blog post published successfully!';
+        messageDiv.className = 'message success';
+
+        document.getElementById('blog-form').reset();
+        document.getElementById('image-preview').innerHTML = '';
+        resetBlogFormState();
+
+        loadBlogs();
          } else {
            messageDiv.textContent = result.error || 'Failed to publish blog post.';
            messageDiv.className = 'message error';
@@ -1922,8 +1932,36 @@
        }
      };
  
-      window.editBlog = function (id) {
-        alert('Edit blog post with ID: ' + id);
+     window.editBlog = async function (id) {
+        try {
+          const response = await fetch(`/api/blogs/${id}`, {
+            headers: { Authorization: `Bearer ${authToken}` }
+          });
+
+          if (!response.ok) {
+            throw new Error('Failed to load blog post');
+          }
+
+          const blog = await response.json();
+
+          const tabBtn = document.querySelector('.tab-btn[data-tab="new-blog"]');
+          if (tabBtn) tabBtn.click();
+
+          document.getElementById('blog-title').value = blog.title || '';
+          document.getElementById('blog-status').value = blog.status || 'published';
+          document.getElementById('blog-excerpt').value = blog.excerpt || '';
+          document.getElementById('blog-content').value = blog.content || '';
+          document.getElementById('image-preview').innerHTML = blog.image
+            ? `<img src="/${blog.image}" class="preview-image" alt="Current image">`
+            : '';
+
+          editingBlogId = blog.id;
+          const submitBtn = document.getElementById('blog-submit');
+          submitBtn.textContent = 'Update Post';
+        } catch (error) {
+          console.error('Error loading blog post:', error);
+          alert('Unable to load blog post for editing.');
+        }
       };
  
      window.deleteBlog = async function (id) {

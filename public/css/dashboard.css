@@ -326,6 +326,16 @@ textarea:focus {
     color: #b8860b;
 }
 
+.status-published {
+    background: rgba(25, 118, 210, 0.15);
+    color: #1976d2;
+}
+
+.status-draft {
+    background: rgba(120, 120, 120, 0.15);
+    color: #5f6f7e;
+}
+
 .actions {
     display: grid;
     gap: 0.5rem;
