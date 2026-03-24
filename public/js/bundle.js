@@ -1288,6 +1288,7 @@
      let currentUser = null;
     let authToken = localStorage.getItem('admin_token');
     let editingBlogId = null;
+    const blogsCache = new Map();
 
     const resetBlogFormState = () => {
       editingBlogId = null;
@@ -1604,10 +1605,29 @@
  
      const loadBlogs = async () => {
        try {
-        const response = await fetch('/api/blogs?status=all', {
+        const response = await fetch('/api/blogs', {
           headers: { Authorization: `Bearer ${authToken}` }
         });
-         const blogs = await response.json();
+        if (!response.ok) {
+          const error = await response.json();
+          throw new Error(error.error || 'Failed to load blogs');
+        }
+
+        const blogs = await response.json();
+
+        if (!Array.isArray(blogs)) {
+          throw new Error('Unexpected response format');
+        }
+
+        blogsCache.clear();
+        blogs.forEach((blog) => {
+          if (blog && blog.id) {
+            blogsCache.set(String(blog.id), blog);
+          }
+          if (blog && blog.slug) {
+            blogsCache.set(`slug:${blog.slug}`, blog);
+          }
+        });
  
          const blogsContent = document.getElementById('blogs-content');
  
@@ -1641,10 +1661,10 @@
                            </span>
                          </td>
                          <td class="truncate">${blog.excerpt || blog.content.substring(0, 100)}...</td>
-                         <td class="actions">
-                           <button class="btn btn-small" onclick="editBlog(${blog.id})">Edit</button>
-                           <button class="btn btn-small" onclick="deleteBlog(${blog.id})">Delete</button>
-                         </td>
+                        <td class="actions">
+                          <button class="btn btn-small" onclick="editBlog(${blog.id}, '${(blog.slug || '').replace(/'/g, "\\'")}')">Edit</button>
+                          <button class="btn btn-small" onclick="deleteBlog(${blog.id})">Delete</button>
+                        </td>
                        </tr>
                      `
                    )
@@ -1653,12 +1673,12 @@
              </tbody>
            </table>
          `;
-       } catch (error) {
-         console.error('Error loading blogs:', error);
-         document.getElementById('blogs-content').innerHTML =
-           '<p class="error">Failed to load blog posts. Please try again.</p>';
-       }
-     };
+      } catch (error) {
+        console.error('Error loading blogs:', error);
+        document.getElementById('blogs-content').innerHTML =
+          `<p class="error">${error.message || 'Failed to load blog posts. Please try again.'}</p>`;
+      }
+    };
  
      const setupTabs = () => {
        const tabBtns = document.querySelectorAll('.tab-btn');
@@ -1932,17 +1952,26 @@
        }
      };
  
-     window.editBlog = async function (id) {
+     window.editBlog = async function (id, slug) {
         try {
-          const response = await fetch(`/api/blogs/${id}`, {
-            headers: { Authorization: `Bearer ${authToken}` }
-          });
+          let blog = blogsCache.get(String(id)) || (slug ? blogsCache.get(`slug:${slug}`) : null);
 
-          if (!response.ok) {
-            throw new Error('Failed to load blog post');
+          if (!blog) {
+            let response = await fetch(`/api/blogs/${id}`, {
+              headers: { Authorization: `Bearer ${authToken}` }
+            });
+
+            if (!response.ok && slug) {
+              response = await fetch(`/api/blogs/${slug}`);
+            }
+
+            if (!response.ok) {
+              const error = await response.json().catch(() => ({}));
+              throw new Error(error.error || 'Failed to load blog post');
+            }
+
+            blog = await response.json();
           }
-
-          const blog = await response.json();
 
           const tabBtn = document.querySelector('.tab-btn[data-tab="new-blog"]');
           if (tabBtn) tabBtn.click();
@@ -1955,7 +1984,7 @@
             ? `<img src="/${blog.image}" class="preview-image" alt="Current image">`
             : '';
 
-          editingBlogId = blog.id;
+          editingBlogId = id;
           const submitBtn = document.getElementById('blog-submit');
           submitBtn.textContent = 'Update Post';
         } catch (error) {
