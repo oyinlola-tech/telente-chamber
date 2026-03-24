@@ -1,758 +1,252 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Legal Spectrum - Barristers and Solicitors</title>
-    <style>
-        :root {
-            --white: #FFFFFF;
-            --black: #000000;
-            --transition: all 0.3s ease;
-        }
-        
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
-        body {
-            font-family: 'Georgia', serif;
-            line-height: 1.6;
-            color: var(--black);
-            background-color: var(--white);
-        }
-        
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 20px;
-        }
-        
-
-        header {
-            background-color: var(--white);
-            border-bottom: 1px solid #eee;
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-        }
-        
-        .nav-container {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 1.5rem 0;
-        }
-        
-        .logo {
-            font-size: 1.8rem;
-            font-weight: bold;
-            text-decoration: none;
-            color: var(--black);
-            display: block;
-            text-align: center;
-            justify-content: center;
-            transition: var(--transition)
-        }
-
-        .logo:hover {
-            opacity: 0.7;
-        }
-
-        nav {
-            display: flex;
-            align-items: center;
-        }
-
-        nav ul {
-            display: flex;
-            list-style: none;
-            gap: 2rem;
-        }
-
-        nav a {
-            text-decoration: none;
-            color: var(--black);
-            font-size: 1rem;
-            transition: var(--transition);
-        }
-
-        nav a:hover {
-            opacity: 0.7;
-        
-        }
-        
-        nav ul {
-            display: flex;
-            list-style: none;
-            gap: 2rem;
-        }
-        
-        nav a {
-            text-decoration: none;
-            color: var(--black);
-            font-size: 1rem;
-            transition: var(--transition);
-        }
-        
-        nav a:hover {
-            opacity: 0.7;
-        }
-        
-        .hamburger {
-            display: none;
-            cursor: pointer;
-            background: none;
-            border: none;
-            padding: 0.5rem;
-        }
-
-        .bar {
-            display: block;
-            width: 25px;
-            height: 3px;
-            margin: 5px auto;
-            transition: all 0.3s ease-in-out;
-            background-color: var(--black);
-        }
-        
-        
-        .hero {
-            padding: 4rem 0;
-            text-align: center;
-            border-bottom: 1px solid #eee;
-        }
-        
-        .hero h1 {
-            font-size: 3rem;
-            margin-bottom: 1rem;
-            font-weight: normal;
-        }
-        
-        .hero p {
-            font-size: 1.2rem;
-            max-width: 800px;
-            margin: 0 auto;
-            color: #333;
-        }
-        
-        
-        .about {
-            padding: 4rem 0;
-            border-bottom: 1px solid #eee;
-        }
-        
-        .about h2 {
-            font-size: 2rem;
-            margin-bottom: 2rem;
-            font-weight: normal;
-        }
-        
-        .about-content {
-            columns: 2;
-            gap: 3rem;
-        }
-        
-        .about-content p {
-            margin-bottom: 1.5rem;
-            break-inside: avoid;
-        }
-        
-        
-        .blog-preview {
-            padding: 4rem 0;
-            border-bottom: 1px solid #eee;
-        }
-        
-        .section-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 3rem;
-        }
-        
-        .section-header h2 {
-            font-size: 2rem;
-            font-weight: normal;
-        }
-        
-        .view-all {
-            color: var(--black);
-            text-decoration: none;
-            border: 1px solid var(--black);
-            padding: 0.5rem 1rem;
-            transition: var(--transition);
-        }
-        
-        .view-all:hover {
-            background-color: var(--black);
-            color: var(--white);
-        }
-        
-        .blogs-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
-        }
-        
-        .blog-card {
-            border: 1px solid #eee;
-            transition: var(--transition);
-            border-radius: 8px;
-            overflow: hidden;
-        }
-        
-        .blog-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-        }
-        
-        .blog-image {
-            height: 200px;
-            overflow: hidden;
-        }
-        
-        .blog-image img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-        
-        .blog-content {
-            padding: 1.5rem;
-        }
-        
-        .blog-content h3 {
-            font-size: 1.3rem;
-            margin-bottom: 1rem;
-            font-weight: normal;
-        }
-        
-        .blog-content p {
-            color: #666;
-            margin-bottom: 1rem;
-            font-size: 0.95rem;
-        }
-        
-        .read-more {
-            color: var(--black);
-            text-decoration: none;
-            font-size: 0.9rem;
-            display: inline-block;
-            border-bottom: 1px solid transparent;
-            transition: var(--transition);
-        }
-        
-        .read-more:hover {
-            border-bottom-color: var(--black);
-        }
-        
-        
-        .testimonials {
-            padding: 4rem 0;
-        }
-        
-        .testimonials h2 {
-            font-size: 2rem;
-            margin-bottom: 3rem;
-            font-weight: normal;
-            text-align: center;
-        }
-        
-        .testimonials-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
-        }
-        
-        .testimonial-card {
-            padding: 2rem;
-            border: 1px solid #eee;
-            position: relative;
-            border-radius: 8px;
-            background-color: var(--white);
-        }
-        
-        .testimonial-card::before {
-            content: '"';
-            font-size: 4rem;
-            position: absolute;
-            top: -10px;
-            left: 20px;
-            opacity: 0.1;
-        }
-        
-        .stars {
-            color: #000;
-            margin-bottom: 1rem;
-            font-size: 1.2rem;
-        }
-        
-        .testimonial-text {
-            font-style: italic;
-            margin-bottom: 1rem;
-            color: #333;
-        }
-        
-        .testimonial-author {
-            font-weight: bold;
-            color: var(--black);
-        }
-        
-        
-        footer {
-            background-color: var(--black);
-            color: var(--white);
-            padding: 4rem 0 2rem;
-            margin-top: 4rem;
-        }
-        
-        .footer-content {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 3rem;
-            margin-bottom: 3rem;
-        }
-        
-        .footer-section h3 {
-            font-size: 1.2rem;
-            margin-bottom: 1.5rem;
-            font-weight: normal;
-        }
-        
-        .footer-section p {
-            color: #ccc;
-            margin-bottom: 1rem;
-        }
-        
-        .copyright {
-            text-align: center;
-            padding-top: 2rem;
-            border-top: 1px solid #333;
-            color: #999;
-            font-size: 0.9rem;
-        }
-        
-        
-        .whatsapp-button {
-            position: fixed;
-            bottom: 30px;
-            right: 30px;
-            width: 60px;
-            height: 60px;
-            background-color: #25D366;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-size: 1.8rem;
-            text-decoration: none;
-            box-shadow: 0 4px 20px rgba(37, 211, 102, 0.3);
-            transition: var(--transition);
-            z-index: 1000;
-        }
-        
-        .whatsapp-button:hover {
-            transform: scale(1.1);
-            box-shadow: 0 6px 25px rgba(37, 211, 102, 0.4);
-        }
-
-        .founder {
-            padding: 4rem 0;
-            border-bottom: 1px solid #eee;
-            background-color: #f9f9f9;
-        }
-
-        .founder h2 {
-            font-size: 2rem;
-            margin-bottom: 3rem;
-            font-weight: normal;
-            text-align: center;
-        }
-
-        .founder-content {
-            display: grid;
-            grid-template-columns: 300px 1fr;
-            gap: 3rem;
-            align-items: start;
-        }
-
-        .founder-image {
-            position: relative;
-        }
-
-        .image-placeholder {
-            width: 100%;
-            height: 400px;
-            background-color: var(--white);
-            border-radius: 8px;
-            border: 1px solid #eee;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .initials {
-            font-size: 4rem;
-            font-weight: bold;
-            color: #333;
-            opacity: 0.3;
-        }
-
-        .founder-details h3 {
-            font-size: 1.8rem;
-            margin-bottom: 0.5rem;
-            font-weight: normal;
-        }
-
-        .founder-title {
-            color: #666;
-            font-size: 1.1rem;
-            margin-bottom: 2rem;
-            font-style: italic;
-        }
-
-        .founder-bio p {
-            margin-bottom: 1.5rem;
-            color: #333;
-        }
-
-        .founder-highlights {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 2rem;
-            margin: 2rem 0;
-        }
-
-        .highlight strong {
-            display: block;
-            margin-bottom: 0.5rem;
-            color: var(--black);
-            font-size: 1rem;
-        }
-
-        .highlight ul {
-            list-style: none;
-            padding-left: 0;
-        }
-
-        .highlight li {
-            margin-bottom: 0.5rem;
-            color: #666;
-            font-size: 0.95rem;
-            position: relative;
-            padding-left: 1.2rem;
-        }
-
-        .highlight li:before {
-            content: "•";
-            position: absolute;
-            left: 0;
-            color: var(--black);
-        }
-
-        .founder-philosophy {
-            font-style: italic;
-            color: #333;
-            padding: 1.5rem;
-            border-left: 3px solid var(--black);
-            background-color: var(--white);
-            margin-top: 2rem;
-        }
-
-        @media (max-width: 768px) {
-            .founder-content {
-                grid-template-columns: 1fr;
-            }
-            
-            .founder-image {
-                max-width: 250px;
-                margin: 0 auto;
-            }
-            
-            .image-placeholder {
-                height: 300px;
-            }
-            
-            .founder-highlights {
-                grid-template-columns: 1fr;
-            }
-        }
-        
-        /* Newsletter Styles */
-        .newsletter-section {
-            margin-top: 4rem;
-            background-color: #f0f2f5; 
-            padding: 60px 20px; 
-            text-align: center;
-        }
-
-        #newsletter-form {
-            max-width: 500px; 
-            margin: 0 auto; 
-            display: flex; 
-            gap: 10px;
-        }
-
-        #newsletter-email {
-            flex-grow: 1; 
-            padding: 15px; 
-            border: 1px solid #ccc; 
-            border-radius: 5px; 
-            font-size: 16px;
-            outline: none;
-        }
-
-        #newsletter-form button {
-            background-color: #000; 
-            color: #fff; 
-            padding: 15px 25px; 
-            border: none; 
-            border-radius: 5px; 
-            font-size: 16px; 
-            cursor: pointer; 
-            font-weight: bold;
-            transition: var(--transition);
-        }
-
-        #newsletter-form button:hover {
-            opacity: 0.8;
-        }
-        
-        
-        @media (max-width: 768px) {
-            .hamburger {
-                display: block;
-            }
-            
-            .hamburger.active .bar:nth-child(2) {
-                opacity: 0;
-            }
-            
-            .hamburger.active .bar:nth-child(1) {
-                transform: translateY(8px) rotate(45deg);
-            }
-            
-            .hamburger.active .bar:nth-child(3) {
-                transform: translateY(-8px) rotate(-45deg);
-            }
-
-            .nav-container {
-                flex-wrap: wrap;
-            }
-            
-            nav {
-                width: 100%;
-                max-height: 0;
-                overflow: hidden;
-                transition: max-height 0.3s ease-out;
-                background-color: var(--white);
-            }
-            
-            nav.active {
-                max-height: 300px;
-            }
-            
-            nav ul {
-                flex-direction: column;
-                padding: 20px 0;
-                gap: 1.5rem;
-                text-align: center;
-            }
-            
-            .hero h1 {
-                font-size: 2rem;
-            }
-            
-            .about-content {
-                columns: 1;
-            }
-            
-            .section-header {
-                flex-direction: column;
-                gap: 1rem;
-                text-align: center;
-            }
-
-            #newsletter-form {
-                flex-direction: column;
-            }
-
-            #newsletter-form button {
-                width: 100%;
-            }
-        }
-
-        /* Tablet devices */
-        @media (min-width: 769px) and (max-width: 1024px) {
-            .hero h1 {
-                font-size: 2.5rem;
-            }
-            .container {
-                padding: 0 30px;
-            }
-        }
-    </style>
-    <link rel="stylesheet" href="/css/styles.css">
+    <meta name="description" content="Legal Spectrum provides strategic legal counsel, dispute resolution, corporate advisory, and private client services with partner-led guidance.">
+    <meta name="robots" content="index, follow">
+    <meta property="og:title" content="Legal Spectrum - Barristers and Solicitors">
+    <meta property="og:description" content="Partner-led legal counsel for corporate, private client, and dispute matters.">
+    <meta property="og:type" content="website">
+    <meta property="og:image" content="/uploads/img/Legal-specturm-logo.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Legal Spectrum - Barristers and Solicitors">
+    <meta name="twitter:description" content="Partner-led legal counsel for corporate, private client, and dispute matters.">
+    <meta name="theme-color" content="#0f1b24">
+    <link rel="icon" type="image/svg+xml" href="/uploads/img/legal-specturm.svg">
+    <link rel="apple-touch-icon" href="/uploads/img/Legal-specturm-logo.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Source+Sans+3:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/home.css">
 </head>
 <body>
-    
+    <a class="skip-link" href="#main-content">Skip to main content</a>
     <header>
         <div class="container nav-container">
-            <a href="/" class="logo" >Legal Spectrum</a>
-            <button class="hamburger" aria-label="Toggle navigation">
+            <a href="/" class="brand">
+                <img src="/uploads/img/Legal-specturm-logo.png" alt="Legal Spectrum logo">
+                <span>Legal Spectrum</span>
+            </a>
+            <button class="hamburger" type="button" aria-label="Toggle navigation" aria-controls="primary-nav" aria-expanded="false">
                 <span class="bar"></span>
                 <span class="bar"></span>
                 <span class="bar"></span>
             </button>
-            <nav>
+            <nav id="primary-nav" aria-label="Primary">
                 <ul>
                     <li><a href="/">Home</a></li>
-                    <li><a href="#about">About</a></li>
-                    <li><a href="/blog">Blog</a></li>
+                    <li><a href="#practice">Practice Areas</a></li>
+                    <li><a href="/blog">Insights</a></li>
                     <li><a href="/contact">Contact</a></li>
                 </ul>
+                <a class="nav-cta" href="/contact">Book a Consultation</a>
             </nav>
         </div>
     </header>
 
-    
+    <main id="main-content">
     <section class="hero">
-        <div class="container">
-            <h1>Legal Excellence with Integrity</h1>
-            <p>Providing expert legal counsel with unwavering commitment to justice and client success. Our firm combines decades of experience with innovative legal strategies.</p>
-        </div>
-    </section>
-
-    
-    <section id="about" class="about">
-        <div class="container">
-            <h2>About Legal Spectrum</h2>
-            <div class="about-content">
-                <p>Founded on the principles of justice, integrity, and excellence, Legal Spectrum has been serving clients with distinction for over two decades. Our firm was established with a clear vision: to provide exceptional legal services while maintaining the highest ethical standards.</p>
-                
-                <p>Our team of experienced attorneys specializes in various areas of law, including corporate law, intellectual property, civil litigation, and family law. Each attorney brings unique expertise and a commitment to achieving the best possible outcomes for our clients.</p>
-                
-                <p>At Legal Spectrum, we believe that every client deserves personalized attention and strategic legal solutions. We take the time to understand your unique circumstances and develop tailored approaches to address your legal needs effectively.</p>
-                
-                <p>Our track record of success is built on thorough preparation, innovative thinking, and a deep understanding of the law. We pride ourselves on being not just legal representatives, but trusted advisors who guide our clients through complex legal challenges with confidence and clarity.</p>
-            </div>
-        </div>
-    </section>
-
-    
-<section class="founder">
-    <div class="container">
-        <h2>Our Founding Lawyer</h2>
-        <div class="founder-content">
-            <div class="founder-image">
-                <img src="/uploads/img/oyin12.jpg" alt="Senior Partner" style="width:100%; height:400px; object-fit:cover; border:1px solid #eee; border-radius: 8px;">
-            </div>
-            <div class="founder-details">
-                <h3>Senior Partner, Esq.</h3>
-                <p class="founder-title">Founding Partner & Senior Counsel</p>
-                
-                <div class="founder-bio">
-                    <p>With over 25 years of legal experience, our founding partner established Legal Spectrum in 2005 with a vision to create a law firm that combines exceptional legal expertise with unwavering client commitment.</p>
-                    
-                    <p>A graduate of Harvard Law School (J.D., 1995), our founding partner began their career at one of New York's premier corporate law firms before establishing their own practice. They specialize in corporate law, intellectual property litigation, and complex civil disputes.</p>
-                    
-                    <div class="founder-highlights">
-                        <div class="highlight">
-                            <strong>Education:</strong>
-                            <ul>
-                                <li>Harvard Law School, J.D. (1995)</li>
-                                <li>Yale University, B.A. in Political Science (1992)</li>
-                            </ul>
-                        </div>
-                        
-                        <div class="highlight">
-                            <strong>Bar Admissions:</strong>
-                            <ul>
-                                <li>New York State Bar (1996)</li>
-                                <li>U.S. District Court, Southern District of New York (1997)</li>
-                                <li>U.S. District Court, Eastern District of New York (1997)</li>
-                                <li>U.S. Court of Appeals for the Second Circuit (2000)</li>
-                            </ul>
-                        </div>
-                        
-                        <div class="highlight">
-                            <strong>Professional Recognition:</strong>
-                            <ul>
-                                <li>Best Lawyers in America (2015-2024)</li>
-                                <li>Super Lawyers, New York Metro (2010-2024)</li>
-                                <li>Martindale-Hubbell AV Preeminent Rating</li>
-                            </ul>
-                        </div>
+        <div class="container hero-grid">
+            <div>
+                <p class="eyebrow">Barristers & Solicitors</p>
+                <h1>Strategic legal counsel for complex, high-stakes matters.</h1>
+                <p>Legal Spectrum advises founders, families, and enterprises through high-impact decisions. We combine deep legal rigor with a calm, client-first approach that keeps you in control.</p>
+                <div class="hero-actions">
+                    <a class="btn primary" href="/contact">Schedule a Consultation</a>
+                    <a class="btn ghost" href="#practice">Explore Practice Areas</a>
+                </div>
+                <div class="hero-metrics">
+                    <div class="metric-card">
+                        <h3>25+ yrs</h3>
+                        <p>Combined partner experience</p>
                     </div>
-                    
-                    <p class="founder-philosophy">
-                        "My philosophy has always been that legal representation should be both formidable and compassionate. We fight tirelessly for our clients while never losing sight of the human element in every case."
-                    </p>
+                    <div class="metric-card">
+                        <h3>900+</h3>
+                        <p>Matters successfully resolved</p>
+                    </div>
+                    <div class="metric-card">
+                        <h3>24 hrs</h3>
+                        <p>Average response time</p>
+                    </div>
+                </div>
+            </div>
+            <div class="hero-panel">
+                <h2 class="panel-title">What sets us apart</h2>
+                <p>We are known for meticulous preparation, empathetic guidance, and decisive courtroom advocacy. Every matter receives a partner-led strategy and clear next steps.</p>
+                <div class="panel-list">
+                    <div class="panel-item">
+                        <strong>Partner-led strategy</strong>
+                        <span>Senior counsel from day one, not just at trial.</span>
+                    </div>
+                    <div class="panel-item">
+                        <strong>Transparent fee planning</strong>
+                        <span>Clear scope, milestones, and no surprise invoices.</span>
+                    </div>
+                    <div class="panel-item">
+                        <strong>Client-first communication</strong>
+                        <span>Weekly updates and proactive risk alerts.</span>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-</section>
+    </section>
 
-    
-    <section class="blog-preview">
+    <section id="practice" class="section">
+        <div class="container">
+            <h2 class="section-title">Practice Areas</h2>
+            <p class="section-subtitle">From advisory to litigation, we tailor every engagement to your objectives while safeguarding your reputation and assets.</p>
+            <div class="practice-grid">
+                <div class="practice-card">
+                    <h3>Corporate & Commercial</h3>
+                    <p>Formation, governance, contracts, restructuring, and board advisory for fast-moving businesses.</p>
+                </div>
+                <div class="practice-card">
+                    <h3>Dispute Resolution</h3>
+                    <p>Litigation and arbitration strategy built around risk containment and decisive outcomes.</p>
+                </div>
+                <div class="practice-card">
+                    <h3>Real Estate & Property</h3>
+                    <p>Transactions, title due diligence, and landlord-tenant representation across complex portfolios.</p>
+                </div>
+                <div class="practice-card">
+                    <h3>Private Clients</h3>
+                    <p>Family governance, trusts, succession planning, and sensitive advisory engagements.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="about" class="section about">
+        <div class="container">
+            <h2 class="section-title">About Legal Spectrum</h2>
+            <p class="section-subtitle">We are a full-service firm known for calm guidance under pressure. Our approach is practical, highly collaborative, and built on long-term relationships.</p>
+            <div class="about-content">
+                <div class="about-card">
+                    <h3>Strategic Insight</h3>
+                    <p>We provide clear advice that balances legal rigor with business realities, so you can make confident decisions.</p>
+                </div>
+                <div class="about-card">
+                    <h3>Trusted Advocacy</h3>
+                    <p>We champion your interests with precision, ensuring every document, argument, and negotiation is defensible.</p>
+                </div>
+                <div class="about-card">
+                    <h3>Human-Centered Service</h3>
+                    <p>We listen deeply and communicate proactively, because outcomes are only meaningful when clients feel supported.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section founder">
+        <div class="container">
+            <h2 class="section-title">Our Founding Partner</h2>
+            <div class="founder-content">
+                <div class="founder-image">
+                    <img src="/uploads/img/oyin12.jpg" alt="Senior Partner portrait">
+                </div>
+                <div class="founder-details">
+                    <h3>Amina O. Adeyemi, Esq.</h3>
+                    <p class="founder-title">Founding Partner & Senior Counsel</p>
+                    <div class="founder-bio">
+                        <p>With more than two decades of courtroom and advisory experience, our founding partner built Legal Spectrum to deliver elite legal counsel with a calm, client-first approach.</p>
+                        <p>Her practice spans corporate governance, complex commercial disputes, and high-net-worth advisory matters. She is known for preparing meticulous strategies that blend legal rigor with practical business judgment.</p>
+                        <div class="founder-highlights">
+                            <div class="highlight">
+                                <strong>Credentials</strong>
+                                <ul>
+                                    <li>LLB, International Commercial Law</li>
+                                    <li>Certified Mediator & Negotiator</li>
+                                </ul>
+                            </div>
+                            <div class="highlight">
+                                <strong>Admissions</strong>
+                                <ul>
+                                    <li>Supreme Court of Nigeria</li>
+                                    <li>International Arbitration Panel Member</li>
+                                </ul>
+                            </div>
+                            <div class="highlight">
+                                <strong>Recognition</strong>
+                                <ul>
+                                    <li>Client Choice Award for Litigation</li>
+                                    <li>Top 40 Under 40 Legal Counsel</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <p class="founder-philosophy">"Every matter is personal. Our job is to make the legal process feel clear, controlled, and ultimately empowering for our clients."</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section blog-preview">
         <div class="container">
             <div class="section-header">
-                <h2>Latest Insights</h2>
+                <h2 class="section-title">Latest Insights</h2>
                 <a href="/blog" class="view-all">View All Articles</a>
             </div>
             <div class="blogs-grid" id="blogs-container">
-                
                 <div class="loading">Loading articles...</div>
             </div>
         </div>
     </section>
 
-    
-    <section class="testimonials">
+    <section class="section testimonials">
         <div class="container">
-            <h2>Client Testimonials</h2>
+            <h2 class="section-title" style="text-align:center;">Client Testimonials</h2>
             <div class="testimonials-grid" id="testimonials-container">
-                
                 <div class="loading">Loading testimonials...</div>
             </div>
         </div>
     </section>
 
-    <!-- Newsletter Section -->
     <section class="newsletter-section">
-        <div class="container">
-            <h2 style="font-size: 28px; font-family: 'Georgia', serif; margin-bottom: 15px;">Subscribe to Our Newsletter</h2>
-            <p style="font-size: 16px; color: #555; max-width: 600px; margin: 0 auto 30px auto;">
-                Stay informed with our latest articles, legal insights, and firm news delivered directly to your inbox.
-            </p>
+        <div class="container" style="text-align:center;">
+            <h2>Subscribe to Our Newsletter</h2>
+            <p style="max-width: 640px; margin: 0 auto; color: #c9d1d9;">Stay ahead with weekly legal updates, case studies, and practical insights tailored to businesses and private clients.</p>
             <form id="newsletter-form">
-                <input type="email" id="newsletter-email" placeholder="Enter your email address" required>
+                <label class="sr-only" for="newsletter-email">Email address</label>
+                <input type="email" id="newsletter-email" placeholder="Enter your email" required>
                 <button type="submit">Subscribe</button>
             </form>
             <p id="newsletter-message" style="margin-top: 15px; font-size: 14px;"></p>
         </div>
     </section>
 
-    <footer style="margin-top: 0;">
+    <section class="cta-section">
+        <div class="container">
+            <div class="cta-card">
+                <div>
+                    <h2>Ready to speak with a senior counsel?</h2>
+                    <p>We offer confidential consultations within 24 hours. Share your matter and we will map out the right path forward.</p>
+                </div>
+                <a class="btn primary" href="/contact">Start Your Consultation</a>
+            </div>
+        </div>
+    </section>
+
+    </main>
+
+    <footer>
         <div class="container">
             <div class="footer-content">
                 <div class="footer-section">
-                    <h3>Legal Spectrum</h3>
-                    <p>123 Legal Avenue<br>Suite 500<br>New York, NY 10001</p>
+                    <div class="footer-brand">
+                        <img src="/uploads/img/Legal-specturm-logo.png" alt="Legal Spectrum logo">
+                        <span>Legal Spectrum</span>
+                    </div>
+                    <p>Trusted counsel for corporate leaders and private clients. We deliver strategic clarity and decisive advocacy.</p>
                 </div>
                 <div class="footer-section">
                     <h3>Contact</h3>
-                    <p>Phone: (555) 123-4567<br>Email: info@spectrumlegals.com<br>Fax: (555) 123-4568</p>
+                    <p>Phone: +1 (555) 123-4567<br>Email: counsel@legalspectrum.com<br>Address: 123 Legal Avenue, Suite 500, New York, NY 10001</p>
                 </div>
                 <div class="footer-section">
-                    <h3>Hours</h3>
+                    <h3>Office Hours</h3>
                     <p>Monday - Friday: 9am - 6pm<br>Saturday: By appointment<br>Sunday: Closed</p>
                 </div>
             </div>
@@ -762,21 +256,20 @@
         </div>
     </footer>
 
-    <a href="https://wa.me/15551234567?text=Hello%20Spectrum%20Legal%2C%20I%20would%20like%20to%20discuss%20a%20legal%20matter" 
-       class="whatsapp-button" 
-       target="_blank">
+    <a href="https://wa.me/15551234567?text=Hello%20Legal%20Spectrum%2C%20I%20would%20like%20to%20discuss%20a%20legal%20matter"
+       class="whatsapp-button"
+       target="_blank" rel="noopener" aria-label="Chat with Legal Spectrum on WhatsApp">
         <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="white">
             <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.76.982.998-3.675-.236-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.9 6.994c-.004 5.45-4.438 9.88-9.888 9.88m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.333.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.333 11.893-11.893 0-3.18-1.24-6.162-3.495-8.411"/>
         </svg>
     </a>
 
     <script>
-        // Update year in footer
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener("DOMContentLoaded", function() {
             const currentYear = new Date().getFullYear();
-            const copyrightElements = document.querySelectorAll('p');
+            const copyrightElements = document.querySelectorAll(".copyright p");
             copyrightElements.forEach(el => {
-                if (el.textContent.includes('Legal Spectrum')) {
+                if (el.textContent.includes("Legal Spectrum")) {
                     el.innerHTML = el.innerHTML.replace(/\d{4}\s+Legal Spectrum/, `${currentYear} Legal Spectrum`);
                 }
             });
@@ -784,92 +277,83 @@
 
         async function loadBlogs() {
             try {
-                const response = await fetch('/api/blogs?limit=3');
+                const response = await fetch("/api/blogs?limit=3");
                 const blogs = await response.json();
-                const container = document.getElementById('blogs-container');
-                
+                const container = document.getElementById("blogs-container");
+
                 if (blogs.length === 0) {
-                    container.innerHTML = '<p class="no-blogs">No articles available at the moment.</p>';
+                    container.innerHTML = "<p class=\"no-blogs\">No articles available at the moment.</p>";
                     return;
                 }
-                
+
                 container.innerHTML = blogs.map(blog => `
                     <div class="blog-card">
                         ${blog.image ? `
                             <div class="blog-image">
                                 <img src="/${blog.image}" alt="${blog.title}">
                             </div>
-                        ` : ''}
+                        ` : ""}
                         <div class="blog-content">
                             <h3>${blog.title}</h3>
                             <p>${blog.excerpt || blog.content.substring(0, 120)}...</p>
-                            <a href="/blog/${blog.slug}" class="read-more">Read More →</a>
+                            <a href="/blog/${blog.slug}" class="read-more">Read More -></a>
                         </div>
                     </div>
-                `).join('');
+                `).join("");
             } catch (error) {
-                console.error('Error loading blogs:', error);
-                document.getElementById('blogs-container').innerHTML = 
-                    '<p class="error">Unable to load articles. Please try again later.</p>';
+                console.error("Error loading blogs:", error);
+                document.getElementById("blogs-container").innerHTML =
+                    "<p class=\"error\">Unable to load articles. Please try again later.</p>";
             }
         }
 
-        
         async function loadTestimonials() {
             try {
-                const response = await fetch('/api/testimonials');
+                const response = await fetch("/api/testimonials");
                 const testimonials = await response.json();
-                const container = document.getElementById('testimonials-container');
-                
+                const container = document.getElementById("testimonials-container");
+
                 if (testimonials.length === 0) {
-                    container.innerHTML = '<p class="no-testimonials">No testimonials yet.</p>';
+                    container.innerHTML = "<p class=\"no-testimonials\">No testimonials yet.</p>";
                     return;
                 }
-                
-                container.innerHTML = testimonials.slice(0, 3).map(testimonial => `
-                    <div class="testimonial-card">
-                        <div class="stars">
-                            ${'★'.repeat(testimonial.rating)}${'☆'.repeat(5 - testimonial.rating)}
+
+                container.innerHTML = testimonials.slice(0, 3).map(testimonial => {
+                    const filled = "&#9733;".repeat(testimonial.rating);
+                    const empty = "&#9734;".repeat(5 - testimonial.rating);
+                    return `
+                        <div class="testimonial-card">
+                            <div class="stars">${filled}${empty}</div>
+                            <p class="testimonial-text">"${testimonial.message}"</p>
+                            <p class="testimonial-author">${testimonial.name}</p>
                         </div>
-                        <p class="testimonial-text">"${testimonial.message}"</p>
-                        <p class="testimonial-author">${testimonial.name}</p>
-                    </div>
-                `).join('');
+                    `;
+                }).join("");
             } catch (error) {
-                console.error('Error loading testimonials:', error);
-                document.getElementById('testimonials-container').innerHTML = 
-                    '<p class="error">Unable to load testimonials.</p>';
+                console.error("Error loading testimonials:", error);
+                document.getElementById("testimonials-container").innerHTML =
+                    "<p class=\"error\">Unable to load testimonials.</p>";
             }
         }
 
-        document.addEventListener('DOMContentLoaded', () => {
+        document.addEventListener("DOMContentLoaded", () => {
             loadBlogs();
             loadTestimonials();
 
-            const hamburger = document.querySelector('.hamburger');
-            const nav = document.querySelector('nav');
-
-            if (hamburger) {
-                hamburger.addEventListener('click', () => {
-                    hamburger.classList.toggle('active');
-                    nav.classList.toggle('active');
-                });
-            }
-
-            const newsletterForm = document.getElementById('newsletter-form');
+            const newsletterForm = document.getElementById("newsletter-form");
             if (newsletterForm) {
-                newsletterForm.addEventListener('submit', async (e) => {
+                newsletterForm.addEventListener("submit", async (e) => {
                     e.preventDefault();
-                    const email = document.getElementById('newsletter-email').value;
-                    const messageEl = document.getElementById('newsletter-message');
-                    
-                    messageEl.textContent = 'Subscribing...';
-                    messageEl.style.color = '#555';
+                    const email = document.getElementById("newsletter-email").value;
+                    const messageEl = document.getElementById("newsletter-message");
+
+                    messageEl.textContent = "Subscribing...";
+                    messageEl.style.color = "#c9d1d9";
 
                     try {
-                        const response = await fetch('/api/subscribe', {
-                            method: 'POST',
-                            headers: { 'Content-Type': 'application/json' },
+                        const response = await fetch("/api/subscribe", {
+                            method: "POST",
+                            headers: { "Content-Type": "application/json" },
                             body: JSON.stringify({ email })
                         });
 
@@ -877,19 +361,20 @@
 
                         if (response.ok) {
                             messageEl.textContent = result.message;
-                            messageEl.style.color = 'green';
-                            document.getElementById('newsletter-email').value = '';
+                            messageEl.style.color = "#8ef3a4";
+                            document.getElementById("newsletter-email").value = "";
                         } else {
-                            messageEl.textContent = result.error || 'An error occurred.';
-                            messageEl.style.color = 'red';
+                            messageEl.textContent = result.error || "An error occurred.";
+                            messageEl.style.color = "#ffb4b4";
                         }
                     } catch (error) {
-                        messageEl.textContent = 'Failed to connect to the server.';
-                        messageEl.style.color = 'red';
+                        messageEl.textContent = "Failed to connect to the server.";
+                        messageEl.style.color = "#ffb4b4";
                     }
                 });
             }
         });
     </script>
+    <script src="/js/nav.js"></script>
 </body>
 </html>

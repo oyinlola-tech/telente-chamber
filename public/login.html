@@ -4,321 +4,36 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Login - Legal Spectrum</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
-        body {
-            font-family: 'Georgia', serif;
-            line-height: 1.6;
-            color: #000000;
-            background-color: #FFFFFF;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-        }
-        
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 20px;
-        }
-        
-        header {
-            background-color: #FFFFFF;
-            border-bottom: 1px solid #eee;
-            padding: 2rem 0;
-        }
-        
-        .logo {
-            font-size: 2rem;
-            font-weight: bold;
-            text-decoration: none;
-            color: #000000;
-            display: block;
-            text-align: center;
-        }
-        
-        .login-container {
-            flex: 1;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 3rem 0;
-        }
-        
-        .login-box {
-            width: 100%;
-            max-width: 500px;
-            padding: 3rem;
-            border: 1px solid #eee;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.05);
-            transition: all 0.3s ease;
-        }
-        
-        .login-box:hover {
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-        }
-        
-        .login-header {
-            text-align: center;
-            margin-bottom: 3rem;
-        }
-        
-        .login-header h1 {
-            font-size: 2.2rem;
-            font-weight: normal;
-            margin-bottom: 1rem;
-        }
-        
-        .login-header p {
-            color: #666;
-            font-size: 1rem;
-        }
-        
-        .form-group {
-            margin-bottom: 2rem;
-        }
-        
-        label {
-            display: block;
-            margin-bottom: 0.75rem;
-            font-size: 1rem;
-            color: #333;
-            font-weight: 500;
-        }
-        
-        input {
-            width: 100%;
-            padding: 1rem;
-            border: 1px solid #ddd;
-            font-family: 'Georgia', serif;
-            font-size: 1.1rem;
-            transition: all 0.3s ease;
-        }
-        
-        input:focus {
-            outline: none;
-            border-color: #000000;
-            box-shadow: 0 0 0 2px rgba(0,0,0,0.1);
-        }
-        
-        .password-container {
-            position: relative;
-        }
-        
-        .toggle-password {
-            position: absolute;
-            right: 15px;
-            top: 50%;
-            transform: translateY(-50%);
-            background: none;
-            border: none;
-            cursor: pointer;
-            font-size: 1rem;
-            color: #666;
-            padding: 0.5rem;
-        }
-        
-        .toggle-password:hover {
-            color: #000000;
-        }
-        
-        button[type="submit"] {
-            width: 100%;
-            background: #000000;
-            color: #FFFFFF;
-            border: 2px solid #000000;
-            padding: 1.1rem;
-            font-size: 1.1rem;
-            cursor: pointer;
-            font-family: 'Georgia', serif;
-            transition: all 0.3s ease;
-            font-weight: 500;
-            letter-spacing: 0.5px;
-        }
-        
-        button[type="submit"]:hover {
-            background: #FFFFFF;
-            color: #000000;
-        }
-        
-        button[type="submit"]:active {
-            transform: translateY(1px);
-        }
-        
-        button[type="submit"]:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-            transform: none;
-        }
-        
-        .message {
-            padding: 1.25rem;
-            margin-bottom: 1.5rem;
-            border-radius: 4px;
-            display: none;
-            text-align: center;
-        }
-        
-        .success {
-            background-color: #f0f9f0;
-            border: 1px solid #c3e6cb;
-            color: #155724;
-            display: block;
-        }
-        
-        .error {
-            background-color: #f8f9fa;
-            border: 1px solid #f5c6cb;
-            color: #721c24;
-            display: block;
-        }
-        
-        footer {
-            background-color: #000000;
-            color: #FFFFFF;
-            padding: 2.5rem 0;
-            margin-top: auto;
-        }
-        
-        .copyright {
-            text-align: center;
-            color: #999;
-            font-size: 0.9rem;
-        }
-        
-        .back-link {
-            text-align: center;
-            margin-top: 2.5rem;
-            padding-top: 2rem;
-            border-top: 1px solid #eee;
-        }
-        
-        .back-link a {
-            color: #000000;
-            text-decoration: none;
-            font-size: 1rem;
-            padding: 0.75rem 1.5rem;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            transition: all 0.3s ease;
-            display: inline-block;
-        }
-        
-        .back-link a:hover {
-            border-color: #000000;
-            background-color: #f9f9f9;
-        }
-        
-        
-        
-        /* Responsive Design */
-        @media (max-width: 768px) {
-            header {
-                padding: 1.5rem 0;
-            }
-            
-            .logo {
-                font-size: 1.6rem;
-            }
-            
-            .login-container {
-                padding: 1.5rem 0;
-            }
-            
-            .login-box {
-                max-width: 100%;
-                padding: 2rem;
-                margin: 0 1rem;
-                box-shadow: none;
-                border: 1px solid #eee;
-            }
-            
-            .login-header h1 {
-                font-size: 1.8rem;
-            }
-            
-            input {
-                padding: 0.875rem;
-                font-size: 1rem;
-            }
-            
-            button[type="submit"] {
-                padding: 1rem;
-                font-size: 1rem;
-            }
-            
-            .form-group {
-                margin-bottom: 1.5rem;
-            }
-        }
-        
-        @media (max-width: 480px) {
-            .login-box {
-                padding: 1.5rem;
-            }
-            
-            .login-header {
-                margin-bottom: 2rem;
-            }
-            
-            .login-header h1 {
-                font-size: 1.5rem;
-            }
-            
-            .login-header p {
-                font-size: 0.9rem;
-            }
-            
-            input {
-                padding: 0.75rem;
-                font-size: 0.95rem;
-            }
-            
-            button[type="submit"] {
-                padding: 0.875rem;
-                font-size: 0.95rem;
-            }
-            
-            .message {
-                padding: 1rem;
-                font-size: 0.9rem;
-            }
-            
-            .back-link a {
-                padding: 0.5rem 1rem;
-                font-size: 0.9rem;
-            }
-        }
-        
-        
-        @media (min-width: 769px) and (max-width: 1024px) {
-            .login-box {
-                max-width: 450px;
-                padding: 2.5rem;
-            }
-        }
-        
-        
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(-10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        
-        .message {
-            animation: fadeIn 0.3s ease;
-        }
-    </style>
+    <link rel="icon" type="image/svg+xml" href="/uploads/img/legal-specturm.svg">
+    <link rel="apple-touch-icon" href="/uploads/img/Legal-specturm-logo.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Source+Sans+3:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="/css/login.css">
+
     <link rel="stylesheet" href="/css/styles.css">
 </head>
 <body>
     <header>
-        <div class="container">
-            <a href="/" class="logo">Legal Spectrum</a>
+        <div class="container nav-container">
+            <a href="/" class="logo">
+                <img src="/uploads/img/Legal-specturm-logo.png" alt="Legal Spectrum logo">
+                <span>Legal Spectrum</span>
+            </a>
+            <button class="hamburger" type="button" aria-label="Toggle navigation" aria-controls="primary-nav" aria-expanded="false">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </button>
+            <nav id="primary-nav">
+                <ul>
+                    <li><a href="/">Home</a></li>
+                    <li><a href="/#practice">Practice Areas</a></li>
+                    <li><a href="/blog">Insights</a></li>
+                    <li><a href="/contact">Contact</a></li>
+                </ul>
+                <a class="nav-cta" href="/contact">Book a Consultation</a>
+            </nav>
         </div>
     </header>
 
@@ -458,5 +173,6 @@
             });
         });
     </script>
+    <script src="/js/nav.js"></script>
 </body>
 </html>

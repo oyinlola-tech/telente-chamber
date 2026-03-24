@@ -52,8 +52,10 @@ app.use(express.static('public'));
 app.use('/uploads', express.static('uploads'));
 app.use(cookieParser());
 
-// Handle favicon.ico 404
-app.get('/favicon.ico', (req, res) => res.status(204).end());
+// Serve branded favicon
+app.get('/favicon.ico', (req, res) => {
+  res.sendFile(path.join(__dirname, 'uploads', 'img', 'legal-specturm.svg'));
+});
 
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000, 
