@@ -16,7 +16,7 @@
         }
 
         body {
-            font-family: 'Georgia', serif;
+            font-family: Georgia, serif;
             line-height: 1.6;
             color: var(--black);
             background-color: var(--white);
@@ -42,7 +42,7 @@
         
         .sidebar-header {
             padding: 0 1.5rem 2rem;
-            border-bottom: 1px solid #333;
+            border-bottom: 1px solid #333333;
         }
         
         .sidebar-header h1 {
@@ -52,7 +52,7 @@
         }
         
         .sidebar-header p {
-            color: #999;
+            color: #999999;
             font-size: 0.9rem;
         }
         
@@ -68,7 +68,7 @@
         .nav-links a {
             display: block;
             padding: 0.75rem 1.5rem;
-            color: #ccc;
+            color: #cccccc;
             text-decoration: none;
             transition: var(--transition);
             border-left: 3px solid transparent;
@@ -76,7 +76,7 @@
         
         .nav-links a:hover,
         .nav-links a.active {
-            background-color: #222;
+            background-color: #222222;
             color: var(--white);
             border-left-color: var(--white);
         }
@@ -86,15 +86,15 @@
             width: calc(100% - 3rem);
             background: transparent;
             color: var(--white);
-            border: 1px solid #666;
+            border: 1px solid #666666;
             padding: 0.75rem;
             cursor: pointer;
             transition: var(--transition);
-            font-family: 'Georgia', serif;
+            font-family: Georgia, serif;
         }
         
         .logout-btn:hover {
-            background: #222;
+            background: #222222;
             border-color: var(--white);
         }
         
@@ -113,7 +113,7 @@
             align-items: center;
             margin-bottom: 2rem;
             padding-bottom: 1rem;
-            border-bottom: 1px solid #eee;
+            border-bottom: 1px solid #eeeeee;
         }
         
         .content-header h2 {
@@ -131,7 +131,7 @@
         .stat-card {
             background: var(--white);
             padding: 1.5rem;
-            border: 1px solid #eee;
+            border: 1px solid #eeeeee;
             text-align: center;
         }
         
@@ -142,14 +142,14 @@
         }
         
         .stat-label {
-            color: #666;
+            color: #666666;
             font-size: 0.9rem;
         }
         
         /* Tab Navigation */
         .tabs {
             display: flex;
-            border-bottom: 1px solid #eee;
+            border-bottom: 1px solid #eeeeee;
             margin-bottom: 2rem;
             background: var(--white);
         }
@@ -160,9 +160,9 @@
             border: none;
             border-bottom: 3px solid transparent;
             cursor: pointer;
-            font-family: 'Georgia', serif;
+            font-family: Georgia, serif;
             font-size: 1rem;
-            color: #666;
+            color: #666666;
             transition: var(--transition);
         }
         
@@ -180,7 +180,7 @@
             display: none;
             background: var(--white);
             padding: 2rem;
-            border: 1px solid #eee;
+            border: 1px solid #eeeeee;
         }
         
         .tab-content.active {
@@ -198,13 +198,13 @@
         .data-table td {
             padding: 1rem;
             text-align: left;
-            border-bottom: 1px solid #eee;
+            border-bottom: 1px solid #eeeeee;
         }
         
         .data-table th {
             background-color: #f9f9f9;
             font-weight: normal;
-            color: #666;
+            color: #666666;
         }
         
         .data-table tr:hover {
@@ -223,7 +223,7 @@
             background: var(--white);
             color: var(--black);
             cursor: pointer;
-            font-family: 'Georgia', serif;
+            font-family: Georgia, serif;
             font-size: 0.9rem;
             transition: var(--transition);
         }
@@ -274,14 +274,14 @@
             display: block;
             margin-bottom: 0.5rem;
             font-size: 0.9rem;
-            color: #333;
+            color: #333333;
         }
         
         input, textarea, select {
             width: 100%;
             padding: 0.75rem;
-            border: 1px solid #ddd;
-            font-family: 'Georgia', serif;
+            border: 1px solid #dddddd;
+            font-family: Georgia, serif;
             font-size: 1rem;
             transition: var(--transition);
         }
@@ -297,7 +297,7 @@
         }
         
         .file-upload {
-            border: 2px dashed #ddd;
+            border: 2px dashed #dddddd;
             padding: 2rem;
             text-align: center;
             cursor: pointer;
@@ -322,11 +322,8 @@
         .modal {
             display: none;
             position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background-color: rgba(0,0,0,0.5);
+            inset: 0;
+            background-color: rgb(0 0 0 / 50%);
             z-index: 1000;
             align-items: center;
             justify-content: center;
@@ -347,7 +344,7 @@
             align-items: center;
             margin-bottom: 1.5rem;
             padding-bottom: 1rem;
-            border-bottom: 1px solid #eee;
+            border-bottom: 1px solid #eeeeee;
         }
         
         .modal-header h3 {
@@ -360,7 +357,7 @@
             border: none;
             font-size: 1.5rem;
             cursor: pointer;
-            color: #666;
+            color: #666666;
         }
         
         /* Messages */
@@ -386,11 +383,11 @@
         .loading {
             text-align: center;
             padding: 2rem;
-            color: #666;
+            color: #666666;
         }
         
         /* Responsive */
-        @media (max-width: 768px) {
+        @media (width <= 768px) {
             .dashboard-container {
                 flex-direction: column;
             }
@@ -484,7 +481,7 @@
             padding: 0;
             margin: -1px;
             overflow: hidden;
-            clip: rect(0, 0, 0, 0);
+            clip-path: inset(50%);
             border: 0;
         }
 
@@ -510,7 +507,7 @@
         .footer-section h3 {
             margin-bottom: 1rem;
             font-family: "Playfair Display", serif;
-            color: #fff;
+            color: #ffffff;
         }
 
         .footer-section p {
@@ -523,7 +520,7 @@
             gap: 0.75rem;
             font-family: "Playfair Display", serif;
             font-size: 1.2rem;
-            color: #fff;
+            color: #ffffff;
         }
 
         .footer-brand img {
@@ -533,7 +530,7 @@
 
         .copyright {
             text-align: center;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            border-top: 1px solid rgb(255 255 255 / 10%);
             padding-top: 1.5rem;
             color: #9aa3ad;
             font-size: 0.9rem;
@@ -605,8 +602,8 @@
             top: 0;
             z-index: 1000;
             backdrop-filter: blur(12px);
-            background: rgba(255, 255, 255, 0.88);
-            border-bottom: 1px solid rgba(226, 230, 234, 0.7);
+            background: rgb(255 255 255 / 88%);
+            border-bottom: 1px solid rgb(226 230 234 / 70%);
         }
 
         .nav-container {
@@ -679,7 +676,7 @@
             padding: 0.55rem 1.2rem;
             border-radius: 999px;
             background: #0f1b24;
-            color: #fff;
+            color: #ffffff;
             font-weight: 600;
             text-decoration: none;
             transition: var(--transition);
@@ -687,7 +684,7 @@
 
         .nav-cta:hover {
             transform: translateY(-1px);
-            box-shadow: 0 16px 30px rgba(16, 27, 36, 0.15);
+            box-shadow: 0 16px 30px rgb(16 27 36 / 15%);
         }
 
         .hamburger {
@@ -707,7 +704,7 @@
             background-color: #0f1b24;
         }
 
-        @media (max-width: 768px) {
+        @media (width <= 768px) {
             .hamburger {
                 display: block;
             }
@@ -717,7 +714,7 @@
                 max-height: 0;
                 overflow: hidden;
                 transition: max-height 0.3s ease-out;
-                background: #fff;
+                background: #ffffff;
                 border-radius: 16px;
             }
 

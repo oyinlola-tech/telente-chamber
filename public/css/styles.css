@@ -1,43 +1,48 @@
-/*Mobile devices */
-@media (max-width: 768px) {
+/* Mobile devices */
+@media (width <= 768px) {
     .login-box {
         max-width: 90%;
         padding: 20px;
     }
 }
+
 /* Animation for messages */
-@keyframes fadeIn {
+@keyframes fade-in {
     from { opacity: 0; transform: translateY(-10px); }
     to { opacity: 1; transform: translateY(0); }
 }
+
 /* Tablet devices */
-@media (min-width: 769px) and (max-width: 1024px) {
+@media (width >= 769px) and (width <= 1024px) {
     .login-box {
         max-width: 450px;
     }
 }
+
 /* Desktop devices */
-@media (min-width: 1025px) {
+@media (width >= 1025px) {
     .login-box {
         max-width: 400px;
     }
 }
 
 /* Mobile devices */
-@media (max-width: 768px) {
+@media (width <= 768px) {
     .register-box {
         max-width: 90%;
         padding: 20px;
     }
 }   
+
 /* Tablet devices */
-@media (min-width: 769px) and (max-width: 1024px) {
+@media (width >= 769px) and (width <= 1024px) {
     .register-box {
         max-width: 450px;
     }   
 }
+
 /* Desktop devices */
-@media (min-width: 1025px) {
+@media (width >= 1025px) {
     .register-box {
         max-width: 400px;
     }

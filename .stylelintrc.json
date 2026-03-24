@@ -2,6 +2,9 @@
   "extends": "stylelint-config-standard",
   "rules": {
     "color-hex-length": "long",
-    "selector-class-pattern": null
+    "selector-class-pattern": null,
+    "declaration-block-single-line-max-declarations": null,
+    "no-descending-specificity": null,
+    "no-duplicate-selectors": null
   }
 }

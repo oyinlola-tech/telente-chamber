@@ -5,7 +5,10 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "lint:css": "stylelint \"public/css/**/*.css\"",
-    "format:css": "stylelint \"public/css/**/*.css\" --fix"
+    "format:css": "stylelint \"public/css/**/*.css\" --fix",
+    "dev:server": "nodemon index.js",
+    "dev:sync": "browser-sync start --proxy http://localhost:3000 --files \"public/**/*.*\" --no-notify --no-open",
+    "dev": "concurrently -k \"npm:dev:server\" \"npm:dev:sync\""
   },
   "keywords": [],
   "author": "Oluwayemi Oyinlola",
@@ -15,19 +18,21 @@
     "bcryptjs": "^3.0.3",
     "cookie-parser": "^1.4.7",
     "crypto": "^1.0.1",
-    "dotenv": "^17.2.3",
+    "dotenv": "^17.3.1",
     "express": "^5.2.1",
-    "express-rate-limit": "^8.2.1",
+    "express-rate-limit": "^8.3.1",
     "helmet": "^8.1.0",
-    "juice": "^10.0.0",
+    "juice": "^11.1.1",
     "jsonwebtoken": "^9.0.3",
-    "multer": "^2.0.2",
-    "mysql2": "^3.16.0",
-    "nodemailer": "^7.0.12"
+    "multer": "^2.1.1",
+    "mysql2": "^3.20.0",
+    "nodemailer": "^8.0.3"
   },
   "devDependencies": {
-    "nodemon": "^3.1.11",
-    "stylelint": "^16.21.0",
-    "stylelint-config-standard": "^37.0.0"
+    "browser-sync": "^3.0.4",
+    "concurrently": "^9.2.1",
+    "nodemon": "^3.1.14",
+    "stylelint": "^17.5.0",
+    "stylelint-config-standard": "^40.0.0"
   }
 }

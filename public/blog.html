@@ -23,7 +23,6 @@
 </head>
 <body data-page="blog" data-site-url="https://www.legalspectrum.ng" data-org-name="Legal Spectrum" data-org-phone="+2348061234567" data-org-email="hello@legalspectrum.ng" data-org-street="Legal Spectrum Chambers" data-org-locality="Okitipupa" data-org-region="Ondo State" data-org-country="NG">
     <a class="skip-link" href="#main-content">Skip to main content</a>
-    <!-- Header -->
     <header>
         <div class="container nav-container">
             <a href="/" class="logo">
@@ -38,7 +37,7 @@
             <nav id="primary-nav" aria-label="Primary">
                 <ul>
                     <li><a href="/">Home</a></li>
-                    <li><a href="/#practice">Practice Areas</a></li>
+                    <li><a href="/practice">Practice Areas</a></li>
                     <li><a href="/blog">Insights</a></li>
                     <li><a href="/contact">Contact</a></li>
                 </ul>
@@ -48,51 +47,91 @@
     </header>
 
     <main id="main-content">
-    <!-- Page Header -->
-    <section class="page-header">
-        <div class="container">
-            <h1>Insights for Decisive Leadership</h1>
-            <p>Practical legal analysis on corporate strategy, disputes, and private client risk management.</p>
-        </div>
-    </section>
-
-    <!-- Blogs Grid -->
-    <section class="blogs-container">
-        <div class="container">
-            <div class="blogs-grid" id="blogs-grid">
-                <!-- Blogs will be loaded dynamically -->
-                <div class="loading">Loading articles...</div>
+        <section class="page-hero">
+            <div class="container hero-grid">
+                <div>
+                    <p class="eyebrow">Legal Spectrum Insights</p>
+                    <h1>Practical guidance for high-stakes decisions in Ondo State.</h1>
+                    <p>Stay ahead with concise, partner-led commentary on disputes, land strategy, corporate governance, and private client risk management in Okitipupa and beyond.</p>
+                    <div class="hero-metrics">
+                        <div class="metric-card">
+                            <h3>Weekly</h3>
+                            <p>New commentary and case notes</p>
+                        </div>
+                        <div class="metric-card">
+                            <h3>Partner-led</h3>
+                            <p>Insights authored by senior counsel</p>
+                        </div>
+                        <div class="metric-card">
+                            <h3>Actionable</h3>
+                            <p>Clear next steps for clients</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="hero-panel">
+                    <h2>What you will find</h2>
+                    <ul>
+                        <li>Land title and property risk updates</li>
+                        <li>Dispute resolution and litigation planning</li>
+                        <li>Corporate governance and compliance briefs</li>
+                        <li>Private client and family advisory guidance</li>
+                    </ul>
+                </div>
             </div>
-            
-            <!-- Pagination -->
-            <div class="pagination is-hidden" id="pagination">
-                <button id="prev-btn" disabled>Previous</button>
-                <span class="current-page">Page <span id="current-page">1</span></span>
-                <button id="next-btn">Next</button>
-            </div>
-        </div>
-    </section>
+        </section>
 
-    <section class="cta-section">
-        <div class="container">
-            <div data-include="cta"></div>
-        </div>
-    </section>
+        <section class="insights-highlights">
+            <div class="container highlights-grid">
+                <div class="highlight-card">
+                    <h3>Okitipupa legal pulse</h3>
+                    <p>Regional updates on land documentation, contract enforcement, and regulatory shifts that affect Ondo State clients.</p>
+                </div>
+                <div class="highlight-card">
+                    <h3>Case playbooks</h3>
+                    <p>Strategies we use to de-risk disputes, protect assets, and align with business priorities.</p>
+                </div>
+                <div class="highlight-card">
+                    <h3>Founder advisory</h3>
+                    <p>Guidance for SMEs and cooperatives navigating governance and growth.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="blogs-section">
+            <div class="container">
+                <div class="section-header">
+                    <h2>Latest Insights</h2>
+                    <p>Fresh perspectives on legal strategy and risk management.</p>
+                </div>
+                <div class="blogs-grid" id="blogs-grid">
+                    <div class="loading">Loading articles...</div>
+                </div>
+
+                <div class="pagination is-hidden" id="pagination">
+                    <button id="prev-btn" disabled>Previous</button>
+                    <span class="current-page">Page <span id="current-page">1</span></span>
+                    <button id="next-btn">Next</button>
+                </div>
+            </div>
+        </section>
+
+        <section class="cta-section">
+            <div class="container">
+                <div data-include="cta"></div>
+            </div>
+        </section>
     </main>
 
     <div data-include="footer"></div>
 
-    <!-- WhatsApp Button -->
-    <a href="https://wa.me/2348061234567?text=Hello%20Legal%20Spectrum%2C%20I%20would%20like%20to%20discuss%20a%20legal%20matter%20in%20Okitipupa" 
-       class="whatsapp-button" 
+    <a href="https://wa.me/2348061234567?text=Hello%20Legal%20Spectrum%2C%20I%20would%20like%20to%20discuss%20a%20legal%20matter%20in%20Okitipupa"
+       class="whatsapp-button"
        target="_blank" rel="noopener" aria-label="Chat with Legal Spectrum on WhatsApp">
         <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="white">
             <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.76.982.998-3.675-.236-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.9 6.994c-.004 5.45-4.438 9.88-9.888 9.88m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.333.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.333 11.893-11.893 0-3.18-1.24-6.162-3.495-8.411"/>
         </svg>
     </a>
 
-
-    
     <script src="/js/bundle.js"></script>
 </body>
 </html>

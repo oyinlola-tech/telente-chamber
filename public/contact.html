@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -23,7 +23,6 @@
 </head>
 <body data-page="contact" data-site-url="https://www.legalspectrum.ng" data-org-name="Legal Spectrum" data-org-phone="+2348061234567" data-org-email="hello@legalspectrum.ng" data-org-street="Legal Spectrum Chambers" data-org-locality="Okitipupa" data-org-region="Ondo State" data-org-country="NG">
     <a class="skip-link" href="#main-content">Skip to main content</a>
-    <!-- Header -->
     <header>
         <div class="container nav-container">
             <a href="/" class="logo">
@@ -38,7 +37,7 @@
             <nav id="primary-nav" aria-label="Primary">
                 <ul>
                     <li><a href="/">Home</a></li>
-                    <li><a href="/#practice">Practice Areas</a></li>
+                    <li><a href="/practice">Practice Areas</a></li>
                     <li><a href="/blog">Insights</a></li>
                     <li><a href="/contact">Contact</a></li>
                 </ul>
@@ -48,148 +47,146 @@
     </header>
 
     <main id="main-content">
-    <!-- Page Header -->
-    <section class="page-header">
-        <div class="container">
-            <h1>Speak With Legal Spectrum</h1>
-            <p>Share your matter and a senior member of our team will respond within 24 hours. You can also leave a testimonial about your experience with us.</p>
-        </div>
-    </section>
-
-    <!-- Contact Content -->
-    <section class="contact-content">
-        <div class="container">
-            <div class="forms-container">
-                <!-- Contact Form -->
-                <div class="form-section">
-                    <h2>Start a Conversation</h2>
-                    <div id="contact-status" class="message" role="status" aria-live="polite"></div>
-                    <form id="contact-form">
-                        <div class="form-group">
-                            <label for="contact-name">Name *</label>
-                            <input type="text" id="contact-name" name="name" required>
+        <section class="page-hero">
+            <div class="container hero-grid">
+                <div>
+                    <p class="eyebrow">Contact Our Team</p>
+                    <h1>Schedule a confidential consultation in Okitipupa.</h1>
+                    <p>Share your matter and a senior member of our team will respond within 24 hours. You can also leave feedback about your experience with us.</p>
+                    <div class="contact-chips">
+                        <div class="chip">
+                            <span class="chip-label">Phone</span>
+                            <a href="tel:+2348061234567">+234 806 123 4567</a>
                         </div>
-                        
-                        <div class="form-group">
-                            <label for="contact-email">Email *</label>
-                            <input type="email" id="contact-email" name="email" required>
+                        <div class="chip">
+                            <span class="chip-label">Email</span>
+                            <a href="mailto:hello@legalspectrum.ng">hello@legalspectrum.ng</a>
                         </div>
-                        
-                        <div class="form-group">
-                            <label for="contact-phone">Phone</label>
-                            <input type="tel" id="contact-phone" name="phone">
+                        <div class="chip">
+                            <span class="chip-label">Address</span>
+                            <span>Legal Spectrum Chambers, Okitipupa</span>
                         </div>
-                        
-                        <div class="form-group">
-                            <label for="contact-subject">Subject</label>
-                            <input type="text" id="contact-subject" name="subject">
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="contact-body">Message *</label>
-                            <textarea id="contact-body" name="message" required></textarea>
-                        </div>
-                        
-                        <button type="submit" id="contact-submit">Send Message</button>
-                    </form>
+                    </div>
                 </div>
-                
-                <!-- Testimonial Form -->
-                <div class="form-section">
-                    <h2>Client Feedback</h2>
-                    <div id="testimonial-status" class="message" role="status" aria-live="polite"></div>
-                    <form id="testimonial-form">
-                        <div class="form-group">
-                            <label for="testimonial-name">Name *</label>
-                            <input type="text" id="testimonial-name" name="name" required>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="testimonial-email">Email</label>
-                            <input type="email" id="testimonial-email" name="email">
-                        </div>
-                        
-                        <div class="form-group">
-                            <label>Rating *</label>
-                            <div class="rating">
-                                <input type="radio" id="star1" name="rating" value="1" required>
-                                <label for="star1">&#9733;</label>
-                                <input type="radio" id="star2" name="rating" value="2">
-                                <label for="star2">&#9733;</label>
-                                <input type="radio" id="star3" name="rating" value="3">
-                                <label for="star3">&#9733;</label>
-                                <input type="radio" id="star4" name="rating" value="4">
-                                <label for="star4">&#9733;</label>
-                                <input type="radio" id="star5" name="rating" value="5">
-                                <label for="star5">&#9733;</label>
+                <div class="hero-panel">
+                    <h2>What to expect</h2>
+                    <ul>
+                        <li>Partner-led review of your matter within 24 hours.</li>
+                        <li>Clear next steps and fee transparency from the start.</li>
+                        <li>Private consultations for individuals, families, and businesses.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section class="contact-section">
+            <div class="container contact-grid">
+                <div class="contact-forms">
+                    <div class="form-card">
+                        <h2>Start a Conversation</h2>
+                        <p class="card-subtitle">Tell us about your matter and we will respond quickly.</p>
+                        <div id="contact-status" class="message" role="status" aria-live="polite"></div>
+                        <form id="contact-form">
+                            <div class="form-group">
+                                <label for="contact-name">Name *</label>
+                                <input type="text" id="contact-name" name="name" required>
                             </div>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="testimonial-body">Your Experience *</label>
-                            <textarea id="testimonial-body" name="message" required></textarea>
-                        </div>
-                        
-                        <button type="submit" id="testimonial-submit">Submit Testimonial</button>
-                    </form>
-                </div>
-            </div>
-            
-            <div class="contact-info">
-                <div class="info-card">
-                    <h3>Contact Information</h3>
-                    <p><strong>Address:</strong><br>
-                    Legal Spectrum Chambers<br>
-                    Okitipupa, Ondo State<br>
-                    Nigeria</p>
-                    
-                    <p><strong>Phone:</strong><br>
-                    <a href="tel:+2348061234567">+234 806 123 4567</a></p>
-                    
-                    <p><strong>Email:</strong><br>
-                    <a href="mailto:hello@legalspectrum.ng">hello@legalspectrum.ng</a></p>
-                </div>
-                
-                <div class="info-card">
-                    <h3>Business Hours</h3>
-                    <p><strong>Monday - Friday:</strong><br>
-                    9:00 AM - 6:00 PM</p>
-                    
-                    <p><strong>Saturday:</strong><br>
-                    By appointment only</p>
-                    
-                    <p><strong>Sunday:</strong><br>
-                    Closed</p>
-                </div>
-                
-                <div class="info-card">
-                    <h3>Emergency Contact</h3>
-                    <p>For urgent legal matters outside business hours, please call our emergency line:</p>
-                    <p><strong><a href="tel:+2348061234577">+234 806 123 4577</a></strong></p>
-                </div>
-            </div>
-        </div>
-    </section>
+                            <div class="form-group">
+                                <label for="contact-email">Email *</label>
+                                <input type="email" id="contact-email" name="email" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="contact-phone">Phone</label>
+                                <input type="tel" id="contact-phone" name="phone">
+                            </div>
+                            <div class="form-group">
+                                <label for="contact-subject">Subject</label>
+                                <input type="text" id="contact-subject" name="subject">
+                            </div>
+                            <div class="form-group">
+                                <label for="contact-body">Message *</label>
+                                <textarea id="contact-body" name="message" required></textarea>
+                            </div>
+                            <button type="submit" id="contact-submit" class="btn primary">Send Message</button>
+                        </form>
+                    </div>
 
-    <section class="cta-section">
-        <div class="container">
-            <div data-include="cta"></div>
-        </div>
-    </section>
+                    <div class="form-card">
+                        <h2>Client Feedback</h2>
+                        <p class="card-subtitle">Share your experience so we can keep improving.</p>
+                        <div id="testimonial-status" class="message" role="status" aria-live="polite"></div>
+                        <form id="testimonial-form">
+                            <div class="form-group">
+                                <label for="testimonial-name">Name *</label>
+                                <input type="text" id="testimonial-name" name="name" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="testimonial-email">Email</label>
+                                <input type="email" id="testimonial-email" name="email">
+                            </div>
+                            <div class="form-group">
+                                <label>Rating *</label>
+                                <div class="rating">
+                                    <input type="radio" id="star1" name="rating" value="1" required>
+                                    <label for="star1">&#9733;</label>
+                                    <input type="radio" id="star2" name="rating" value="2">
+                                    <label for="star2">&#9733;</label>
+                                    <input type="radio" id="star3" name="rating" value="3">
+                                    <label for="star3">&#9733;</label>
+                                    <input type="radio" id="star4" name="rating" value="4">
+                                    <label for="star4">&#9733;</label>
+                                    <input type="radio" id="star5" name="rating" value="5">
+                                    <label for="star5">&#9733;</label>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="testimonial-body">Your Experience *</label>
+                                <textarea id="testimonial-body" name="message" required></textarea>
+                            </div>
+                            <button type="submit" id="testimonial-submit" class="btn ghost">Submit Testimonial</button>
+                        </form>
+                    </div>
+                </div>
+
+                <aside class="contact-sidebar">
+                    <div class="info-card">
+                        <h3>Office Location</h3>
+                        <p>Legal Spectrum Chambers</p>
+                        <p>Okitipupa, Ondo State, Nigeria</p>
+                        <a href="mailto:hello@legalspectrum.ng">hello@legalspectrum.ng</a>
+                    </div>
+                    <div class="info-card">
+                        <h3>Business Hours</h3>
+                        <p><strong>Monday - Friday:</strong><br>9:00 AM - 6:00 PM</p>
+                        <p><strong>Saturday:</strong><br>By appointment only</p>
+                        <p><strong>Sunday:</strong><br>Closed</p>
+                    </div>
+                    <div class="info-card highlight">
+                        <h3>Emergency Contact</h3>
+                        <p>For urgent legal matters outside business hours:</p>
+                        <a href="tel:+2348061234577">+234 806 123 4577</a>
+                    </div>
+                </aside>
+            </div>
+        </section>
+
+        <section class="cta-section">
+            <div class="container">
+                <div data-include="cta"></div>
+            </div>
+        </section>
     </main>
 
     <div data-include="footer"></div>
 
-    <!-- WhatsApp Button -->
-    <a href="https://wa.me/2348061234567?text=Hello%20Legal%20Spectrum%2C%20I%20would%20like%20to%20discuss%20a%20legal%20matter%20in%20Okitipupa" 
-       class="whatsapp-button" 
+    <a href="https://wa.me/2348061234567?text=Hello%20Legal%20Spectrum%2C%20I%20would%20like%20to%20discuss%20a%20legal%20matter%20in%20Okitipupa"
+       class="whatsapp-button"
        target="_blank" rel="noopener" aria-label="Chat with Legal Spectrum on WhatsApp">
         <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="white">
             <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.76.982.998-3.675-.236-.374a9.86 9.87 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.9 6.994c-.004 5.45-4.438 9.88-9.888 9.88m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.333.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.333 11.893-11.893 0-3.18-1.24-6.162-3.495-8.411"/>
         </svg>
     </a>
 
-    
     <script src="/js/bundle.js"></script>
 </body>
 </html>

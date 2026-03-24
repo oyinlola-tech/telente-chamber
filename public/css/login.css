@@ -10,7 +10,7 @@
         }
 
         body {
-            font-family: 'Georgia', serif;
+            font-family: Georgia, serif;
             line-height: 1.6;
             color: #000000;
             background-color: #FFFFFF;
@@ -27,7 +27,7 @@
         
         header {
             background-color: #FFFFFF;
-            border-bottom: 1px solid #eee;
+            border-bottom: 1px solid #eeeeee;
             padding: 2rem 0;
         }
         
@@ -52,13 +52,13 @@
             width: 100%;
             max-width: 500px;
             padding: 3rem;
-            border: 1px solid #eee;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+            border: 1px solid #eeeeee;
+            box-shadow: 0 5px 20px rgb(0 0 0 / 5%);
             transition: all 0.3s ease;
         }
         
         .login-box:hover {
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            box-shadow: 0 10px 30px rgb(0 0 0 / 10%);
         }
         
         .login-header {
@@ -73,7 +73,7 @@
         }
         
         .login-header p {
-            color: #666;
+            color: #666666;
             font-size: 1rem;
         }
         
@@ -85,15 +85,15 @@
             display: block;
             margin-bottom: 0.75rem;
             font-size: 1rem;
-            color: #333;
+            color: #333333;
             font-weight: 500;
         }
         
         input {
             width: 100%;
             padding: 1rem;
-            border: 1px solid #ddd;
-            font-family: 'Georgia', serif;
+            border: 1px solid #dddddd;
+            font-family: Georgia, serif;
             font-size: 1.1rem;
             transition: all 0.3s ease;
         }
@@ -101,7 +101,7 @@
         input:focus {
             outline: none;
             border-color: #000000;
-            box-shadow: 0 0 0 2px rgba(0,0,0,0.1);
+            box-shadow: 0 0 0 2px rgb(0 0 0 / 10%);
         }
         
         .password-container {
@@ -117,7 +117,7 @@
             border: none;
             cursor: pointer;
             font-size: 1rem;
-            color: #666;
+            color: #666666;
             padding: 0.5rem;
         }
         
@@ -133,7 +133,7 @@
             padding: 1.1rem;
             font-size: 1.1rem;
             cursor: pointer;
-            font-family: 'Georgia', serif;
+            font-family: Georgia, serif;
             transition: all 0.3s ease;
             font-weight: 500;
             letter-spacing: 0.5px;
@@ -185,7 +185,7 @@
         
         .copyright {
             text-align: center;
-            color: #999;
+            color: #999999;
             font-size: 0.9rem;
         }
         
@@ -193,7 +193,7 @@
             text-align: center;
             margin-top: 2.5rem;
             padding-top: 2rem;
-            border-top: 1px solid #eee;
+            border-top: 1px solid #eeeeee;
         }
         
         .back-link a {
@@ -201,7 +201,7 @@
             text-decoration: none;
             font-size: 1rem;
             padding: 0.75rem 1.5rem;
-            border: 1px solid #ddd;
+            border: 1px solid #dddddd;
             border-radius: 4px;
             transition: all 0.3s ease;
             display: inline-block;
@@ -215,7 +215,7 @@
         
         
         /* Responsive Design */
-        @media (max-width: 768px) {
+        @media (width <= 768px) {
             header {
                 padding: 1.5rem 0;
             }
@@ -237,7 +237,7 @@
                 padding: 2rem;
                 margin: 0 1rem;
                 box-shadow: none;
-                border: 1px solid #eee;
+                border: 1px solid #eeeeee;
             }
             
             .login-header h1 {
@@ -259,7 +259,7 @@
             }
         }
         
-        @media (max-width: 480px) {
+        @media (width <= 480px) {
             .login-box {
                 padding: 1.5rem;
             }
@@ -298,7 +298,7 @@
         }
         
         
-        @media (min-width: 769px) and (max-width: 1024px) {
+        @media (width >= 769px) and (width <= 1024px) {
             .login-box {
                 max-width: 450px;
                 padding: 2.5rem;
@@ -306,13 +306,13 @@
         }
         
         
-        @keyframes fadeIn {
+        @keyframes fade-in {
             from { opacity: 0; transform: translateY(-10px); }
             to { opacity: 1; transform: translateY(0); }
         }
         
         .message {
-            animation: fadeIn 0.3s ease;
+            animation: fade-in 0.3s ease;
         }
 
         /* Brand refresh */
@@ -328,7 +328,7 @@
         }
 
         header {
-            background: rgba(255, 255, 255, 0.92);
+            background: rgb(255 255 255 / 92%);
             border-bottom: 1px solid #e3e7ec;
             backdrop-filter: blur(10px);
         }
@@ -385,7 +385,7 @@
             padding: 0.55rem 1.2rem;
             border-radius: 999px;
             background: #0f1b24;
-            color: #fff;
+            color: #ffffff;
             font-weight: 600;
             text-decoration: none;
             transition: var(--transition);
@@ -393,7 +393,7 @@
 
         .nav-cta:hover {
             transform: translateY(-1px);
-            box-shadow: 0 16px 30px rgba(16, 27, 36, 0.15);
+            box-shadow: 0 16px 30px rgb(16 27 36 / 15%);
         }
 
         .hamburger {
@@ -413,7 +413,7 @@
             background-color: #0f1b24;
         }
 
-        @media (max-width: 768px) {
+        @media (width <= 768px) {
             .hamburger {
                 display: block;
             }
@@ -423,7 +423,7 @@
                 max-height: 0;
                 overflow: hidden;
                 transition: max-height 0.3s ease-out;
-                background: #fff;
+                background: #ffffff;
                 border-radius: 16px;
             }
 
@@ -466,7 +466,7 @@
             padding: 0;
             margin: -1px;
             overflow: hidden;
-            clip: rect(0, 0, 0, 0);
+            clip-path: inset(50%);
             border: 0;
         }
 
@@ -492,7 +492,7 @@
         .footer-section h3 {
             margin-bottom: 1rem;
             font-family: "Playfair Display", serif;
-            color: #fff;
+            color: #ffffff;
         }
 
         .footer-section p {
@@ -505,7 +505,7 @@
             gap: 0.75rem;
             font-family: "Playfair Display", serif;
             font-size: 1.2rem;
-            color: #fff;
+            color: #ffffff;
         }
 
         .footer-brand img {
@@ -515,7 +515,7 @@
 
         .copyright {
             text-align: center;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            border-top: 1px solid rgb(255 255 255 / 10%);
             padding-top: 1.5rem;
             color: #9aa3ad;
             font-size: 0.9rem;
