@@ -516,6 +516,21 @@
             margin-bottom: 1rem;
         }
 
+        .text-center {
+            text-align: center;
+        }
+
+        .newsletter-description {
+            max-width: 640px;
+            margin: 0 auto;
+            color: #c9d1d9;
+        }
+
+        .newsletter-message {
+            margin-top: 15px;
+            font-size: 14px;
+        }
+
         .newsletter-section {
             background: #101821;
             color: #fff;

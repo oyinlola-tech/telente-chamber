@@ -41,33 +41,39 @@
     </header>
 
     <main class="unsubscribe-content" id="main-content">
+        <h1>Newsletter Preferences</h1>
+        <p>We are processing your request. You can rejoin at any time.</p>
         <div id="message" class="message" role="status" aria-live="polite">Unsubscribing, please wait...</div>
         <a href="/" class="home-link">Return to Home Page</a>
     </main>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', async () => {
-            const token = new URLSearchParams(window.location.search).get('token');
-            const messageEl = document.getElementById('message');
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <div class="footer-brand">
+                        <img src="/uploads/img/Legal-specturm-logo.png" alt="Legal Spectrum logo">
+                        <span>Legal Spectrum</span>
+                    </div>
+                    <p>Trusted counsel for corporate leaders and private clients. We deliver strategic clarity and decisive advocacy.</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Contact</h3>
+                    <p>Phone: +1 (555) 123-4567<br>Email: counsel@legalspectrum.com<br>Address: 123 Legal Avenue, Suite 500, New York, NY 10001</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Office Hours</h3>
+                    <p>Monday - Friday: 9am - 6pm<br>Saturday: By appointment<br>Sunday: Closed</p>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>&copy; 2026 Legal Spectrum. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
 
-            if (!token) {
-                messageEl.textContent = 'Invalid unsubscribe link. Token is missing.';
-                messageEl.classList.add('error');
-                return;
-            }
-
-            try {
-                const response = await fetch(`/api/unsubscribe?token=${token}`);
-                const result = await response.json();
-
-                messageEl.textContent = result.message || result.error;
-                messageEl.classList.add(response.ok ? 'success' : 'error');
-            } catch (error) {
-                messageEl.textContent = 'An error occurred. Please try again later.';
-                messageEl.classList.add('error');
-            }
-        });
-    </script>
+    
     <script src="/js/nav.js"></script>
+    <script src="/js/unsubscribe.js"></script>
 </body>
 </html>

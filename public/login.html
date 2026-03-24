@@ -43,8 +43,8 @@
         <div class="container">
             <div class="login-box">
                 <div class="login-header">
-                    <h1>Admin Login</h1>
-                    <p>Access the admin dashboard to manage content</p>
+                    <h1>Admin Sign In</h1>
+                    <p>Manage insights, messages, and client updates.</p>
                 </div>
                 
                 <div id="login-message" class="message" role="status" aria-live="polite"></div>
@@ -65,116 +65,43 @@
                     
                     <button type="submit" id="login-submit">Sign In</button>
                 </form>
-                <div style="text-align: center; margin-top: 1rem;">
-                    <a href="/admin/forgot-password" style="color: #000000; text-decoration: none; font-size: 0.9rem;">Forgot Password?</a>
+                <div class="login-helper">
+                    <a href="/admin/forgot-password" class="login-link">Forgot Password?</a>
+                </div>
                 <div class="back-link">
-                    <a href="/"> Back to Website</a>
+                    <a href="/">Back to Website</a>
                 </div>
             </div>
         </div>
-    </div>
     </main>
 
     <footer>
         <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <div class="footer-brand">
+                        <img src="/uploads/img/Legal-specturm-logo.png" alt="Legal Spectrum logo">
+                        <span>Legal Spectrum</span>
+                    </div>
+                    <p>Trusted counsel for corporate leaders and private clients. We deliver strategic clarity and decisive advocacy.</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Contact</h3>
+                    <p>Phone: +1 (555) 123-4567<br>Email: counsel@legalspectrum.com<br>Address: 123 Legal Avenue, Suite 500, New York, NY 10001</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Office Hours</h3>
+                    <p>Monday - Friday: 9am - 6pm<br>Saturday: By appointment<br>Sunday: Closed</p>
+                </div>
+            </div>
             <div class="copyright">
                 <p>&copy; 2026 Legal Spectrum. All rights reserved.</p>
             </div>
         </div>
     </footer>
 
-    <script>
-        // Toggle password visibility
-        const togglePassword = document.getElementById('toggle-password');
-        const passwordInput = document.getElementById('password');
-        
-        togglePassword.addEventListener('click', function() {
-            if (passwordInput.type === 'password') {
-                passwordInput.type = 'text';
-                this.textContent = 'Hide';
-            } else {
-                passwordInput.type = 'password';
-                this.textContent = 'Show';
-            }
-        });
-        
-        // Login form handler
-        const loginForm = document.getElementById('login-form');
-        const loginSubmit = document.getElementById('login-submit');
-        const messageDiv = document.getElementById('login-message');
-        
-        loginForm.addEventListener('submit', async function(e) {
-            e.preventDefault();
-            
-            const originalText = loginSubmit.textContent;
-            loginSubmit.textContent = 'Signing in...';
-            loginSubmit.disabled = true;
-            
-            const formData = {
-                email: document.getElementById('email').value,
-                password: document.getElementById('password').value
-            };
-            
-            try {
-                const response = await fetch('/api/admin/login', {
-                    method: 'POST',
-                    credentials: 'include',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(formData)
-                });
-                
-
-                if(response.status === 401){
-                    alert('Incorrect credentials. Please try again.');
-                }
-                
-                const result = await response.json();
-                
-                console.log('Login response:', { status: response.status, result });
-                
-                if (response.ok) {
-                    messageDiv.textContent = 'Login successful! Redirecting...';
-                    messageDiv.className = 'message success';
-                    
-                    // Store token in localStorage
-                    if (result.token) {
-                        localStorage.setItem('admin_token', result.token);
-                        console.log('Token stored in localStorage');
-                    }
-                    
-                    // Redirect to dashboard
-                    setTimeout(() => {
-                        window.location.href = '/admin/dashboard';
-                    }, 1000);
-                } else {
-                    messageDiv.textContent = result.error || 'Invalid email or password';
-                    messageDiv.className = 'message error';
-                    console.error('Login failed:', result);
-                    loginSubmit.textContent = originalText;
-                    loginSubmit.disabled = false;
-                }
-                
-            } catch (error) {
-                messageDiv.textContent = 'Network error. Please check your connection and try again.';
-                messageDiv.className = 'message error';
-                console.error('Network error:', error);
-                loginSubmit.textContent = originalText;
-                loginSubmit.disabled = false;
-            }
-        });
-        
-        // Clear message when user starts typing
-        const inputs = loginForm.querySelectorAll('input');
-        inputs.forEach(input => {
-            input.addEventListener('input', () => {
-                messageDiv.style.display = 'none';
-                messageDiv.textContent = '';
-                messageDiv.className = 'message';
-            });
-        });
-    </script>
+    
     <script src="/js/nav.js"></script>
+    <script src="/js/login.js"></script>
 </body>
 </html>

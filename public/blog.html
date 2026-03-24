@@ -51,8 +51,8 @@
     <!-- Page Header -->
     <section class="page-header">
         <div class="container">
-            <h1>Legal Insights & Articles</h1>
-            <p>Expert perspectives on law, legislation, and legal strategy</p>
+            <h1>Insights for Decisive Leadership</h1>
+            <p>Practical legal analysis on corporate strategy, disputes, and private client risk management.</p>
         </div>
     </section>
 
@@ -65,10 +65,22 @@
             </div>
             
             <!-- Pagination -->
-            <div class="pagination" id="pagination" style="display: none;">
+            <div class="pagination is-hidden" id="pagination">
                 <button id="prev-btn" disabled>Previous</button>
                 <span class="current-page">Page <span id="current-page">1</span></span>
                 <button id="next-btn">Next</button>
+            </div>
+        </div>
+    </section>
+
+    <section class="cta-section">
+        <div class="container">
+            <div class="cta-card">
+                <div>
+                    <h2>Need clarity on a legal decision?</h2>
+                    <p>Speak directly with a senior counsel within 24 hours and receive a clear, actionable plan.</p>
+                </div>
+                <a class="btn primary" href="/contact">Book a Consultation</a>
             </div>
         </div>
     </section>
@@ -79,15 +91,18 @@
         <div class="container">
             <div class="footer-content">
                 <div class="footer-section">
-                    <h3>Legal Spectrum</h3>
-                    <p>123 Legal Avenue<br>Suite 500<br>New York, NY 10001</p>
+                    <div class="footer-brand">
+                        <img src="/uploads/img/Legal-specturm-logo.png" alt="Legal Spectrum logo">
+                        <span>Legal Spectrum</span>
+                    </div>
+                    <p>Trusted counsel for corporate leaders and private clients. We deliver strategic clarity and decisive advocacy.</p>
                 </div>
                 <div class="footer-section">
                     <h3>Contact</h3>
-                    <p>Phone: (555) 123-4567<br>Email: info@spectrumlegals.com<br>Fax: (555) 123-4568</p>
+                    <p>Phone: +1 (555) 123-4567<br>Email: counsel@legalspectrum.com<br>Address: 123 Legal Avenue, Suite 500, New York, NY 10001</p>
                 </div>
                 <div class="footer-section">
-                    <h3>Hours</h3>
+                    <h3>Office Hours</h3>
                     <p>Monday - Friday: 9am - 6pm<br>Saturday: By appointment<br>Sunday: Closed</p>
                 </div>
             </div>
@@ -107,106 +122,8 @@
     </a>
 
 
-    <script>
-        // Update year in footer
-        document.addEventListener('DOMContentLoaded', function() {
-            const currentYear = new Date().getFullYear();
-            const copyrightElements = document.querySelectorAll('p');
-            copyrightElements.forEach(el => {
-                if (el.textContent.includes('Legal Spectrum')) {
-                    el.innerHTML = el.innerHTML.replace(/\d{4}\s+Legal Spectrum/, `${currentYear} Legal Spectrum`);
-                }
-            });
-        });
-
-        let currentPage = 1;
-        const blogsPerPage = 6;
-        let allBlogs = [];
-
-        async function loadAllBlogs() {
-            try {
-                const response = await fetch('/api/blogs');
-                allBlogs = await response.json();
-                displayBlogs();
-                setupPagination();
-            } catch (error) {
-                console.error('Error loading blogs:', error);
-                document.getElementById('blogs-grid').innerHTML = 
-                    '<p class="error">Unable to load articles. Please try again later.</p>';
-            }
-        }
-
-        function displayBlogs() {
-            const start = (currentPage - 1) * blogsPerPage;
-            const end = start + blogsPerPage;
-            const paginatedBlogs = allBlogs.slice(start, end);
-            const container = document.getElementById('blogs-grid');
-
-            if (paginatedBlogs.length === 0) {
-                container.innerHTML = '<p class="no-blogs">No articles available at the moment.</p>';
-                return;
-            }
-
-            container.innerHTML = paginatedBlogs.map(blog => `
-                <div class="blog-card">
-                    ${blog.image ? `
-                        <div class="blog-image">
-                            <img src="/${blog.image}" alt="${blog.title}" loading="lazy">
-                        </div>
-                    ` : ''}
-                    <div class="blog-content">
-                        <div class="blog-meta">
-                            ${new Date(blog.created_at).toLocaleDateString('en-US', {
-                                year: 'numeric',
-                                month: 'long',
-                                day: 'numeric'
-                            })}
-                        </div>
-                        <h3>${blog.title}</h3>
-                        <p>${blog.excerpt || blog.content.substring(0, 150)}...</p>
-                        <a href="/blog/${blog.slug}" class="read-more">Read Article →</a>
-                    </div>
-                </div>
-            `).join('');
-        }
-
-        function setupPagination() {
-            const totalPages = Math.ceil(allBlogs.length / blogsPerPage);
-            const paginationDiv = document.getElementById('pagination');
-            
-            if (totalPages <= 1) {
-                paginationDiv.style.display = 'none';
-                return;
-            }
-            
-            paginationDiv.style.display = 'block';
-            document.getElementById('current-page').textContent = currentPage;
-            document.getElementById('prev-btn').disabled = currentPage === 1;
-            document.getElementById('next-btn').disabled = currentPage === totalPages;
-        }
-
-        document.getElementById('prev-btn').addEventListener('click', () => {
-            if (currentPage > 1) {
-                currentPage--;
-                displayBlogs();
-                setupPagination();
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-            }
-        });
-
-        document.getElementById('next-btn').addEventListener('click', () => {
-            const totalPages = Math.ceil(allBlogs.length / blogsPerPage);
-            if (currentPage < totalPages) {
-                currentPage++;
-                displayBlogs();
-                setupPagination();
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-            }
-        });
-
-        // Load blogs on page load
-        document.addEventListener('DOMContentLoaded', loadAllBlogs);
-    </script>
+    
     <script src="/js/nav.js"></script>
+    <script src="/js/blog.js"></script>
 </body>
 </html>

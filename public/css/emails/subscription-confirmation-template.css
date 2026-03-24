@@ -1,0 +1,19 @@
+body { margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; background-color: #f0f2f5; color: #333; }
+        .email-container { max-width: 600px; margin: 20px auto; background-color: #ffffff; border: 1px solid #e0e0e0; border-radius: 8px; overflow: hidden; }
+        .header { background-color: #0f1b24; color: #ffffff; padding: 30px 40px; text-align: center; }
+        .header img { width: 48px; height: 48px; object-fit: contain; margin-bottom: 12px; }
+        .header h1 { font-size: 28px; font-weight: 600; margin: 0; font-family: 'Georgia', 'Times New Roman', Times, serif; }
+        .body-content { padding: 30px 40px; line-height: 1.7; font-size: 16px; }
+        .body-content h2 { font-size: 22px; font-weight: 600; color: #000000; margin-top: 0; font-family: 'Georgia', 'Times New Roman', Times, serif; }
+        .body-content p { margin: 0 0 1em; }
+        .footer { background-color: #f0f2f5; color: #888; font-size: 12px; padding: 20px 40px; text-align: center; }
+        .footer p { margin: 0 0 10px; }
+        .disclaimer {
+            font-style: italic;
+            border-top: 1px solid #e0e0e0;
+            padding-top: 15px;
+            margin-top: 15px;
+            text-align: left;
+        }
+        .signature { margin-top: 30px; }
+        .accent-link { color: #c8a167; text-decoration: none; }

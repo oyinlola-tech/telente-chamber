@@ -151,6 +151,10 @@
             padding: 4rem 0;
             border-top: 1px solid #eee;
         }
+
+        .is-hidden {
+            display: none;
+        }
         
         .related-articles h2 {
             font-size: 2rem;
@@ -237,6 +241,20 @@
         .footer-section p {
             color: #ccc;
             margin-bottom: 1rem;
+        }
+
+        .footer-brand {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-family: "Playfair Display", serif;
+            font-size: 1.2rem;
+            color: #fff;
+        }
+
+        .footer-brand img {
+            width: 36px;
+            height: 36px;
         }
         
         .copyright {
