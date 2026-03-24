@@ -170,6 +170,7 @@ const createApiRouter = ({ pool, upload, authenticateToken, email, baseDir }) =>
     } catch (error) {
       res.status(500).json({ error: error.message });
     }
+    }
   );
 
   router.put(
@@ -230,6 +231,7 @@ const createApiRouter = ({ pool, upload, authenticateToken, email, baseDir }) =>
       res.json({ id: blogId, slug, message: 'Blog updated successfully' });
     } catch (error) {
       res.status(500).json({ error: error.message });
+    }
     }
   );
 
@@ -315,6 +317,7 @@ const createApiRouter = ({ pool, upload, authenticateToken, email, baseDir }) =>
     } catch (error) {
       console.error('Subscription error:', error);
       res.status(500).json({ error: 'An error occurred during subscription.' });
+    }
     }
   );
 
@@ -409,6 +412,7 @@ const createApiRouter = ({ pool, upload, authenticateToken, email, baseDir }) =>
     } catch (error) {
       res.status(500).json({ error: error.message });
     }
+    }
   );
 
   router.put('/testimonials/:id/approve', authenticateToken, async (req, res) => {
@@ -449,6 +453,7 @@ const createApiRouter = ({ pool, upload, authenticateToken, email, baseDir }) =>
       res.json({ message: 'Message sent successfully' });
     } catch (error) {
       res.status(500).json({ error: error.message });
+    }
     }
   );
 
@@ -529,6 +534,7 @@ const createApiRouter = ({ pool, upload, authenticateToken, email, baseDir }) =>
       res.json({ message: 'Login successful', token: token, user: { id: user.id, email: user.email } });
     } catch (error) {
       res.status(500).json({ error: error.message });
+    }
     }
   );
 
@@ -626,6 +632,7 @@ const createApiRouter = ({ pool, upload, authenticateToken, email, baseDir }) =>
       console.error('OTP verification error:', error);
       res.status(500).json({ error: 'Error verifying OTP' });
     }
+    }
   );
 
   router.post(
@@ -680,6 +687,7 @@ const createApiRouter = ({ pool, upload, authenticateToken, email, baseDir }) =>
       console.error('Password reset error:', error);
       res.status(500).json({ error: 'Error resetting password' });
     }
+    }
   );
 
   router.post(
@@ -724,6 +732,7 @@ const createApiRouter = ({ pool, upload, authenticateToken, email, baseDir }) =>
     } catch (error) {
       console.error('Resend OTP error:', error);
       res.status(500).json({ error: 'Error resending OTP' });
+    }
     }
   );
 
@@ -813,6 +822,7 @@ const createApiRouter = ({ pool, upload, authenticateToken, email, baseDir }) =>
     } catch (error) {
       console.error('Send email error:', error);
       res.status(500).json({ error: error.message });
+    }
     }
   );
 
