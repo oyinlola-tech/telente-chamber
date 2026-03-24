@@ -469,6 +469,15 @@
             outline-offset: 3px;
         }
 
+        .contact-forms {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .hero-panel li::before {
+            content: "-";
+        }
+
         @media (width <= 900px) {
             .contact-grid {
                 grid-template-columns: 1fr;
@@ -538,3 +547,4 @@
                 bottom: 20px;
             }
         }
+

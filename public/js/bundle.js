@@ -36,10 +36,10 @@
        return;
      }
  
-     await Promise.all(
-       Array.from(placeholders).map(async (placeholder) => {
-         const partialName = placeholder.getAttribute('data-include');
-         if (!partialName) return;
+    await Promise.all(
+      Array.from(placeholders).map(async (placeholder) => {
+        const partialName = placeholder.getAttribute('data-include');
+        if (!partialName) return;
          try {
            const response = await fetch(`/partials/${partialName}.html`);
            if (!response.ok) {
@@ -50,10 +50,8 @@
          } catch (error) {
            console.error(error);
          }
-       })
-     );
- 
-    setCurrentYear();
+      })
+    );
   };
 
   const injectJsonLd = (data, id) => {
@@ -1881,9 +1879,9 @@
      });
    };
  
-  onReady(() => {
+  onReady(async () => {
+    await loadPartials();
     initNav();
-    loadPartials();
     setCurrentYear();
     injectLegalServiceSchema();
     setCanonicalUrl();
