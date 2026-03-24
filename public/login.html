@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -19,49 +19,70 @@
     <a class="skip-link" href="#main-content">Skip to main content</a>
     <div data-include="header"></div>
 
-    <main class="login-container" id="main-content">
-        <div class="container">
-            <div class="login-box">
-                <div class="login-header">
-                    <h1>Admin Sign In</h1>
-                    <p>Manage insights, messages, and client updates.</p>
-                </div>
-                
-                <div id="login-message" class="message" role="status" aria-live="polite"></div>
-                
-                <form id="login-form">
-                    <div class="form-group">
-                        <label for="email">Email Address</label>
-                        <input type="email" id="email" name="email" required placeholder="Enter your email address">
+    <main id="main-content" class="login-shell">
+        <section class="login-hero">
+            <div class="container login-grid">
+                <div class="login-intro">
+                    <div class="admin-badge">
+                        <span>Restricted Area</span>
                     </div>
-                    
-                    <div class="form-group">
-                        <label for="password">Password</label>
-                        <div class="password-container">
-                            <input type="password" id="password" name="password" required placeholder="Enter your password">
-                            <button type="button" class="toggle-password" id="toggle-password">Show</button>
+                    <h1>Executive Admin Access</h1>
+                    <p>Confidential communications, client records, and firm intelligence live here. Please confirm your credentials to continue.</p>
+                    <div class="signal-list">
+                        <div class="signal-item">
+                            <span class="signal-title">Compliance-first</span>
+                            <span class="signal-desc">Access is logged and monitored for security.</span>
+                        </div>
+                        <div class="signal-item">
+                            <span class="signal-title">Private by design</span>
+                            <span class="signal-desc">Encrypted sessions with strict timeouts.</span>
+                        </div>
+                        <div class="signal-item">
+                            <span class="signal-title">Partner-led</span>
+                            <span class="signal-desc">Only approved administrators are permitted.</span>
                         </div>
                     </div>
-                    
-                    <button type="submit" id="login-submit">Sign In</button>
-                </form>
-                <div class="login-helper">
-                    <a href="/admin/forgot-password" class="login-link">Forgot Password?</a>
                 </div>
-                <div class="back-link">
-                    <a href="/">Back to Website</a>
+
+                <div class="login-panel">
+                    <div class="panel-header">
+                        <p class="eyebrow">Admin Sign In</p>
+                        <h2>Continue to the dashboard</h2>
+                        <p>Enter your admin email and password to manage updates, approvals, and client messages.</p>
+                    </div>
+
+                    <div id="login-message" class="message" role="status" aria-live="polite"></div>
+
+                    <form id="login-form">
+                        <div class="form-group">
+                            <label for="email">Email Address</label>
+                            <input type="email" id="email" name="email" required placeholder="admin@chamber.telente.site">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="password">Password</label>
+                            <div class="password-container">
+                                <input type="password" id="password" name="password" required placeholder="Enter your password">
+                                <button type="button" class="toggle-password" id="toggle-password">Show</button>
+                            </div>
+                        </div>
+
+                        <button type="submit" id="login-submit">Unlock Dashboard</button>
+                    </form>
+
+                    <div class="panel-links">
+                        <a href="/admin/forgot-password" class="login-link">Forgot Password?</a>
+                        <a href="/" class="back-link">Back to Website</a>
+                    </div>
+
+                    <p class="panel-note">If you believe you need access, email admin@chamber.telente.site.</p>
                 </div>
             </div>
-        </div>
+        </section>
     </main>
 
     <div data-include="footer"></div>
 
-    
     <script src="/js/bundle.js"></script>
 </body>
 </html>
-
-
-
-

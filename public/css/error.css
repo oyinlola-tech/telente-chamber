@@ -1,0 +1,142 @@
+:root {
+    --ink: #0f1b24;
+    --ink-2: #253444;
+    --muted: #5f6f7e;
+    --accent: #c8a167;
+    --accent-strong: #a37b41;
+    --surface: #f7f2ea;
+    --surface-2: #ffffff;
+    --border: #e2e6ea;
+    --shadow: 0 18px 45px rgb(16 27 36 / 8%);
+    --transition: 200ms ease;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html, body {
+    width: 100%;
+    overflow-x: hidden;
+}
+
+body {
+    font-family: "Source Sans 3", sans-serif;
+    line-height: 1.7;
+    color: var(--ink);
+    background: radial-gradient(circle at top, #ffffff 0%, #f6f2ea 55%, #f2ede4 100%);
+}
+
+img {
+    max-width: 100%;
+    display: block;
+}
+
+.container {
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: 0 24px;
+}
+
+.eyebrow {
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    font-size: 0.75rem;
+    color: var(--muted);
+    margin-bottom: 1rem;
+}
+
+.error-hero {
+    padding: 4.5rem 0 4rem;
+}
+
+.error-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 2.5rem;
+    align-items: start;
+}
+
+.error-hero h1 {
+    font-family: "Playfair Display", serif;
+    font-size: clamp(2.4rem, 3.6vw, 3.4rem);
+    line-height: 1.2;
+    margin-bottom: 1rem;
+}
+
+.error-hero p {
+    color: var(--muted);
+    font-size: 1.05rem;
+}
+
+.error-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.9rem;
+    margin-top: 2rem;
+}
+
+.error-links {
+    margin-top: 1.8rem;
+    display: grid;
+    gap: 0.6rem;
+    color: var(--muted);
+}
+
+.error-links a {
+    color: var(--ink-2);
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.error-links a:hover {
+    color: var(--accent-strong);
+}
+
+.error-card {
+    padding: 2.4rem;
+    border-radius: 22px;
+    background: linear-gradient(135deg, rgb(200 161 103 / 18%), rgb(15 27 36 / 10%));
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow);
+}
+
+.error-code {
+    font-family: "Playfair Display", serif;
+    font-size: clamp(3.4rem, 7vw, 5.2rem);
+    letter-spacing: 0.1em;
+    color: var(--ink);
+}
+
+.error-card p {
+    margin-top: 0.6rem;
+    color: var(--muted);
+}
+
+.error-tips {
+    list-style: none;
+    margin-top: 1.6rem;
+    display: grid;
+    gap: 0.9rem;
+}
+
+.error-tips li {
+    padding-left: 1.2rem;
+    position: relative;
+    color: var(--ink-2);
+}
+
+.error-tips li::before {
+    content: "-";
+    position: absolute;
+    left: 0;
+    color: var(--accent-strong);
+}
+
+@media (width <= 900px) {
+    .error-card {
+        padding: 2rem;
+    }
+}
