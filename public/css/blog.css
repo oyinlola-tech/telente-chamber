@@ -374,3 +374,35 @@
                 margin-bottom: 1rem;
             }
         }
+
+        .skip-link {
+            position: absolute;
+            left: -999px;
+            top: 16px;
+            background: #0f1b24;
+            color: #ffffff;
+            padding: 0.6rem 1rem;
+            border-radius: 999px;
+            z-index: 1100;
+            text-decoration: none;
+        }
+
+        .skip-link:focus {
+            left: 16px;
+        }
+
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            border: 0;
+        }
+
+        :focus-visible {
+            outline: 3px solid #c8a167;
+            outline-offset: 3px;
+        }

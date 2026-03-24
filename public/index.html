@@ -15,6 +15,31 @@
     <meta name="twitter:title" content="Legal Spectrum - Barristers and Solicitors">
     <meta name="twitter:description" content="Partner-led legal counsel for corporate, private client, and dispute matters.">
     <meta name="theme-color" content="#0f1b24">
+    <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@type": "LegalService",
+            "name": "Legal Spectrum",
+            "logo": "/uploads/img/Legal-specturm-logo.png",
+            "image": "/uploads/img/Legal-specturm-logo.png",
+            "address": {
+                "@type": "PostalAddress",
+                "streetAddress": "123 Legal Avenue, Suite 500",
+                "addressLocality": "New York",
+                "addressRegion": "NY",
+                "postalCode": "10001",
+                "addressCountry": "US"
+            },
+            "telephone": "+1-555-123-4567",
+            "areaServed": "US",
+            "serviceType": [
+                "Corporate & Commercial",
+                "Dispute Resolution",
+                "Real Estate & Property",
+                "Private Clients"
+            ]
+        }
+    </script>
     <link rel="icon" type="image/svg+xml" href="/uploads/img/legal-specturm.svg">
     <link rel="apple-touch-icon" href="/uploads/img/Legal-specturm-logo.png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -213,7 +238,7 @@
                 <input type="email" id="newsletter-email" placeholder="Enter your email" required>
                 <button type="submit">Subscribe</button>
             </form>
-            <p id="newsletter-message" style="margin-top: 15px; font-size: 14px;"></p>
+            <p id="newsletter-message" role="status" aria-live="polite" style="margin-top: 15px; font-size: 14px;"></p>
         </div>
     </section>
 

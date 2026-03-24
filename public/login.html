@@ -4,16 +4,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Login - Legal Spectrum</title>
+    <meta name="description" content="Secure Legal Spectrum admin login for managing content and client communications.">
+    <meta name="robots" content="noindex, nofollow">
+    <meta name="theme-color" content="#0f1b24">
     <link rel="icon" type="image/svg+xml" href="/uploads/img/legal-specturm.svg">
     <link rel="apple-touch-icon" href="/uploads/img/Legal-specturm-logo.png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Source+Sans+3:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-        <link rel="stylesheet" href="/css/login.css">
-
-    <link rel="stylesheet" href="/css/styles.css">
+    <link rel="stylesheet" href="/css/login.css">
 </head>
 <body>
+    <a class="skip-link" href="#main-content">Skip to main content</a>
     <header>
         <div class="container nav-container">
             <a href="/" class="logo">
@@ -25,7 +27,7 @@
                 <span class="bar"></span>
                 <span class="bar"></span>
             </button>
-            <nav id="primary-nav">
+            <nav id="primary-nav" aria-label="Primary">
                 <ul>
                     <li><a href="/">Home</a></li>
                     <li><a href="/#practice">Practice Areas</a></li>
@@ -37,7 +39,7 @@
         </div>
     </header>
 
-    <main class="login-container">
+    <main class="login-container" id="main-content">
         <div class="container">
             <div class="login-box">
                 <div class="login-header">
@@ -45,7 +47,7 @@
                     <p>Access the admin dashboard to manage content</p>
                 </div>
                 
-                <div id="login-message" class="message"></div>
+                <div id="login-message" class="message" role="status" aria-live="polite"></div>
                 
                 <form id="login-form">
                     <div class="form-group">
