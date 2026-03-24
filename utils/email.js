@@ -3,9 +3,10 @@ const juice = require('juice');
 
 const createEmailTransporter = () => {
   const nodemailer = require('nodemailer');
+  const provider = (process.env.EMAIL_PROVIDER || '').toLowerCase();
   const host = process.env.EMAIL_HOST;
-  const port = process.env.EMAIL_PORT ? parseInt(process.env.EMAIL_PORT, 10) : undefined;
-  const secure = process.env.EMAIL_SECURE
+  let port = process.env.EMAIL_PORT ? parseInt(process.env.EMAIL_PORT, 10) : undefined;
+  let secure = process.env.EMAIL_SECURE
     ? process.env.EMAIL_SECURE === 'true'
     : port === 465;
 
@@ -13,6 +14,18 @@ const createEmailTransporter = () => {
     return nodemailer.createTransport({
       host,
       port: port || 587,
+      secure,
+      auth: { user: process.env.EMAIL_USER, pass: process.env.EMAIL_PASS }
+    });
+  }
+
+  if (provider === 'namecheap') {
+    if (!port) port = 465;
+    if (process.env.EMAIL_SECURE === undefined) secure = port === 465;
+
+    return nodemailer.createTransport({
+      host: 'mail.privateemail.com',
+      port,
       secure,
       auth: { user: process.env.EMAIL_USER, pass: process.env.EMAIL_PASS }
     });

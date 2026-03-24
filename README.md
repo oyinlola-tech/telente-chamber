@@ -137,6 +137,24 @@ EMAIL_PASS=your-app-specific-password
 EMAIL_FROM_NAME=Legal Spectrum
 ```
 
+### Email Provider Options
+By default, Gmail is used. You can switch to Namecheap Private Email (SMTP) by adding:
+
+```env
+EMAIL_PROVIDER=namecheap
+EMAIL_USER=admin@chamber.telente.site
+EMAIL_PASS=your-mailbox-password
+EMAIL_FROM_NAME=Legal Spectrum
+EMAIL_PORT=465
+EMAIL_SECURE=true
+```
+
+Optional override if needed:
+
+```env
+EMAIL_HOST=mail.privateemail.com
+```
+
 ## Running the Application
 
 ### Development

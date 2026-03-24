@@ -1,5 +1,7 @@
-User-agent: *
+﻿User-agent: *
 Allow: /
 
-Host: https://www.legalspectrum.ng
-Sitemap: https://www.legalspectrum.ng/sitemap.xml
+Host: https://chamber.telente.site
+Sitemap: https://chamber.telente.site/sitemap.xml
+
+

@@ -1,0 +1,6 @@
+﻿# Force HTTPS and canonical host
+RewriteEngine On
+
+RewriteCond %{HTTPS} !=on [OR]
+RewriteCond %{HTTP_HOST} !^chamber\.telente\.site$ [NC]
+RewriteRule ^(.*)$ https://chamber.telente.site/$1 [L,R=301]
