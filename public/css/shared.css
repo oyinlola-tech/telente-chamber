@@ -62,6 +62,17 @@ footer {
     font-size: 0.9rem;
 }
 
+.cta-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.8rem;
+}
+
+.cta-note {
+    margin-top: 0.6rem;
+    color: var(--muted);
+}
+
 .skip-link {
     position: absolute;
     left: -999px;
@@ -96,18 +107,23 @@ footer {
 
 header {
     position: sticky;
+    position: -webkit-sticky;
     top: 0;
-    z-index: 1000;
+    left: 0;
+    right: 0;
+    z-index: 1200;
+    width: 100%;
     backdrop-filter: blur(12px);
     background: rgb(255 255 255 / 92%);
     border-bottom: 1px solid rgb(226 230 234 / 70%);
+    transform: translateZ(0);
 }
 
 .nav-container {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 32.2rem 0;
+    padding: 1.6rem 0;
     gap: 1.5rem;
 }
 
@@ -119,13 +135,13 @@ header {
     color: var(--ink);
     font-family: "Playfair Display", serif;
     font-weight: 600;
-    font-size: 1.5rem;
+    font-size: 1.7rem;
     letter-spacing: 0.02em;
 }
 
 .logo img {
-    width: 50px;
-    height: 50px;
+    width: 58px;
+    height: 58px;
     object-fit: contain;
 }
 

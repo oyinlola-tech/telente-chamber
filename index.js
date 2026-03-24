@@ -14,12 +14,110 @@ const { createApiRouter } = require('./routes/api');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
+const getSiteUrl = (req) =>
+  process.env.SITE_URL || `${req.protocol}://${req.get('host')}`;
 
 app.use(helmet({
-  contentSecurityPolicy: false, 
+  contentSecurityPolicy: false,
 }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+app.get('/robots.txt', (req, res) => {
+  const baseUrl = getSiteUrl(req).replace(/\/$/, '');
+  res.type('text/plain');
+  res.send(`User-agent: *\nAllow: /\n\nHost: ${baseUrl}\nSitemap: ${baseUrl}/sitemap.xml\n`);
+});
+
+app.get('/rss.xml', async (req, res) => {
+  try {
+    const baseUrl = getSiteUrl(req).replace(/\/$/, '');
+    const [blogs] = await pool.query(
+      'SELECT title, slug, excerpt, content, created_at, updated_at FROM blogs WHERE status = "published" ORDER BY created_at DESC'
+    );
+
+    const items = blogs
+      .map((blog) => {
+        const link = `${baseUrl}/blog/${blog.slug}`;
+        const description = (blog.excerpt || blog.content || '')
+          .replace(/<[^>]+>/g, '')
+          .substring(0, 300);
+        const pubDate = new Date(blog.updated_at || blog.created_at).toUTCString();
+        return `
+      <item>
+        <title><![CDATA[${blog.title}]]></title>
+        <link>${link}</link>
+        <guid>${link}</guid>
+        <pubDate>${pubDate}</pubDate>
+        <description><![CDATA[${description}]]></description>
+      </item>`;
+      })
+      .join('');
+
+    const rss = `<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0">
+  <channel>
+    <title>Legal Spectrum Insights</title>
+    <link>${baseUrl}/blog</link>
+    <description>Latest legal insights and updates from Legal Spectrum.</description>
+    <language>en</language>
+    <lastBuildDate>${new Date().toUTCString()}</lastBuildDate>${items}
+  </channel>
+</rss>`;
+
+    res.type('application/rss+xml');
+    res.send(rss);
+  } catch (error) {
+    res.status(500).send('Unable to generate RSS feed.');
+  }
+});
+
+app.get('/sitemap.xml', async (req, res) => {
+  try {
+    const baseUrl = getSiteUrl(req).replace(/\/$/, '');
+    const staticPaths = [
+      '/',
+      '/blog',
+      '/contact',
+      '/about',
+      '/practice',
+      '/faq',
+      '/privacy',
+      '/terms'
+    ];
+
+    const [blogs] = await pool.query(
+      'SELECT slug, updated_at, created_at FROM blogs WHERE status = "published" ORDER BY created_at DESC'
+    );
+
+    const urls = [
+      ...staticPaths.map((path) => ({
+        loc: `${baseUrl}${path}`,
+        lastmod: new Date().toISOString().split('T')[0]
+      })),
+      ...blogs.map((blog) => ({
+        loc: `${baseUrl}/blog/${blog.slug}`,
+        lastmod: new Date(blog.updated_at || blog.created_at).toISOString().split('T')[0]
+      }))
+    ];
+
+    const xml = `<?xml version="1.0" encoding="UTF-8"?>\n` +
+      `<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n` +
+      urls
+        .map(
+          (url) =>
+            `  <url>\n    <loc>${url.loc}</loc>\n    <lastmod>${url.lastmod}</lastmod>\n  </url>`
+        )
+        .join('\n') +
+      `\n</urlset>`;
+
+    res.set('Content-Type', 'application/xml');
+    res.send(xml);
+  } catch (error) {
+    res.status(500).send('Unable to generate sitemap.');
+  }
+});
+
 app.use(express.static('public'));
 app.use('/uploads', express.static('uploads'));
 app.use(cookieParser());

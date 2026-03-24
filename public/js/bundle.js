@@ -165,6 +165,33 @@
     }
     link.setAttribute('href', url);
   };
+
+  const setMetaTag = (selector, attrName, content) => {
+    if (!content) return;
+    let tag = document.querySelector(selector);
+    if (!tag) {
+      tag = document.createElement('meta');
+      if (selector.includes('property=')) {
+        tag.setAttribute('property', selector.match(/property="([^"]+)"/)[1]);
+      } else if (selector.includes('name=')) {
+        tag.setAttribute('name', selector.match(/name="([^"]+)"/)[1]);
+      }
+      document.head.appendChild(tag);
+    }
+    tag.setAttribute(attrName, content);
+  };
+
+  const setMetaContent = (name, content) => {
+    setMetaTag(`meta[name="${name}"]`, 'content', content);
+  };
+
+  const setOgContent = (property, content) => {
+    setMetaTag(`meta[property="${property}"]`, 'content', content);
+  };
+
+  const setTwitterContent = (name, content) => {
+    setMetaTag(`meta[name="${name}"]`, 'content', content);
+  };
  
   const initContactPage = () => {
     const contactForm = document.getElementById('contact-form');
@@ -349,29 +376,30 @@
       ],
       'jsonld-breadcrumbs'
     );
+    setCanonicalUrl('/blog');
  
      let currentPage = 1;
      const blogsPerPage = 6;
      let allBlogs = [];
  
-     const displayBlogs = () => {
-       const start = (currentPage - 1) * blogsPerPage;
+    const displayBlogs = () => {
+      const start = (currentPage - 1) * blogsPerPage;
       const end = start + blogsPerPage;
-       const paginatedBlogs = allBlogs.slice(start, end);
+      const paginatedBlogs = allBlogs.slice(start, end);
  
        if (paginatedBlogs.length === 0) {
          blogsGrid.innerHTML = '<p class="no-blogs">No insights yet. Check back soon for new guidance.</p>';
          return;
        }
  
-       blogsGrid.innerHTML = paginatedBlogs
-         .map((blog) => {
+      blogsGrid.innerHTML = paginatedBlogs
+        .map((blog) => {
            const date = new Date(blog.created_at).toLocaleDateString('en-US', {
              year: 'numeric',
              month: 'long',
              day: 'numeric'
            });
-           return `
+          return `
              <div class="blog-card">
                ${
                  blog.image
@@ -389,10 +417,51 @@
                  <a href="/blog/${blog.slug}" class="read-more">Read Insight</a>
                </div>
              </div>
-           `;
-         })
-         .join('');
-     };
+          `;
+        })
+        .join('');
+
+      const listSchema = {
+        '@context': 'https://schema.org',
+        '@type': 'ItemList',
+        itemListElement: paginatedBlogs.map((blog, index) => ({
+          '@type': 'ListItem',
+          position: index + 1,
+          name: blog.title,
+          url: `${origin}/blog/${blog.slug}`
+        }))
+      };
+      injectJsonLd(listSchema, 'jsonld-blog-list');
+
+      const org = getOrgData();
+      const postingsSchema = {
+        '@context': 'https://schema.org',
+        '@type': 'Blog',
+        name: 'Legal Spectrum Insights',
+        blogPost: paginatedBlogs.map((blog) => ({
+          '@type': 'BlogPosting',
+          headline: blog.title,
+          description: blog.excerpt || blog.content.substring(0, 160),
+          datePublished: blog.created_at,
+          dateModified: blog.updated_at || blog.created_at,
+          mainEntityOfPage: `${origin}/blog/${blog.slug}`,
+          image: blog.image ? [`${origin}/${blog.image}`] : undefined,
+          author: org
+            ? {
+                '@type': 'Organization',
+                name: org.name
+              }
+            : undefined,
+          publisher: org
+            ? {
+                '@type': 'Organization',
+                name: org.name
+              }
+            : undefined
+        }))
+      };
+      injectJsonLd(postingsSchema, 'jsonld-blog-postings');
+    };
  
      const setupPagination = () => {
        const totalPages = Math.ceil(allBlogs.length / blogsPerPage);
@@ -511,6 +580,22 @@
  
         const blog = await response.json();
         document.title = `${blog.title} - Legal Spectrum`;
+        setCanonicalUrl(`/blog/${blog.slug}`);
+
+        const excerpt = blog.excerpt || blog.content.substring(0, 160);
+        setMetaContent('description', excerpt);
+        setOgContent('og:title', blog.title);
+        setOgContent('og:description', excerpt);
+        setOgContent('og:type', 'article');
+        setOgContent('og:url', window.location.href);
+        if (blog.image) {
+          setOgContent('og:image', `/${blog.image}`);
+        }
+        setTwitterContent('twitter:title', blog.title);
+        setTwitterContent('twitter:description', excerpt);
+        if (blog.image) {
+          setTwitterContent('twitter:image', `/${blog.image}`);
+        }
  
          const formattedDate = new Date(blog.created_at).toLocaleDateString('en-US', {
            year: 'numeric',
@@ -538,6 +623,31 @@
          `;
  
         loadRelatedArticles(blog.id);
+
+        const org = getOrgData();
+        const articleSchema = {
+          '@context': 'https://schema.org',
+          '@type': 'Article',
+          headline: blog.title,
+          description: excerpt,
+          datePublished: blog.created_at,
+          dateModified: blog.updated_at || blog.created_at,
+          mainEntityOfPage: window.location.href,
+          author: org
+            ? {
+                '@type': 'Organization',
+                name: org.name
+              }
+            : undefined,
+          publisher: org
+            ? {
+                '@type': 'Organization',
+                name: org.name
+              }
+            : undefined,
+          image: blog.image ? [`/${blog.image}`] : undefined
+        };
+        injectJsonLd(articleSchema, 'jsonld-article');
 
         const origin = document.body.dataset.siteUrl || window.location.origin;
         injectBreadcrumbSchema(
