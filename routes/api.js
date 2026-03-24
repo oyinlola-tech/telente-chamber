@@ -1,9 +1,22 @@
 const express = require('express');
 const path = require('path');
+const { body, validationResult } = require('express-validator');
 
 const createApiRouter = ({ pool, upload, authenticateToken, email, baseDir }) => {
   const router = express.Router();
   const publicDir = path.join(baseDir, 'public');
+  const { authLimiter, strictLimiter } = require('../middleware/rateLimiter');
+
+  const validate = (rules) => [
+    ...rules,
+    (req, res, next) => {
+      const errors = validationResult(req);
+      if (!errors.isEmpty()) {
+        return res.status(400).json({ error: 'Invalid input', details: errors.array() });
+      }
+      return next();
+    }
+  ];
 
   router.get('/blogs', async (req, res) => {
     try {
@@ -78,7 +91,17 @@ const createApiRouter = ({ pool, upload, authenticateToken, email, baseDir }) =>
     }
   });
 
-  router.post('/blogs', authenticateToken, upload.single('image'), async (req, res) => {
+  router.post(
+    '/blogs',
+    authenticateToken,
+    validate([
+      body('title').trim().isLength({ min: 3, max: 200 }),
+      body('content').trim().isLength({ min: 20 }),
+      body('excerpt').optional({ nullable: true }).trim().isLength({ max: 400 }),
+      body('status').optional().isIn(['published', 'draft'])
+    ]),
+    upload.single('image'),
+    async (req, res) => {
     try {
       const { title, content, excerpt, status } = req.body;
 
@@ -147,9 +170,19 @@ const createApiRouter = ({ pool, upload, authenticateToken, email, baseDir }) =>
     } catch (error) {
       res.status(500).json({ error: error.message });
     }
-  });
+  );
 
-  router.put('/blogs/:id', authenticateToken, upload.single('image'), async (req, res) => {
+  router.put(
+    '/blogs/:id',
+    authenticateToken,
+    validate([
+      body('title').trim().isLength({ min: 3, max: 200 }),
+      body('content').trim().isLength({ min: 20 }),
+      body('excerpt').optional({ nullable: true }).trim().isLength({ max: 400 }),
+      body('status').optional().isIn(['published', 'draft'])
+    ]),
+    upload.single('image'),
+    async (req, res) => {
     try {
       const blogId = parseInt(req.params.id, 10);
       if (isNaN(blogId)) {
@@ -198,7 +231,7 @@ const createApiRouter = ({ pool, upload, authenticateToken, email, baseDir }) =>
     } catch (error) {
       res.status(500).json({ error: error.message });
     }
-  });
+  );
 
   router.delete('/blogs/:id', authenticateToken, async (req, res) => {
     try {
@@ -235,7 +268,10 @@ const createApiRouter = ({ pool, upload, authenticateToken, email, baseDir }) =>
     }
   });
 
-  router.post('/subscribe', async (req, res) => {
+  router.post(
+    '/subscribe',
+    validate([body('email').isEmail().normalizeEmail()]),
+    async (req, res) => {
     try {
       const { email: subscriberEmail } = req.body;
       if (!subscriberEmail || !/^\S+@\S+\.\S+$/.test(subscriberEmail)) {
@@ -280,7 +316,7 @@ const createApiRouter = ({ pool, upload, authenticateToken, email, baseDir }) =>
       console.error('Subscription error:', error);
       res.status(500).json({ error: 'An error occurred during subscription.' });
     }
-  });
+  );
 
   router.get('/unsubscribe', async (req, res) => {
     try {
@@ -343,7 +379,15 @@ const createApiRouter = ({ pool, upload, authenticateToken, email, baseDir }) =>
     }
   });
 
-  router.post('/testimonials', async (req, res) => {
+  router.post(
+    '/testimonials',
+    validate([
+      body('name').trim().isLength({ min: 2, max: 120 }),
+      body('email').isEmail().normalizeEmail(),
+      body('rating').isInt({ min: 1, max: 5 }),
+      body('message').trim().isLength({ min: 5, max: 1000 })
+    ]),
+    async (req, res) => {
     try {
       const { name, email: testimonialEmail, rating, message } = req.body;
 
@@ -365,7 +409,7 @@ const createApiRouter = ({ pool, upload, authenticateToken, email, baseDir }) =>
     } catch (error) {
       res.status(500).json({ error: error.message });
     }
-  });
+  );
 
   router.put('/testimonials/:id/approve', authenticateToken, async (req, res) => {
     try {
@@ -380,7 +424,16 @@ const createApiRouter = ({ pool, upload, authenticateToken, email, baseDir }) =>
     }
   });
 
-  router.post('/contact', async (req, res) => {
+  router.post(
+    '/contact',
+    validate([
+      body('name').trim().isLength({ min: 2, max: 120 }),
+      body('email').isEmail().normalizeEmail(),
+      body('phone').optional({ nullable: true }).trim().isLength({ max: 40 }),
+      body('subject').optional({ nullable: true }).trim().isLength({ max: 160 }),
+      body('message').trim().isLength({ min: 5, max: 2000 })
+    ]),
+    async (req, res) => {
     try {
       const { name, email: contactEmail, phone, subject, message } = req.body;
 
@@ -397,7 +450,7 @@ const createApiRouter = ({ pool, upload, authenticateToken, email, baseDir }) =>
     } catch (error) {
       res.status(500).json({ error: error.message });
     }
-  });
+  );
 
   router.get('/contacts', authenticateToken, async (req, res) => {
     try {
@@ -434,7 +487,14 @@ const createApiRouter = ({ pool, upload, authenticateToken, email, baseDir }) =>
     }
   });
 
-  router.post('/admin/login', async (req, res) => {
+  router.post(
+    '/admin/login',
+    authLimiter,
+    validate([
+      body('email').isEmail().normalizeEmail(),
+      body('password').isString().isLength({ min: 1, max: 200 })
+    ]),
+    async (req, res) => {
     try {
       const { email: adminEmail, password } = req.body;
 
@@ -461,7 +521,7 @@ const createApiRouter = ({ pool, upload, authenticateToken, email, baseDir }) =>
 
       res.cookie('token', token, {
         httpOnly: true,
-        secure: process.env.NODE_ENV === 'production',
+        secure: req.secure || process.env.FORCE_HTTPS === 'true',
         sameSite: 'lax',
         maxAge: 24 * 60 * 60 * 1000
       });
@@ -470,9 +530,13 @@ const createApiRouter = ({ pool, upload, authenticateToken, email, baseDir }) =>
     } catch (error) {
       res.status(500).json({ error: error.message });
     }
-  });
+  );
 
-  router.post('/admin/forgot-password', async (req, res) => {
+  router.post(
+    '/admin/forgot-password',
+    authLimiter,
+    validate([body('email').isEmail().normalizeEmail()]),
+    async (req, res) => {
     try {
       const { email: adminEmail } = req.body;
 
@@ -517,7 +581,14 @@ const createApiRouter = ({ pool, upload, authenticateToken, email, baseDir }) =>
     }
   });
 
-  router.post('/admin/verify-otp', async (req, res) => {
+  router.post(
+    '/admin/verify-otp',
+    strictLimiter,
+    validate([
+      body('email').isEmail().normalizeEmail(),
+      body('otp').isLength({ min: 6, max: 6 }).isNumeric()
+    ]),
+    async (req, res) => {
     try {
       const { email: adminEmail, otp } = req.body;
       if (!adminEmail || !otp) {
@@ -555,9 +626,17 @@ const createApiRouter = ({ pool, upload, authenticateToken, email, baseDir }) =>
       console.error('OTP verification error:', error);
       res.status(500).json({ error: 'Error verifying OTP' });
     }
-  });
+  );
 
-  router.post('/admin/reset-password', async (req, res) => {
+  router.post(
+    '/admin/reset-password',
+    strictLimiter,
+    validate([
+      body('email').isEmail().normalizeEmail(),
+      body('otp').isLength({ min: 6, max: 6 }).isNumeric(),
+      body('password').isString().isLength({ min: 8, max: 200 })
+    ]),
+    async (req, res) => {
     try {
       const { email: adminEmail, otp, password } = req.body;
       if (!adminEmail || !otp || !password) {
@@ -601,9 +680,13 @@ const createApiRouter = ({ pool, upload, authenticateToken, email, baseDir }) =>
       console.error('Password reset error:', error);
       res.status(500).json({ error: 'Error resetting password' });
     }
-  });
+  );
 
-  router.post('/admin/resend-otp', async (req, res) => {
+  router.post(
+    '/admin/resend-otp',
+    strictLimiter,
+    validate([body('email').isEmail().normalizeEmail()]),
+    async (req, res) => {
     try {
       const { email: adminEmail } = req.body;
       if (!adminEmail) {
@@ -642,7 +725,7 @@ const createApiRouter = ({ pool, upload, authenticateToken, email, baseDir }) =>
       console.error('Resend OTP error:', error);
       res.status(500).json({ error: 'Error resending OTP' });
     }
-  });
+  );
 
   router.post('/admin/logout', (req, res) => {
     res.clearCookie('token');
@@ -653,7 +736,17 @@ const createApiRouter = ({ pool, upload, authenticateToken, email, baseDir }) =>
     res.json({ authenticated: true, user: req.user });
   });
 
-  router.post('/send-email', authenticateToken, async (req, res) => {
+  router.post(
+    '/send-email',
+    authenticateToken,
+    validate([
+      body('to').isEmail().normalizeEmail(),
+      body('subject').trim().isLength({ min: 1, max: 200 }),
+      body('message').trim().isLength({ min: 1, max: 4000 }),
+      body('type').optional({ nullable: true }).isIn(['contact', 'testimonial']),
+      body('recordId').optional({ nullable: true }).isInt()
+    ]),
+    async (req, res) => {
     try {
       const { to, subject, message, type, recordId } = req.body;
 
@@ -721,7 +814,7 @@ const createApiRouter = ({ pool, upload, authenticateToken, email, baseDir }) =>
       console.error('Send email error:', error);
       res.status(500).json({ error: error.message });
     }
-  });
+  );
 
   return router;
 };

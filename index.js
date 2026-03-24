@@ -1,6 +1,8 @@
 const express = require('express');
 const path = require('path');
 const helmet = require('helmet');
+const hpp = require('hpp');
+const xssClean = require('xss-clean');
 const cookieParser = require('cookie-parser');
 require('dotenv').config();
 
@@ -13,6 +15,9 @@ const { createPagesRouter } = require('./routes/pages');
 const { createApiRouter } = require('./routes/api');
 
 const app = express();
+app.disable('x-powered-by');
+app.set('trust proxy', 1);
+const forceHttps = process.env.FORCE_HTTPS === 'true';
 const PORT = process.env.PORT || 3000;
 const getSiteUrl = (req) =>
   process.env.SITE_URL || `${req.protocol}://${req.get('host')}`;
@@ -20,10 +25,38 @@ const publicDir = path.join(__dirname, 'public');
 const isApiRequest = (req) => req.originalUrl.startsWith('/api');
 
 app.use(helmet({
-  contentSecurityPolicy: false,
+  contentSecurityPolicy: {
+    useDefaults: true,
+    directives: {
+      "default-src": ["'self'"],
+      "script-src": ["'self'"],
+      "style-src": ["'self'", "'unsafe-inline'", "https://fonts.googleapis.com"],
+      "font-src": ["'self'", "https://fonts.gstatic.com", "data:"],
+      "img-src": ["'self'", "data:", "blob:"],
+      "connect-src": ["'self'"],
+      "frame-ancestors": ["'none'"],
+      "object-src": ["'none'"],
+      "base-uri": ["'self'"],
+      "form-action": ["'self'"]
+    }
+  },
+  referrerPolicy: { policy: 'no-referrer' },
+  hsts: forceHttps
+    ? { maxAge: 15552000, includeSubDomains: true, preload: true }
+    : false
 }));
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+app.use(express.json({ limit: '2mb' }));
+app.use(express.urlencoded({ extended: true, limit: '2mb' }));
+app.use(cookieParser());
+app.use(hpp());
+app.use(xssClean());
+
+if (forceHttps) {
+  app.use((req, res, next) => {
+    if (req.secure) return next();
+    return res.redirect(301, `https://${req.headers.host}${req.originalUrl}`);
+  });
+}
 
 app.get('/robots.txt', (req, res) => {
   const baseUrl = getSiteUrl(req).replace(/\/$/, '');
@@ -122,7 +155,6 @@ app.get('/sitemap.xml', async (req, res) => {
 
 app.use(express.static('public'));
 app.use('/uploads', express.static('uploads'));
-app.use(cookieParser());
 
 // Serve branded favicon
 app.get('/favicon.ico', (req, res) => {
