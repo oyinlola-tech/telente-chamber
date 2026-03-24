@@ -16,6 +16,8 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 const getSiteUrl = (req) =>
   process.env.SITE_URL || `${req.protocol}://${req.get('host')}`;
+const publicDir = path.join(__dirname, 'public');
+const isApiRequest = (req) => req.originalUrl.startsWith('/api');
 
 app.use(helmet({
   contentSecurityPolicy: false,
@@ -149,7 +151,17 @@ app.use(
 
 app.use((err, req, res, next) => {
   console.error(err.stack);
-  res.status(500).json({ error: 'Something went wrong!' });
+  if (isApiRequest(req)) {
+    return res.status(500).json({ error: 'Something went wrong!' });
+  }
+  return res.status(500).sendFile(path.join(publicDir, '500.html'));
+});
+
+app.use((req, res) => {
+  if (isApiRequest(req)) {
+    return res.status(404).json({ error: 'Not found' });
+  }
+  return res.status(404).sendFile(path.join(publicDir, '404.html'));
 });
 
 initDatabase().then(() => {

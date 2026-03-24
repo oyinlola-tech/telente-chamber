@@ -665,6 +665,12 @@
                 editingBlogId = id;
                 const submitBtn = document.getElementById('blog-submit');
                 submitBtn.textContent = 'Update Post';
+
+                const messageDiv = document.getElementById('blog-message');
+                if (messageDiv) {
+                    messageDiv.textContent = 'Edit mode: blog loaded successfully.';
+                    messageDiv.className = 'message success';
+                }
             } catch (error) {
                 console.error('Error loading blog post:', error);
                 alert('Unable to load blog post for editing.');

@@ -10,6 +10,21 @@ const createApiRouter = ({ pool, upload, authenticateToken, email, baseDir }) =>
       const limit = req.query.limit ? parseInt(req.query.limit) : null;
       const status = req.query.status || 'published';
 
+      if (status === 'all' || (req.headers.authorization && req.query.status === undefined)) {
+        return authenticateToken(req, res, async () => {
+          let query = 'SELECT * FROM blogs ORDER BY created_at DESC';
+          const params = [];
+
+          if (limit) {
+            query += ' LIMIT ?';
+            params.push(limit);
+          }
+
+          const [blogs] = await pool.query(query, params);
+          res.json(blogs);
+        });
+      }
+
       let query = 'SELECT * FROM blogs WHERE status = ? ORDER BY created_at DESC';
       const params = [status];
 
@@ -23,6 +38,27 @@ const createApiRouter = ({ pool, upload, authenticateToken, email, baseDir }) =>
     } catch (error) {
       res.status(500).json({ error: error.message });
     }
+  });
+
+  router.get('/blogs/:id', async (req, res, next) => {
+    if (!/^\d+$/.test(req.params.id)) {
+      return next();
+    }
+
+    return authenticateToken(req, res, async () => {
+      try {
+        const blogId = parseInt(req.params.id, 10);
+        const [blogs] = await pool.query('SELECT * FROM blogs WHERE id = ?', [blogId]);
+
+        if (blogs.length === 0) {
+          return res.status(404).json({ error: 'Blog not found' });
+        }
+
+        res.json(blogs[0]);
+      } catch (error) {
+        res.status(500).json({ error: error.message });
+      }
+    });
   });
 
   router.get('/blogs/:slug', async (req, res) => {
@@ -108,6 +144,57 @@ const createApiRouter = ({ pool, upload, authenticateToken, email, baseDir }) =>
       }
 
       res.json({ id: result.insertId, slug, message: 'Blog created successfully' });
+    } catch (error) {
+      res.status(500).json({ error: error.message });
+    }
+  });
+
+  router.put('/blogs/:id', authenticateToken, upload.single('image'), async (req, res) => {
+    try {
+      const blogId = parseInt(req.params.id, 10);
+      if (isNaN(blogId)) {
+        return res.status(400).json({ error: 'Invalid blog ID' });
+      }
+      const { title, content, excerpt, status } = req.body;
+
+      if (!title || !content) {
+        return res.status(400).json({ error: 'Title and content are required' });
+      }
+
+      const [existing] = await pool.query('SELECT image FROM blogs WHERE id = ?', [blogId]);
+      if (existing.length === 0) {
+        return res.status(404).json({ error: 'Blog post not found' });
+      }
+
+      const slug = title.toLowerCase()
+        .replace(/[^\w\s-]/g, '')
+        .replace(/\s+/g, '-')
+        .replace(/--+/g, '-');
+
+      let imagePath = existing[0].image || null;
+      if (req.file) {
+        const fs = require('fs');
+        const newPath = `uploads/blogs/${req.file.filename}`;
+        fs.renameSync(req.file.path, newPath);
+        imagePath = newPath;
+
+        if (existing[0].image) {
+          const fsPromises = require('fs').promises;
+          const oldPath = path.join(baseDir, existing[0].image);
+          try {
+            await fsPromises.unlink(oldPath);
+          } catch (err) {
+            console.error(`Failed to delete image file: ${oldPath}`, err);
+          }
+        }
+      }
+
+      await pool.query(
+        'UPDATE blogs SET title = ?, slug = ?, content = ?, excerpt = ?, image = ?, status = ? WHERE id = ?',
+        [title, slug, content, excerpt, imagePath, status || 'published', blogId]
+      );
+
+      res.json({ id: blogId, slug, message: 'Blog updated successfully' });
     } catch (error) {
       res.status(500).json({ error: error.message });
     }

@@ -7,5 +7,5 @@ build
 log
 .logs
 *.log
-uploads/blog/
-uploads/blogs/
+public/uploads/blog/
+public/uploads/blogs/
