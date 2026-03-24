@@ -73,6 +73,38 @@ footer {
     color: var(--muted);
 }
 
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.8rem 1.6rem;
+    border-radius: 999px;
+    border: 1px solid transparent;
+    font-weight: 600;
+    text-decoration: none;
+    transition: var(--transition);
+}
+
+.btn.primary {
+    background: var(--accent);
+    color: #1d160b;
+}
+
+.btn.primary:hover {
+    background: var(--accent-strong);
+    color: #ffffff;
+}
+
+.btn.ghost {
+    border-color: var(--ink);
+    color: var(--ink);
+}
+
+.btn.ghost:hover {
+    background: var(--ink);
+    color: #ffffff;
+}
+
 .skip-link {
     position: absolute;
     left: -999px;
