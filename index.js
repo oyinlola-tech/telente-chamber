@@ -2,7 +2,6 @@ const express = require('express');
 const path = require('path');
 const helmet = require('helmet');
 const hpp = require('hpp');
-const xssClean = require('xss-clean');
 const cookieParser = require('cookie-parser');
 require('dotenv').config();
 
@@ -49,7 +48,6 @@ app.use(express.json({ limit: '2mb' }));
 app.use(express.urlencoded({ extended: true, limit: '2mb' }));
 app.use(cookieParser());
 app.use(hpp());
-app.use(xssClean());
 
 if (forceHttps) {
   app.use((req, res, next) => {

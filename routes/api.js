@@ -18,6 +18,17 @@ const createApiRouter = ({ pool, upload, authenticateToken, email, baseDir }) =>
     }
   ];
 
+  const sanitizePlainText = (field, options = {}) => {
+    const chain = body(field).trim().escape();
+    if (options.optional) {
+      return chain.optional({
+        nullable: options.nullable === true,
+        checkFalsy: options.checkFalsy === true
+      });
+    }
+    return chain;
+  };
+
   router.get('/blogs', async (req, res) => {
     try {
       const limit = req.query.limit ? parseInt(req.query.limit) : null;
@@ -95,9 +106,9 @@ const createApiRouter = ({ pool, upload, authenticateToken, email, baseDir }) =>
     '/blogs',
     authenticateToken,
     validate([
-      body('title').trim().isLength({ min: 3, max: 200 }),
+      sanitizePlainText('title').isLength({ min: 3, max: 200 }),
       body('content').trim().isLength({ min: 20 }),
-      body('excerpt').optional({ nullable: true }).trim().isLength({ max: 400 }),
+      sanitizePlainText('excerpt', { optional: true, nullable: true }).isLength({ max: 400 }),
       body('status').optional().isIn(['published', 'draft'])
     ]),
     upload.single('image'),
@@ -177,9 +188,9 @@ const createApiRouter = ({ pool, upload, authenticateToken, email, baseDir }) =>
     '/blogs/:id',
     authenticateToken,
     validate([
-      body('title').trim().isLength({ min: 3, max: 200 }),
+      sanitizePlainText('title').isLength({ min: 3, max: 200 }),
       body('content').trim().isLength({ min: 20 }),
-      body('excerpt').optional({ nullable: true }).trim().isLength({ max: 400 }),
+      sanitizePlainText('excerpt', { optional: true, nullable: true }).isLength({ max: 400 }),
       body('status').optional().isIn(['published', 'draft'])
     ]),
     upload.single('image'),
@@ -385,10 +396,10 @@ const createApiRouter = ({ pool, upload, authenticateToken, email, baseDir }) =>
   router.post(
     '/testimonials',
     validate([
-      body('name').trim().isLength({ min: 2, max: 120 }),
+      sanitizePlainText('name').isLength({ min: 2, max: 120 }),
       body('email').isEmail().normalizeEmail(),
       body('rating').isInt({ min: 1, max: 5 }),
-      body('message').trim().isLength({ min: 5, max: 1000 })
+      sanitizePlainText('message').isLength({ min: 5, max: 1000 })
     ]),
     async (req, res) => {
     try {
@@ -431,11 +442,11 @@ const createApiRouter = ({ pool, upload, authenticateToken, email, baseDir }) =>
   router.post(
     '/contact',
     validate([
-      body('name').trim().isLength({ min: 2, max: 120 }),
+      sanitizePlainText('name').isLength({ min: 2, max: 120 }),
       body('email').isEmail().normalizeEmail(),
-      body('phone').optional({ nullable: true }).trim().isLength({ max: 40 }),
-      body('subject').optional({ nullable: true }).trim().isLength({ max: 160 }),
-      body('message').trim().isLength({ min: 5, max: 2000 })
+      sanitizePlainText('phone', { optional: true, nullable: true }).isLength({ max: 40 }),
+      sanitizePlainText('subject', { optional: true, nullable: true }).isLength({ max: 160 }),
+      sanitizePlainText('message').isLength({ min: 5, max: 2000 })
     ]),
     async (req, res) => {
     try {
@@ -750,8 +761,8 @@ const createApiRouter = ({ pool, upload, authenticateToken, email, baseDir }) =>
     authenticateToken,
     validate([
       body('to').isEmail().normalizeEmail(),
-      body('subject').trim().isLength({ min: 1, max: 200 }),
-      body('message').trim().isLength({ min: 1, max: 4000 }),
+      sanitizePlainText('subject').isLength({ min: 1, max: 200 }),
+      sanitizePlainText('message').isLength({ min: 1, max: 4000 }),
       body('type').optional({ nullable: true }).isIn(['contact', 'testimonial']),
       body('recordId').optional({ nullable: true }).isInt()
     ]),
