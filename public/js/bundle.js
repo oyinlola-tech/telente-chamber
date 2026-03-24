@@ -1944,26 +1944,26 @@
        }
      };
  
-     document.addEventListener('DOMContentLoaded', async () => {
-       const isAuthenticated = await checkAuth();
-       if (isAuthenticated) {
-         setupTabs();
-         loadDashboardStats();
+    (async () => {
+      setupTabs();
+      const isAuthenticated = await checkAuth();
+      if (isAuthenticated) {
+        loadDashboardStats();
  
-         const fileUpload = document.getElementById('file-upload');
-         if (fileUpload) {
-           fileUpload.addEventListener('dragover', (e) => {
-             e.preventDefault();
-             fileUpload.classList.add('is-dragging');
-           });
- 
-           fileUpload.addEventListener('dragleave', () => {
-             fileUpload.classList.remove('is-dragging');
-           });
- 
-           fileUpload.addEventListener('drop', (e) => {
-             e.preventDefault();
-             fileUpload.classList.remove('is-dragging');
+        const fileUpload = document.getElementById('file-upload');
+        if (fileUpload) {
+          fileUpload.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            fileUpload.classList.add('is-dragging');
+          });
+
+          fileUpload.addEventListener('dragleave', () => {
+            fileUpload.classList.remove('is-dragging');
+          });
+
+          fileUpload.addEventListener('drop', (e) => {
+            e.preventDefault();
+            fileUpload.classList.remove('is-dragging');
  
              const file = e.dataTransfer.files[0];
              if (file && file.type.startsWith('image/')) {
@@ -1981,12 +1981,12 @@
                  const preview = document.getElementById('image-preview');
                  preview.innerHTML = `<img src="${event.target.result}" class="preview-image" alt="Preview">`;
                };
-               reader.readAsDataURL(file);
-             }
-           });
-         }
-       }
-     });
+              reader.readAsDataURL(file);
+            }
+          });
+        }
+      }
+    })();
    };
  
   onReady(async () => {

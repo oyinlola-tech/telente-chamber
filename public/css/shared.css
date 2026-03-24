@@ -73,6 +73,19 @@ footer {
     color: var(--muted);
 }
 
+.admin-badge {
+    margin-left: 0.6rem;
+    padding: 0.2rem 0.6rem;
+    border-radius: 999px;
+    border: 1px solid var(--border);
+    font-size: 0.65rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    font-weight: 700;
+    color: var(--ink-2);
+    background: #ffffff;
+}
+
 .btn {
     display: inline-flex;
     align-items: center;

@@ -623,11 +623,11 @@
             }
         };
         
-        // Initialize dashboard
-        document.addEventListener('DOMContentLoaded', async () => {
+        // Initialize dashboard immediately (onReady already fired)
+        (async () => {
+            setupTabs();
             const isAuthenticated = await checkAuth();
             if (isAuthenticated) {
-                setupTabs();
                 loadDashboardStats();
                 
                 // Setup file upload
@@ -635,16 +635,16 @@
                 if (fileUpload) {
                     fileUpload.addEventListener('dragover', (e) => {
                         e.preventDefault();
-                        fileUpload.style.borderColor = 'var(--black)';
+                        fileUpload.classList.add('is-dragging');
                     });
                     
                     fileUpload.addEventListener('dragleave', () => {
-                        fileUpload.style.borderColor = '#ddd';
+                        fileUpload.classList.remove('is-dragging');
                     });
                     
                     fileUpload.addEventListener('drop', (e) => {
                         e.preventDefault();
-                        fileUpload.style.borderColor = '#ddd';
+                        fileUpload.classList.remove('is-dragging');
                         
                         const file = e.dataTransfer.files[0];
                         if (file && file.type.startsWith('image/')) {
@@ -668,4 +668,4 @@
                     });
                 }
             }
-        });
+        })();
