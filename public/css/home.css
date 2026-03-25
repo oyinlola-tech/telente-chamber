@@ -790,7 +790,7 @@
             }
 
             .founder-image img {
-                height: 320px;
+                height: auto;
             }
 
             .why-footer {
