@@ -431,7 +431,7 @@
     box-shadow: var(--shadow);
 }
 
-.why-metric h3 {
+.why-metric .why-metric-value {
     font-size: 1.6rem;
     color: var(--ink);
     margin-bottom: 0.4rem;
