@@ -1,5 +1,6 @@
 const express = require('express');
 const path = require('path');
+const compression = require('compression');
 const helmet = require('helmet');
 const hpp = require('hpp');
 const cookieParser = require('cookie-parser');
@@ -44,6 +45,7 @@ app.use(helmet({
     ? { maxAge: 15552000, includeSubDomains: true, preload: true }
     : false
 }));
+app.use(compression());
 app.use(express.json({ limit: '2mb' }));
 app.use(express.urlencoded({ extended: true, limit: '2mb' }));
 app.use(cookieParser());
@@ -55,6 +57,20 @@ if (forceHttps) {
     return res.redirect(301, `https://${req.headers.host}${req.originalUrl}`);
   });
 }
+
+app.use((req, res, next) => {
+  if (isApiRequest(req)) return next();
+  const isHtmlRequest = req.accepts('html') && !req.path.includes('.');
+  if (!isHtmlRequest) return next();
+
+  if (req.path.startsWith('/admin') || req.path.startsWith('/unsubscribe')) {
+    res.setHeader('Cache-Control', 'no-store');
+    return next();
+  }
+
+  res.setHeader('Cache-Control', 'public, max-age=300, s-maxage=600');
+  return next();
+});
 
 app.get('/robots.txt', (req, res) => {
   const baseUrl = getSiteUrl(req).replace(/\/$/, '');
