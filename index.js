@@ -158,8 +158,8 @@ app.get('/sitemap.xml', async (req, res) => {
   }
 });
 
-app.use(express.static('public'));
-app.use('/uploads', express.static('uploads'));
+app.use(express.static('public', { maxAge: '30d' }));
+app.use('/uploads', express.static('uploads', { maxAge: '30d' }));
 
 // Serve branded favicon
 app.get('/favicon.ico', (req, res) => {

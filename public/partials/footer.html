@@ -3,7 +3,7 @@
         <div class="footer-content">
             <div class="footer-section">
                 <div class="footer-brand">
-                    <img src="/uploads/img/Legal-specturm-logo.png" alt="Legal Spectrum logo">
+                    <img src="/uploads/img/Legal-specturm-logo.png" alt="Legal Spectrum logo" width="40" height="40" loading="lazy" decoding="async">
                     <span>Legal Spectrum</span>
                 </div>
                 <p>Trusted counsel for corporate leaders and private clients. We deliver strategic clarity and decisive advocacy.</p>
@@ -19,9 +19,20 @@
                     <a href="/terms">Terms of Service</a>
                 </p>
             </div>
-            <div class="footer-section">
+            <div class="footer-section" itemscope itemtype="https://schema.org/LegalService">
+                <meta itemprop="name" content="Legal Spectrum Chambers">
+                <meta itemprop="url" content="https://chamber.telente.site">
                 <h3>Contact</h3>
-                <p>Phone: <a href="tel:+2348061234567">+234 806 123 4567</a><br>Email: <a href="mailto:admin@chamber.telente.site">admin@chamber.telente.site</a><br>Address: Legal Spectrum Chambers, Okitipupa, Ondo State, Nigeria</p>
+                <p>
+                    Phone: <a href="tel:+2348061234567" itemprop="telephone">+234 806 123 4567</a><br>
+                    Email: <a href="mailto:admin@chamber.telente.site" itemprop="email">admin@chamber.telente.site</a><br>
+                    <span itemprop="address" itemscope itemtype="https://schema.org/PostalAddress">
+                        Address: <span itemprop="streetAddress">Legal Spectrum Chambers</span>,
+                        <span itemprop="addressLocality">Okitipupa</span>,
+                        <span itemprop="addressRegion">Ondo State</span>,
+                        <span itemprop="addressCountry">Nigeria</span>
+                    </span>
+                </p>
             </div>
             <div class="footer-section">
                 <h3>Office Hours</h3>

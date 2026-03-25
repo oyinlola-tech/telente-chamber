@@ -139,11 +139,11 @@
             box-shadow: var(--shadow);
         }
 
-        .metric-card h3 {
-            font-size: 1.6rem;
-            font-weight: 600;
-            color: var(--ink);
-        }
+.metric-card .metric-value {
+    font-size: 1.6rem;
+    font-weight: 600;
+    color: var(--ink);
+}
 
         .metric-card p {
             margin: 0.4rem 0 0;
