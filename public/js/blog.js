@@ -41,7 +41,7 @@
                 <div class="blog-card">
                     ${blog.image ? `
                         <div class="blog-image">
-                            <img src="/${blog.image}" alt="${blog.title}" loading="lazy">
+                            <img src="/${blog.image}" alt="${blog.title}" loading="lazy" decoding="async">
                         </div>
                     ` : ''}
                     <div class="blog-content">

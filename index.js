@@ -114,6 +114,13 @@ app.get('/sitemap.xml', async (req, res) => {
       '/contact',
       '/about',
       '/practice',
+      '/practice/corporate-commercial',
+      '/practice/dispute-resolution',
+      '/practice/land-property',
+      '/practice/private-clients',
+      '/practice/employment-hr',
+      '/practice/risk-compliance',
+      '/service-areas',
       '/faq',
       '/privacy',
       '/terms'

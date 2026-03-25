@@ -149,6 +149,10 @@ img {
     color: var(--muted);
 }
 
+.practice-card .btn {
+    margin-top: 1rem;
+}
+
 .industry-grid {
     margin-top: 2rem;
     display: grid;

@@ -405,7 +405,7 @@
                  blog.image
                    ? `
                      <div class="blog-image">
-                       <img src="/${blog.image}" alt="${blog.title}" loading="lazy">
+                      <img src="/${blog.image}" alt="${blog.title}" loading="lazy" decoding="async">
                      </div>
                    `
                    : ''
@@ -535,7 +535,7 @@
                      blog.image
                        ? `
                          <div class="related-image">
-                           <img src="/${blog.image}" alt="${blog.title}">
+                           <img src="/${blog.image}" alt="${blog.title}" loading="lazy" decoding="async">
                          </div>
                        `
                        : ''
@@ -582,20 +582,30 @@
         document.title = `${blog.title} - Legal Spectrum`;
         setCanonicalUrl(`/blog/${blog.slug}`);
 
-        const excerpt = blog.excerpt || blog.content.substring(0, 160);
+        const excerpt = (blog.excerpt || blog.content || '')
+          .replace(/<[^>]+>/g, '')
+          .replace(/\s+/g, ' ')
+          .trim()
+          .substring(0, 160);
+        const siteUrl = document.body.dataset.siteUrl || window.location.origin;
+        const canonicalUrl = `${siteUrl.replace(/\/$/, '')}/blog/${blog.slug}`;
+        const imageUrl = blog.image
+          ? `${siteUrl.replace(/\/$/, '')}/${blog.image.replace(/^\/+/, '')}`
+          : `${siteUrl.replace(/\/$/, '')}/uploads/img/Legal-specturm-logo.png`;
+
         setMetaContent('description', excerpt);
         setOgContent('og:title', blog.title);
         setOgContent('og:description', excerpt);
         setOgContent('og:type', 'article');
-        setOgContent('og:url', window.location.href);
-        if (blog.image) {
-          setOgContent('og:image', `/${blog.image}`);
-        }
+        setOgContent('og:url', canonicalUrl);
+        setOgContent('og:image', imageUrl);
         setTwitterContent('twitter:title', blog.title);
         setTwitterContent('twitter:description', excerpt);
-        if (blog.image) {
-          setTwitterContent('twitter:image', `/${blog.image}`);
-        }
+        setTwitterContent('twitter:image', imageUrl);
+
+        const isoDate = new Date(blog.updated_at || blog.created_at).toISOString();
+        setOgContent('article:published_time', isoDate);
+        setOgContent('article:modified_time', isoDate);
  
          const formattedDate = new Date(blog.created_at).toLocaleDateString('en-US', {
            year: 'numeric',
@@ -612,7 +622,7 @@
              blog.image
                ? `
                  <div class="featured-image">
-                   <img src="/${blog.image}" alt="${blog.title}">
+                   <img src="/${blog.image}" alt="${blog.title}" loading="lazy" decoding="async">
                  </div>
                `
                : ''
@@ -632,7 +642,7 @@
           description: excerpt,
           datePublished: blog.created_at,
           dateModified: blog.updated_at || blog.created_at,
-          mainEntityOfPage: window.location.href,
+          mainEntityOfPage: canonicalUrl,
           author: org
             ? {
                 '@type': 'Organization',
@@ -645,7 +655,7 @@
                 name: org.name
               }
             : undefined,
-          image: blog.image ? [`/${blog.image}`] : undefined
+          image: imageUrl ? [imageUrl] : undefined
         };
         injectJsonLd(articleSchema, 'jsonld-article');
 
@@ -694,7 +704,7 @@
                    blog.image
                      ? `
                        <div class="blog-image">
-                         <img src="/${blog.image}" alt="${blog.title}">
+                         <img src="/${blog.image}" alt="${blog.title}" loading="lazy" decoding="async">
                        </div>
                      `
                      : ''

@@ -29,6 +29,34 @@ const createPagesRouter = ({ baseDir, authenticateToken }) => {
     res.sendFile(path.join(publicDir, 'practice.html'));
   });
 
+  router.get('/practice/corporate-commercial', (req, res) => {
+    res.sendFile(path.join(publicDir, 'practice-corporate-commercial.html'));
+  });
+
+  router.get('/practice/dispute-resolution', (req, res) => {
+    res.sendFile(path.join(publicDir, 'practice-dispute-resolution.html'));
+  });
+
+  router.get('/practice/land-property', (req, res) => {
+    res.sendFile(path.join(publicDir, 'practice-land-property.html'));
+  });
+
+  router.get('/practice/private-clients', (req, res) => {
+    res.sendFile(path.join(publicDir, 'practice-private-clients.html'));
+  });
+
+  router.get('/practice/employment-hr', (req, res) => {
+    res.sendFile(path.join(publicDir, 'practice-employment-hr.html'));
+  });
+
+  router.get('/practice/risk-compliance', (req, res) => {
+    res.sendFile(path.join(publicDir, 'practice-risk-compliance.html'));
+  });
+
+  router.get('/service-areas', (req, res) => {
+    res.sendFile(path.join(publicDir, 'service-areas.html'));
+  });
+
   router.get('/faq', (req, res) => {
     res.sendFile(path.join(publicDir, 'faq.html'));
   });
